@@ -8,7 +8,7 @@ export default async function Landing() {
                 <div className="px-20 flex flex-col md:flex-row items-center justify-between gap-10">
                     <div className="max-w-xl space-y-12">
                         <div className="space-y-5">
-                            <h1 className="text-5xl font-bold leading-tight">
+                            <h1 className="text-5xl text-secondary font-bold leading-tight">
                                 Build with confidence <br /> Skip the guesswork
                             </h1>
                             <p className="text-xl text-secondary">
@@ -17,10 +17,16 @@ export default async function Landing() {
                             </p>
                         </div>
                         <div className="flex space-x-5">
-                            <Link className="px-8 py-4 rounded-2xl bg-primary text-white" href={"/signup"}>
+                            <Link
+                                className="px-8 py-4 rounded-2xl bg-primary text-white expanding-button"
+                                href={"/signup"}
+                            >
                                 Get Started
                             </Link>
-                            <Link className="px-8 py-4 rounded-2xl border-1 border-gray-500 text-black" href={""}>
+                            <Link
+                                className="px-8 py-4 rounded-2xl border-1 border-gray-500 text-black expanding-button"
+                                href={""}
+                            >
                                 Learn More
                             </Link>
                         </div>

@@ -131,3 +131,11 @@ body {
     color: var(--foreground);
     font-family: var(--font-poppins);
 }
+
+.expanding-button {
+    @apply cursor-pointer duration-100 hover:scale-105;
+}
+
+.animating-button {
+    @apply cursor-pointer duration-100;
+}

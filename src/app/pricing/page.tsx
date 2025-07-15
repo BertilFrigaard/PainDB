@@ -3,7 +3,7 @@ import PainPointTable from "@/components/tables/PainPointTable/PainPointTable";
 import { PainPoint } from "@/types/PainPoint";
 import { useEffect, useState } from "react";
 
-export default function DBViewer() {
+export default function Pricing() {
     const [painPoints, setPainPoints] = useState<PainPoint[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
