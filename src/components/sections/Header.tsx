@@ -1,5 +1,7 @@
 import { auth, signIn, signOut } from "@/auth";
 import Link from "next/link";
+import { IoIosArrowDown } from "react-icons/io";
+import DropDown from "../buttons/DropDown";
 
 export default async function Header() {
     const session = await auth();
@@ -34,9 +36,16 @@ export default async function Header() {
                         </>
                     ) : (
                         <>
-                            <Link className="text-secondary" href="/features">
-                                Features
-                            </Link>
+                            <DropDown
+                                items={[
+                                    { text: "Advanced query", link: "/advanced-query" },
+                                    { text: "Data Viewer", link: "/data-viewer" },
+                                ]}
+                            >
+                                <p className="text-secondary cursor-pointer hover:text-primary duration-100">
+                                    Features
+                                </p>
+                            </DropDown>
                             <Link className="text-secondary" href="/example">
                                 Example
                             </Link>
@@ -52,12 +61,18 @@ export default async function Header() {
             </div>
             <div className="flex space-x-4">
                 {session?.user ? (
-                    <button
-                        className="px-7 py-3 bg-primary text-white rounded-2xl animating-button hover:bg-primary/90"
-                        onClick={logOutClicked}
-                    >
-                        Log Out
-                    </button>
+                    <DropDown items={[{ text: "Pricing" }, { text: "Sign Out", func: logOutClicked }]}>
+                        <div className="flex items-center gap-2 font-semibold group cursor-pointer">
+                            <div className="w-9 h-9 flex items-center text-lg justify-center bg-secondary text-white font-bold rounded-full">
+                                {session.user.name?.charAt(0) ?? "U"}
+                            </div>
+                            <p className="relative text-secondary group-hover:after:w-full group-hover:after:opacity-100 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:bg-secondary after:w-0 after:opacity-0 after:transition-all after:duration-300">
+                                Om {session.user.name?.split(" ")[0]}
+                            </p>
+
+                            <IoIosArrowDown className="font-bold" />
+                        </div>
+                    </DropDown>
                 ) : (
                     <>
                         <button
