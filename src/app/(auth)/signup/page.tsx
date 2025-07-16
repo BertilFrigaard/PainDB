@@ -15,7 +15,7 @@ export default function SignUp() {
     };
 
     return (
-        <div className="flex mt-15 items-center justify-center bg-background px-4">
+        <div className="flex my-25 items-center justify-center bg-background px-4">
             <div className="w-full max-w-md space-y-6 bg-white p-8 rounded-2xl shadow-md">
                 <h1 className="text-4xl font-bold text-center">
                     Welcome to <br />

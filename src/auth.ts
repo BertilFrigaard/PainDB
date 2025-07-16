@@ -38,4 +38,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         error: "/",
         verifyRequest: "/verify",
     },
+    callbacks: {
+        session({ session, user }) {
+            session.user.id = user.id;
+            session.user.role = user.role ? user.role : "";
+            return session;
+        },
+    },
 });
