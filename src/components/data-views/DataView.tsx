@@ -4,11 +4,14 @@ import { useEffect, useState } from "react";
 import PainPointTable from "../tables/PainPointTable/PainPointTable";
 import DropDown from "../buttons/DropDown";
 import FileSaver from "file-saver";
+import { UseAlerts } from "@/contexts/AlertContext";
 
 export default function DataViewer() {
     const [painPoints, setPainPoints] = useState<PainPoint[]>([]);
     const [order, setOrder] = useState<keyof typeof orderItemNames>("most_recent");
     const [loading, setLoading] = useState<boolean>(false);
+
+    const { addAlert } = UseAlerts();
 
     useEffect(() => {
         const updateData = async () => {
@@ -147,7 +150,14 @@ export default function DataViewer() {
                         {orderItemNames[order]}
                     </button>
                 </DropDown>
-                <button className="border-1 border-secondary rounded-xl px-5 py-1">Filters</button>
+                <button
+                    onClick={() => {
+                        addAlert({ message: "Not implemented yet", bg: "bg-error" }, 3000);
+                    }}
+                    className="border-1 border-secondary rounded-xl px-5 py-1"
+                >
+                    Filters
+                </button>
             </div>
             {loading ? (
                 <>
