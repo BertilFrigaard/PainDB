@@ -13,34 +13,44 @@ const orderItemNames = {
     least_validation: "Lowest Validation",
 };
 
+const filterItemNames = {
+    all: "Show All",
+    favorites: "Only Favorites",
+};
+
 export default function DataViewer({
     title,
     default_order = "most_recent",
+    default_filter = "all",
     order_dropdown = true,
     filter_dropdown = true,
 }: {
     title: string;
     default_order?: keyof typeof orderItemNames;
+    default_filter?: keyof typeof filterItemNames;
     order_dropdown?: boolean;
     filter_dropdown?: boolean;
 }) {
     const [painPoints, setPainPoints] = useState<PainPoint[]>([]);
     const [order, setOrder] = useState(default_order);
+    const [filter, setFilter] = useState(default_filter);
     const [loading, setLoading] = useState<boolean>(false);
 
     const { addAlert } = UseAlerts();
 
     useEffect(() => {
         const updateData = async () => {
-            const res = await fetch("/api/data?page-size=10&page-index=0&order=" + order);
+            const res = await fetch("/api/data?page-size=10&page-index=0&order=" + order + "&filter=" + filter);
             if (res.status === 200) {
                 const rows = await res.json();
                 setPainPoints(rows);
+            } else {
+                addAlert({ message: "Something went wrong", bg: "bg-error" }, 3000);
             }
             setLoading(false);
         };
         updateData();
-    }, [order]);
+    }, [order, filter]);
 
     const getOrderDropDownItems = () => {
         const out: { text: string; link?: string | undefined; func?: (() => void) | undefined }[] = [];
@@ -54,6 +64,26 @@ export default function DataViewer({
                     text: v,
                     func: () => {
                         setOrder(k as keyof typeof orderItemNames);
+                    },
+                });
+            }
+        }
+
+        return out;
+    };
+
+    const getFilterDropDownItems = () => {
+        const out: { text: string; link?: string | undefined; func?: (() => void) | undefined }[] = [];
+
+        for (const k in filterItemNames) {
+            const v = filterItemNames[k as keyof typeof filterItemNames];
+            if (filter === k) {
+                out.push({ text: v });
+            } else {
+                out.push({
+                    text: v,
+                    func: () => {
+                        setFilter(k as keyof typeof filterItemNames);
                     },
                 });
             }
@@ -177,14 +207,11 @@ export default function DataViewer({
                     </DropDown>
                 )}
                 {filter_dropdown && (
-                    <button
-                        onClick={() => {
-                            addAlert({ message: "Not implemented yet", bg: "bg-error" }, 3000);
-                        }}
-                        className="border-1 border-secondary rounded-xl px-5 py-1"
-                    >
-                        Filters
-                    </button>
+                    <DropDown items={getFilterDropDownItems()}>
+                        <button className="cursor-pointer border-1 border-secondary rounded-xl px-5 py-1">
+                            {filterItemNames[filter]}
+                        </button>
+                    </DropDown>
                 )}
             </div>
             {loading ? (

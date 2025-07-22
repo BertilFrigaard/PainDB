@@ -15,6 +15,9 @@ export async function GET(req: NextRequest) {
     const pageSizeParam = searchParams.get("page-size");
     const pageIndexParam = searchParams.get("page-index");
     const orderParam = searchParams.get("order");
+    const filterParam = searchParams.get("filter");
+
+    const filterForFavorites = filterParam === "favorites";
 
     let pageSize: number;
     let pageIndex: number;
@@ -32,19 +35,27 @@ export async function GET(req: NextRequest) {
 
     if (orderParam === "most_recent") {
         return Response.json(
-            await (await getMostRecentPainPoints(pageSize, pageIndex, Number(session?.user.id))).json()
+            await (
+                await getMostRecentPainPoints(pageSize, pageIndex, Number(session?.user.id), filterForFavorites)
+            ).json()
         );
     } else if (orderParam === "least_recent") {
         return Response.json(
-            await (await getLeastRecentPainPoints(pageSize, pageIndex, Number(session?.user.id))).json()
+            await (
+                await getLeastRecentPainPoints(pageSize, pageIndex, Number(session?.user.id), filterForFavorites)
+            ).json()
         );
     } else if (orderParam === "most_validation") {
         return Response.json(
-            await (await getMostValidatedPainPoints(pageSize, pageIndex, Number(session?.user.id))).json()
+            await (
+                await getMostValidatedPainPoints(pageSize, pageIndex, Number(session?.user.id), filterForFavorites)
+            ).json()
         );
     } else if (orderParam === "least_validation") {
         return Response.json(
-            await (await getLeastValidatedPainPoints(pageSize, pageIndex, Number(session?.user.id))).json()
+            await (
+                await getLeastValidatedPainPoints(pageSize, pageIndex, Number(session?.user.id), filterForFavorites)
+            ).json()
         );
     } else {
         return Response.error();

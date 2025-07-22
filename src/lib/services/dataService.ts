@@ -1,7 +1,12 @@
 import { PainPoint } from "@/types/PainPoint";
 import { pool } from "../utils/database";
 
-export async function getMostRecentPainPoints(pageSize: number, pageIndex: number, userID: number) {
+export async function getMostRecentPainPoints(
+    pageSize: number,
+    pageIndex: number,
+    userID: number,
+    filterFavorites = true
+) {
     const res = await pool.query<PainPoint>(
         `SELECT 
             dp.id,
@@ -16,7 +21,7 @@ export async function getMostRecentPainPoints(pageSize: number, pageIndex: numbe
         LEFT JOIN metadata m ON dp.id = m.data_point_id
         LEFT JOIN duplicates d1 ON dp.id = d1.data_point_id
         LEFT JOIN duplicates d2 ON d1.group_id = d2.group_id
-        LEFT JOIN favorites f ON f.data_point_id = dp.id AND f.user_id = $1
+        ${filterFavorites ? "INNER" : "LEFT"} JOIN favorites f ON f.data_point_id = dp.id AND f.user_id = $1
         GROUP BY dp.id, m.validation, f.user_id
         ORDER BY dp.created DESC
         LIMIT $2 OFFSET $3
@@ -26,7 +31,12 @@ export async function getMostRecentPainPoints(pageSize: number, pageIndex: numbe
     return Response.json(res.rows);
 }
 
-export async function getLeastRecentPainPoints(pageSize: number, pageIndex: number, userID: number) {
+export async function getLeastRecentPainPoints(
+    pageSize: number,
+    pageIndex: number,
+    userID: number,
+    filterFavorites = true
+) {
     const res = await pool.query<PainPoint>(
         `SELECT 
             dp.id,
@@ -41,7 +51,7 @@ export async function getLeastRecentPainPoints(pageSize: number, pageIndex: numb
         LEFT JOIN metadata m ON dp.id = m.data_point_id
         LEFT JOIN duplicates d1 ON dp.id = d1.data_point_id
         LEFT JOIN duplicates d2 ON d1.group_id = d2.group_id
-        LEFT JOIN favorites f ON f.data_point_id = dp.id AND f.user_id = $1
+        ${filterFavorites ? "INNER" : "LEFT"} JOIN favorites f ON f.data_point_id = dp.id AND f.user_id = $1
         GROUP BY dp.id, m.validation, f.user_id
         ORDER BY dp.created ASC
         LIMIT $2 OFFSET $3
@@ -51,7 +61,12 @@ export async function getLeastRecentPainPoints(pageSize: number, pageIndex: numb
     return Response.json(res.rows);
 }
 
-export async function getMostValidatedPainPoints(pageSize: number, pageIndex: number, userID: number) {
+export async function getMostValidatedPainPoints(
+    pageSize: number,
+    pageIndex: number,
+    userID: number,
+    filterFavorites = true
+) {
     const res = await pool.query<PainPoint>(
         `SELECT 
             dp.id,
@@ -66,7 +81,7 @@ export async function getMostValidatedPainPoints(pageSize: number, pageIndex: nu
         LEFT JOIN metadata m ON dp.id = m.data_point_id
         LEFT JOIN duplicates d1 ON dp.id = d1.data_point_id
         LEFT JOIN duplicates d2 ON d1.group_id = d2.group_id
-        LEFT JOIN favorites f ON f.data_point_id = dp.id AND f.user_id = $1
+        ${filterFavorites ? "INNER" : "LEFT"} JOIN favorites f ON f.data_point_id = dp.id AND f.user_id = $1
         GROUP BY dp.id, m.validation, f.user_id
         ORDER BY m.validation DESC NULLS LAST
         LIMIT $2 OFFSET $3
@@ -76,7 +91,12 @@ export async function getMostValidatedPainPoints(pageSize: number, pageIndex: nu
     return Response.json(res.rows);
 }
 
-export async function getLeastValidatedPainPoints(pageSize: number, pageIndex: number, userID: number) {
+export async function getLeastValidatedPainPoints(
+    pageSize: number,
+    pageIndex: number,
+    userID: number,
+    filterFavorites = true
+) {
     const res = await pool.query<PainPoint>(
         `SELECT 
             dp.id,
@@ -91,7 +111,7 @@ export async function getLeastValidatedPainPoints(pageSize: number, pageIndex: n
         LEFT JOIN metadata m ON dp.id = m.data_point_id
         LEFT JOIN duplicates d1 ON dp.id = d1.data_point_id
         LEFT JOIN duplicates d2 ON d1.group_id = d2.group_id
-        LEFT JOIN favorites f ON f.data_point_id = dp.id AND f.user_id = $1
+        ${filterFavorites ? "INNER" : "LEFT"} JOIN favorites f ON f.data_point_id = dp.id AND f.user_id = $1
         GROUP BY dp.id, m.validation, f.user_id
         ORDER BY m.validation ASC NULLS LAST
         LIMIT $2 OFFSET $3
@@ -101,7 +121,13 @@ export async function getLeastValidatedPainPoints(pageSize: number, pageIndex: n
     return Response.json(res.rows);
 }
 
-export async function searchPainPoints(query: string, pageSize: number, pageIndex: number, userID: number) {
+export async function searchPainPoints(
+    query: string,
+    pageSize: number,
+    pageIndex: number,
+    userID: number,
+    filterFavorites = true
+) {
     const res = await pool.query<PainPoint>(
         `SELECT 
       dp.id,
@@ -116,7 +142,7 @@ export async function searchPainPoints(query: string, pageSize: number, pageInde
     LEFT JOIN metadata m ON dp.id = m.data_point_id
     LEFT JOIN duplicates d1 ON dp.id = d1.data_point_id
     LEFT JOIN duplicates d2 ON d1.group_id = d2.group_id
-        LEFT JOIN favorites f ON f.data_point_id = dp.id AND f.user_id = $1
+        ${filterFavorites ? "INNER" : "LEFT"} JOIN favorites f ON f.data_point_id = dp.id AND f.user_id = $1
     WHERE dp.problem ILIKE $2
     GROUP BY dp.id, dp.problem, dp.description, dp.created, m.validation, f.user_id
     LIMIT $3 OFFSET $4

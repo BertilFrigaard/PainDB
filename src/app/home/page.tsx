@@ -20,7 +20,12 @@ export default async function Home() {
                     </button>
                 </div>
             </section>
-            <DataViewer title="Favorite Pain Points" filter_dropdown={false} />
+            <DataViewer
+                title="Favorite Pain Points"
+                filter_dropdown={false}
+                default_filter="favorites"
+                default_order="most_validation"
+            />
         </main>
     );
 }
