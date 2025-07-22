@@ -9,7 +9,7 @@ export default function DataViewer() {
 
     useEffect(() => {
         const updateData = async () => {
-            const res = await fetch("/api/data?page-size=7&page-index=0");
+            const res = await fetch("/api/data?page-size=7&page-index=0&order=most_recent");
             if (res.status === 200) {
                 const rows = await res.json();
                 setPainPoints(rows);
