@@ -1,7 +1,9 @@
+import { auth } from "@/auth";
 import { searchPainPoints } from "@/lib/services/dataService";
 import { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
+    const session = await auth();
     const searchParams = req.nextUrl.searchParams;
 
     const searchQuery = searchParams.get("search-query");
@@ -26,5 +28,7 @@ export async function GET(req: NextRequest) {
     if (pageSize <= 0 || pageIndex < 0) {
         return Response.error();
     }
-    return Response.json(await (await searchPainPoints(searchQuery, pageSize, pageIndex)).json());
+    return Response.json(
+        await (await searchPainPoints(searchQuery, pageSize, pageIndex, Number(session?.user.id))).json()
+    );
 }

@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 import {
     getLeastRecentPainPoints,
     getLeastValidatedPainPoints,
@@ -7,6 +8,8 @@ import {
 import { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
+    const session = await auth();
+
     const searchParams = req.nextUrl.searchParams;
 
     const pageSizeParam = searchParams.get("page-size");
@@ -28,13 +31,21 @@ export async function GET(req: NextRequest) {
     }
 
     if (orderParam === "most_recent") {
-        return Response.json(await (await getMostRecentPainPoints(pageSize, pageIndex)).json());
+        return Response.json(
+            await (await getMostRecentPainPoints(pageSize, pageIndex, Number(session?.user.id))).json()
+        );
     } else if (orderParam === "least_recent") {
-        return Response.json(await (await getLeastRecentPainPoints(pageSize, pageIndex)).json());
+        return Response.json(
+            await (await getLeastRecentPainPoints(pageSize, pageIndex, Number(session?.user.id))).json()
+        );
     } else if (orderParam === "most_validation") {
-        return Response.json(await (await getMostValidatedPainPoints(pageSize, pageIndex)).json());
+        return Response.json(
+            await (await getMostValidatedPainPoints(pageSize, pageIndex, Number(session?.user.id))).json()
+        );
     } else if (orderParam === "least_validation") {
-        return Response.json(await (await getLeastValidatedPainPoints(pageSize, pageIndex)).json());
+        return Response.json(
+            await (await getLeastValidatedPainPoints(pageSize, pageIndex, Number(session?.user.id))).json()
+        );
     } else {
         return Response.error();
     }

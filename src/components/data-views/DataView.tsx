@@ -85,6 +85,20 @@ export default function DataViewer() {
         }
     };
 
+    const setFavorite = async (row: PainPoint) => {
+        const wasFavorite = row.favorite;
+
+        const url = wasFavorite
+            ? "/api/data/favorites/remove?data-point-id=" + row.id
+            : "/api/data/favorites/add?data-point-id=" + row.id;
+
+        setPainPoints((prev) => {
+            return prev.map((v) => (v.id === row.id ? { ...v, favorite: !wasFavorite } : v));
+        });
+
+        await fetch(url, { method: "POST" });
+    };
+
     return (
         <section className="mx-auto bg-white rounded-xl shadow-md py-8 px-13">
             <div className="flex items-center justify-between mb-5">
@@ -161,12 +175,12 @@ export default function DataViewer() {
             </div>
             {loading ? (
                 <>
-                    <PainPointTable painPoints={[]} />
+                    <PainPointTable setFavorite={setFavorite} painPoints={[]} />
                     <p className="text-center p-10 font-bold text-lg text-gray-500">Loading</p>
                 </>
             ) : (
                 <>
-                    <PainPointTable painPoints={painPoints} />
+                    <PainPointTable setFavorite={setFavorite} painPoints={painPoints} />
                     {painPoints.length === 0 && (
                         <p className="text-center p-10 font-bold text-lg text-gray-500">No Data</p>
                     )}

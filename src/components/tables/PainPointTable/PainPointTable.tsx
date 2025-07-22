@@ -3,7 +3,13 @@ import PainPointTableRow from "./PainPointTableRow";
 import { useState } from "react";
 import DetailedView from "@/components/data-views/DetailedView";
 
-export default function PainPointTable({ painPoints }: { painPoints: PainPoint[] }) {
+export default function PainPointTable({
+    painPoints,
+    setFavorite,
+}: {
+    painPoints: PainPoint[];
+    setFavorite: (row: PainPoint) => void;
+}) {
     const [selection, setSelection] = useState<string | null>(null);
 
     return (
@@ -12,6 +18,7 @@ export default function PainPointTable({ painPoints }: { painPoints: PainPoint[]
                 <table className="min-w-full overflow-hidden">
                     <thead className="text-left text-sm font-semibold">
                         <tr>
+                            <th></th>
                             <th className="px-4 py-3 border-b-2 border-gray-300 text-secondary text-base">Problem</th>
                             <th className="px-4 py-3 border-b-2 border-gray-300 text-secondary text-base">Created</th>
                             <th className="px-4 py-3 border-b-2 border-gray-300 text-secondary text-base">
@@ -24,6 +31,9 @@ export default function PainPointTable({ painPoints }: { painPoints: PainPoint[]
                             <PainPointTableRow
                                 onClick={() => {
                                     setSelection(row.id);
+                                }}
+                                favoriteClick={() => {
+                                    setFavorite(row);
                                 }}
                                 key={index}
                                 row={row}
