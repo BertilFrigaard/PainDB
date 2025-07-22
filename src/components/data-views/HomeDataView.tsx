@@ -22,7 +22,7 @@ export default function DataViewer() {
     return (
         <section className="mx-auto bg-white rounded-xl shadow-md py-8 px-13">
             <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-semibold text-gray-800">Most Recent Pain Points</h2>
+                <h2 className="text-2xl font-semibold text-gray-800">Favorite Pain Points</h2>
 
                 <div className="flex items-center gap-3  text-primary">
                     <svg

@@ -3,6 +3,7 @@ import { PainPoint } from "@/types/PainPoint";
 import { useEffect, useState } from "react";
 import PainPointTable from "../tables/PainPointTable/PainPointTable";
 import DropDown from "../buttons/DropDown";
+import FileSaver from "file-saver";
 
 export default function DataViewer() {
     const [painPoints, setPainPoints] = useState<PainPoint[]>([]);
@@ -48,6 +49,39 @@ export default function DataViewer() {
         return out;
     };
 
+    const escapeCSV = (val: unknown): string => {
+        if (val == null) return "";
+        const str = String(val);
+        return `"${str.replace(/"/g, '""')}"`;
+    };
+
+    const exportData = async (amount: number) => {
+        try {
+            const res = await fetch(`/api/data?page-size=${amount}&page-index=0&order=${order}`);
+            if (!res.ok) {
+                console.error("Failed to fetch data:", res.status, await res.text());
+                return;
+            }
+
+            const rows: PainPoint[] = await res.json();
+            if (rows.length === 0) {
+                console.log("No data to export");
+                return;
+            }
+
+            const headers = Object.keys(rows[0]) as (keyof PainPoint)[];
+            const csvRows = [
+                headers.join(","), // header row
+                ...rows.map((row) => headers.map((h) => escapeCSV(row[h])).join(",")),
+            ];
+
+            const csvData = new Blob(["\uFEFF" + csvRows.join("\n")], { type: "text/csv;charset=utf-8;" });
+            FileSaver.saveAs(csvData, "paindb_data.csv");
+        } catch (error) {
+            console.error("Export failed:", error);
+        }
+    };
+
     return (
         <section className="mx-auto bg-white rounded-xl shadow-md py-8 px-13">
             <div className="flex items-center justify-between mb-5">
@@ -72,7 +106,42 @@ export default function DataViewer() {
                 </div>
             </div>
             <div className="mb-4 gap-2 flex">
-                <button className="bg-primary rounded-xl text-white px-5 py-1">Export CSV</button>
+                <DropDown
+                    items={[
+                        {
+                            text: "Top 100",
+                            func: () => {
+                                exportData(100);
+                            },
+                        },
+                        {
+                            text: "Top 250",
+                            func: () => {
+                                exportData(250);
+                            },
+                        },
+                        {
+                            text: "Top 500",
+                            func: () => {
+                                exportData(500);
+                            },
+                        },
+                        {
+                            text: "Top 1000",
+                            func: () => {
+                                exportData(1000);
+                            },
+                        },
+                        {
+                            text: "All",
+                            func: () => {
+                                exportData(100000);
+                            },
+                        },
+                    ]}
+                >
+                    <button className="cursor-pointer bg-primary rounded-xl text-white px-5 py-1">Export CSV</button>
+                </DropDown>
                 <DropDown items={getOrderDropDownItems()}>
                     <button className="cursor-pointer border-1 border-secondary rounded-xl px-5 py-1">
                         {orderItemNames[order]}
