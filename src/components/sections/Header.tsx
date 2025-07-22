@@ -30,6 +30,18 @@ export default async function Header() {
                             <Link className="text-secondary" href="/db-viewer">
                                 DB Viewer
                             </Link>
+                            {session?.user.role === "admin" && (
+                                <DropDown
+                                    items={[
+                                        { text: "Review Duplicates", link: "/admin/review-duplicates" },
+                                        { text: "Manage Validation Scores", link: "/admin/validation-score" },
+                                    ]}
+                                >
+                                    <p className="text-secondary cursor-pointer hover:text-primary duration-100">
+                                        Admin
+                                    </p>
+                                </DropDown>
+                            )}
                             <Link className="text-secondary" href="/help">
                                 Help
                             </Link>
@@ -46,8 +58,8 @@ export default async function Header() {
                                     Features
                                 </p>
                             </DropDown>
-                            <Link className="text-secondary" href="/example">
-                                Example
+                            <Link className="text-secondary" href="/examples">
+                                Examples
                             </Link>
                             <Link className="text-secondary" href="/faq">
                                 FAQ
@@ -61,7 +73,12 @@ export default async function Header() {
             </div>
             <div className="flex space-x-4">
                 {session?.user ? (
-                    <DropDown items={[{ text: "Pricing" }, { text: "Sign Out", func: logOutClicked }]}>
+                    <DropDown
+                        items={[
+                            { text: "Profile", link: "/profile" },
+                            { text: "Sign Out", func: logOutClicked },
+                        ]}
+                    >
                         <div className="flex items-center gap-2 font-semibold group cursor-pointer">
                             <div className="w-9 h-9 flex items-center text-lg justify-center bg-secondary text-white font-bold rounded-full">
                                 {session.user.name?.charAt(0) ?? "U"}

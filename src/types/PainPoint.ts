@@ -3,6 +3,6 @@ export type PainPoint = {
     problem: string;
     description: string;
     created: Date;
-    validation: number;
+    validation: number | null;
     duplicates: string[];
 };

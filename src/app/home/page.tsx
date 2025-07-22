@@ -1,15 +1,31 @@
-import { auth } from "@/auth";
+import DataViewer from "@/components/data-views/DataView";
+import HomeDataView from "@/components/data-views/HomeDataView";
 import { restrictPage } from "@/lib/utils/pageRestriction";
 
 export default async function Home() {
     await restrictPage();
-
-    const session = await auth();
-
     return (
-        <div>
-            <h1>Home</h1>
-            <p>user: {session?.user.role}</p>
-        </div>
+        <main className="px-30 py-10">
+            <h1 className="text-3xl font-bold text-secondary">Welcome home, Bertil!</h1>
+            <section className="my-10">
+                <h2 className="text-2xl font-semibold text-gray-800 mb-2">Quick Access</h2>
+                <div className="flex gap-5">
+                    <button className="px-7 py-3 rounded-2xl bg-primary text-white animating-button hover:bg-primary/90">
+                        Search Data
+                    </button>
+                    <button className="px-7 py-3 rounded-2xl bg-primary text-white animating-button hover:bg-primary/90">
+                        Create Pipeline
+                    </button>
+                    <button className="px-7 py-3 rounded-2xl bg-primary text-white animating-button hover:bg-primary/90">
+                        Provide Feedback
+                    </button>
+                </div>
+            </section>
+            <div className="flex gap-10">
+                <HomeDataView />
+
+                <DataViewer />
+            </div>
+        </main>
     );
 }
