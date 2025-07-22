@@ -6,9 +6,26 @@ import DropDown from "../buttons/DropDown";
 import FileSaver from "file-saver";
 import { UseAlerts } from "@/contexts/AlertContext";
 
-export default function DataViewer() {
+const orderItemNames = {
+    most_recent: "Most Recent",
+    most_validation: "Highest Validation",
+    least_recent: "Least Recent",
+    least_validation: "Lowest Validation",
+};
+
+export default function DataViewer({
+    title,
+    default_order = "most_recent",
+    order_dropdown = true,
+    filter_dropdown = true,
+}: {
+    title: string;
+    default_order?: keyof typeof orderItemNames;
+    order_dropdown?: boolean;
+    filter_dropdown?: boolean;
+}) {
     const [painPoints, setPainPoints] = useState<PainPoint[]>([]);
-    const [order, setOrder] = useState<keyof typeof orderItemNames>("most_recent");
+    const [order, setOrder] = useState(default_order);
     const [loading, setLoading] = useState<boolean>(false);
 
     const { addAlert } = UseAlerts();
@@ -24,13 +41,6 @@ export default function DataViewer() {
         };
         updateData();
     }, [order]);
-
-    const orderItemNames = {
-        most_recent: "Most Recent",
-        most_validation: "Highest Validation",
-        least_recent: "Least Recent",
-        least_validation: "Lowest Validation",
-    };
 
     const getOrderDropDownItems = () => {
         const out: { text: string; link?: string | undefined; func?: (() => void) | undefined }[] = [];
@@ -102,7 +112,7 @@ export default function DataViewer() {
     return (
         <section className="mx-auto bg-white rounded-xl shadow-md py-8 px-13">
             <div className="flex items-center justify-between mb-5">
-                <h2 className="text-2xl font-semibold text-gray-800">View Pain Points</h2>
+                <h2 className="text-2xl font-semibold text-gray-800">{title}</h2>
 
                 <div className="flex items-center gap-3  text-primary">
                     <svg
@@ -159,19 +169,23 @@ export default function DataViewer() {
                 >
                     <button className="cursor-pointer bg-primary rounded-xl text-white px-5 py-1">Export CSV</button>
                 </DropDown>
-                <DropDown items={getOrderDropDownItems()}>
-                    <button className="cursor-pointer border-1 border-secondary rounded-xl px-5 py-1">
-                        {orderItemNames[order]}
+                {order_dropdown && (
+                    <DropDown items={getOrderDropDownItems()}>
+                        <button className="cursor-pointer border-1 border-secondary rounded-xl px-5 py-1">
+                            {orderItemNames[order]}
+                        </button>
+                    </DropDown>
+                )}
+                {filter_dropdown && (
+                    <button
+                        onClick={() => {
+                            addAlert({ message: "Not implemented yet", bg: "bg-error" }, 3000);
+                        }}
+                        className="border-1 border-secondary rounded-xl px-5 py-1"
+                    >
+                        Filters
                     </button>
-                </DropDown>
-                <button
-                    onClick={() => {
-                        addAlert({ message: "Not implemented yet", bg: "bg-error" }, 3000);
-                    }}
-                    className="border-1 border-secondary rounded-xl px-5 py-1"
-                >
-                    Filters
-                </button>
+                )}
             </div>
             {loading ? (
                 <>

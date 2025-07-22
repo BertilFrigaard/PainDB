@@ -15,7 +15,7 @@ export default function DBViewer() {
             </section>
 
             <SearchableDataViewer />
-            <DataViewer />
+            <DataViewer title="Pain Points" />
         </main>
     );
 }

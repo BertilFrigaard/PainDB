@@ -1,4 +1,4 @@
-import HomeDataView from "@/components/data-views/HomeDataView";
+import DataViewer from "@/components/data-views/DataView";
 import { restrictPage } from "@/lib/utils/pageRestriction";
 
 export default async function Home() {
@@ -20,7 +20,7 @@ export default async function Home() {
                     </button>
                 </div>
             </section>
-            <HomeDataView />
+            <DataViewer title="Favorite Pain Points" filter_dropdown={false} />
         </main>
     );
 }
