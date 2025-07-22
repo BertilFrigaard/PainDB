@@ -1,4 +1,9 @@
-import { getPainPoints } from "@/lib/services/dataService";
+import {
+    getLeastRecentPainPoints,
+    getLeastValidatedPainPoints,
+    getMostRecentPainPoints,
+    getMostValidatedPainPoints,
+} from "@/lib/services/dataService";
 import { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -6,6 +11,7 @@ export async function GET(req: NextRequest) {
 
     const pageSizeParam = searchParams.get("page-size");
     const pageIndexParam = searchParams.get("page-index");
+    const orderParam = searchParams.get("order");
 
     let pageSize: number;
     let pageIndex: number;
@@ -21,5 +27,15 @@ export async function GET(req: NextRequest) {
         return Response.error();
     }
 
-    return Response.json(await (await getPainPoints(pageSize, pageIndex)).json());
+    if (orderParam === "most_recent") {
+        return Response.json(await (await getMostRecentPainPoints(pageSize, pageIndex)).json());
+    } else if (orderParam === "least_recent") {
+        return Response.json(await (await getLeastRecentPainPoints(pageSize, pageIndex)).json());
+    } else if (orderParam === "most_validation") {
+        return Response.json(await (await getMostValidatedPainPoints(pageSize, pageIndex)).json());
+    } else if (orderParam === "least_validation") {
+        return Response.json(await (await getLeastValidatedPainPoints(pageSize, pageIndex)).json());
+    } else {
+        return Response.error();
+    }
 }
