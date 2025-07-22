@@ -2,9 +2,10 @@
 import { PainPoint } from "@/types/PainPoint";
 import { useEffect, useState } from "react";
 import PainPointTable from "../tables/PainPointTable/PainPointTable";
-import DropDown from "../buttons/DropDown";
 import FileSaver from "file-saver";
 import { UseAlerts } from "@/contexts/AlertContext";
+import DropDownSecondaryButton from "../buttons/drop-downs/styles/DropDownSecondaryButton";
+import DropDownPrimaryButton from "../buttons/drop-downs/styles/DropDownPrimaryButton";
 
 const orderItemNames = {
     most_recent: "Most Recent",
@@ -100,7 +101,7 @@ export default function DataViewer({
 
     const exportData = async (amount: number) => {
         try {
-            const res = await fetch(`/api/data?page-size=${amount}&page-index=0&order=${order}`);
+            const res = await fetch(`/api/data?page-size=${amount}&page-index=0&order=${order}` + "&filter=" + filter);
             if (!res.ok) {
                 console.error("Failed to fetch data:", res.status, await res.text());
                 return;
@@ -163,8 +164,15 @@ export default function DataViewer({
                 </div>
             </div>
             <div className="mb-4 gap-2 flex">
-                <DropDown
+                <DropDownPrimaryButton
+                    text="Export CSV"
                     items={[
+                        {
+                            text: "All",
+                            func: () => {
+                                exportData(100000);
+                            },
+                        },
                         {
                             text: "Top 100",
                             func: () => {
@@ -189,31 +197,28 @@ export default function DataViewer({
                                 exportData(1000);
                             },
                         },
-                        {
-                            text: "All",
-                            func: () => {
-                                exportData(100000);
-                            },
-                        },
                     ]}
-                >
-                    <button className="cursor-pointer bg-primary rounded-xl text-white px-5 py-1">Export CSV</button>
-                </DropDown>
+                />
                 {order_dropdown && (
-                    <DropDown items={getOrderDropDownItems()}>
-                        <button className="cursor-pointer border-1 border-secondary rounded-xl px-5 py-1">
-                            {orderItemNames[order]}
-                        </button>
-                    </DropDown>
+                    <DropDownSecondaryButton text={orderItemNames[order]} items={getOrderDropDownItems()} />
                 )}
                 {filter_dropdown && (
-                    <DropDown items={getFilterDropDownItems()}>
-                        <button className="cursor-pointer border-1 border-secondary rounded-xl px-5 py-1">
-                            {filterItemNames[filter]}
-                        </button>
-                    </DropDown>
+                    <DropDownSecondaryButton text={filterItemNames[filter]} items={getFilterDropDownItems()} />
                 )}
             </div>
+            {/*             <form className="flex space-x-5 my-10">
+                <button
+                    type="submit"
+                    className="rounded-xl bg-primary px-7 text-white animating-button hover:bg-primary/90"
+                >
+                    Search
+                </button>
+                <input
+                    type="text"
+                    required
+                    className="mt-1 w-full rounded-xl border border-gray-300 px-7 py-3 focus:border-primary focus:ring-primary"
+                />
+            </form> */}
             {loading ? (
                 <>
                     <PainPointTable setFavorite={setFavorite} painPoints={[]} />

@@ -5,7 +5,7 @@ export async function getMostRecentPainPoints(
     pageSize: number,
     pageIndex: number,
     userID: number,
-    filterFavorites = true
+    filterFavorites = false
 ) {
     const res = await pool.query<PainPoint>(
         `SELECT 
@@ -35,7 +35,7 @@ export async function getLeastRecentPainPoints(
     pageSize: number,
     pageIndex: number,
     userID: number,
-    filterFavorites = true
+    filterFavorites = false
 ) {
     const res = await pool.query<PainPoint>(
         `SELECT 
@@ -65,7 +65,7 @@ export async function getMostValidatedPainPoints(
     pageSize: number,
     pageIndex: number,
     userID: number,
-    filterFavorites = true
+    filterFavorites = false
 ) {
     const res = await pool.query<PainPoint>(
         `SELECT 
@@ -95,7 +95,7 @@ export async function getLeastValidatedPainPoints(
     pageSize: number,
     pageIndex: number,
     userID: number,
-    filterFavorites = true
+    filterFavorites = false
 ) {
     const res = await pool.query<PainPoint>(
         `SELECT 
@@ -126,7 +126,7 @@ export async function searchPainPoints(
     pageSize: number,
     pageIndex: number,
     userID: number,
-    filterFavorites = true
+    filterFavorites = false
 ) {
     const res = await pool.query<PainPoint>(
         `SELECT 

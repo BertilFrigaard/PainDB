@@ -1,7 +1,7 @@
 import { auth, signIn, signOut } from "@/auth";
 import Link from "next/link";
-import { IoIosArrowDown } from "react-icons/io";
-import DropDown from "../buttons/DropDown";
+import DropDownPlain from "../buttons/drop-downs/styles/DropDownPlain";
+import DropDownProfile from "../buttons/drop-downs/styles/DropDownProfile";
 
 export default async function Header() {
     const session = await auth();
@@ -31,16 +31,13 @@ export default async function Header() {
                                 DB Viewer
                             </Link>
                             {session?.user.role === "admin" && (
-                                <DropDown
+                                <DropDownPlain
+                                    text="Admin"
                                     items={[
                                         { text: "Review Duplicates", link: "/admin/review-duplicates" },
                                         { text: "Manage Validation Scores", link: "/admin/validation-score" },
                                     ]}
-                                >
-                                    <p className="text-secondary cursor-pointer hover:text-primary duration-100">
-                                        Admin
-                                    </p>
-                                </DropDown>
+                                />
                             )}
                             <Link className="text-secondary" href="/help">
                                 Help
@@ -48,16 +45,13 @@ export default async function Header() {
                         </>
                     ) : (
                         <>
-                            <DropDown
+                            <DropDownPlain
+                                text="Features"
                                 items={[
                                     { text: "Advanced query", link: "/advanced-query" },
                                     { text: "Data Viewer", link: "/data-viewer" },
                                 ]}
-                            >
-                                <p className="text-secondary cursor-pointer hover:text-primary duration-100">
-                                    Features
-                                </p>
-                            </DropDown>
+                            />
                             <Link className="text-secondary" href="/examples">
                                 Examples
                             </Link>
@@ -73,23 +67,13 @@ export default async function Header() {
             </div>
             <div className="flex space-x-4">
                 {session?.user ? (
-                    <DropDown
+                    <DropDownProfile
+                        name={session.user.name ? session.user.name : "Dig"}
                         items={[
                             { text: "Profile", link: "/profile" },
                             { text: "Sign Out", func: logOutClicked },
                         ]}
-                    >
-                        <div className="flex items-center gap-2 font-semibold group cursor-pointer">
-                            <div className="w-9 h-9 flex items-center text-lg justify-center bg-secondary text-white font-bold rounded-full">
-                                {session.user.name?.charAt(0) ?? "U"}
-                            </div>
-                            <p className="relative text-secondary group-hover:after:w-full group-hover:after:opacity-100 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:bg-secondary after:w-0 after:opacity-0 after:transition-all after:duration-300">
-                                Om {session.user.name?.split(" ")[0]}
-                            </p>
-
-                            <IoIosArrowDown className="font-bold" />
-                        </div>
-                    </DropDown>
+                    />
                 ) : (
                     <>
                         <button
