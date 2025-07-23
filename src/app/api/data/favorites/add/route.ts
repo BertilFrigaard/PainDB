@@ -17,7 +17,15 @@ export async function POST(req: NextRequest) {
     if (!dataPointParam) {
         return Response.error();
     }
+    const userID = Number(session?.user.id);
+    if (isNaN(userID)) {
+        return new Response(null, { status: 500 });
+    }
 
-    await enableFavorite(Number(session?.user.id), dataPointParam);
-    return new Response(null, { status: 204 });
+    try {
+        await enableFavorite(userID, dataPointParam);
+        return new Response(null, { status: 204 });
+    } catch {
+        return new Response(null, { status: 400 });
+    }
 }

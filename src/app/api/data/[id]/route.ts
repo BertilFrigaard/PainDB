@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { getPainPointById } from "@/lib/services/dataService";
 import { apiMinRole } from "@/lib/utils/roleRestrictions";
+import { PainPoint } from "@/types/PainPoint";
 import { NextRequest } from "next/server";
 
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
@@ -10,14 +11,18 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
         return rr;
     }
 
-    let userID;
-    try {
-        userID = Number(session?.user.id);
-    } catch {
+    const userID = Number(session?.user.id);
+    if (isNaN(userID)) {
         return new Response(null, { status: 500 });
     }
 
-    const res = await getPainPointById((await params).id, userID);
+    let res: PainPoint | null;
+    try {
+        res = await getPainPointById((await params).id, userID);
+    } catch {
+        return new Response(null, { status: 400 });
+    }
+
     if (!res) {
         return new Response(null, { status: 404 });
     }

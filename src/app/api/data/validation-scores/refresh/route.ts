@@ -6,6 +6,11 @@ export async function POST() {
     if (rr) {
         return rr;
     }
-    await updateValidationScores();
-    return new Response(null, { status: 204 });
+
+    try {
+        await updateValidationScores();
+        return new Response(null, { status: 204 });
+    } catch {
+        return new Response(null, { status: 500 });
+    }
 }

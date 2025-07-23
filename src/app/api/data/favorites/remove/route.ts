@@ -18,7 +18,15 @@ export async function POST(req: NextRequest) {
         return new Response(null, { status: 400 });
     }
 
-    await disableFavorite(Number(session?.user.id), dataPointParam);
+    const userID = Number(session?.user.id);
+    if (isNaN(userID)) {
+        return new Response(null, { status: 500 });
+    }
 
-    return new Response(null, { status: 204 });
+    try {
+        await disableFavorite(userID, dataPointParam);
+        return new Response(null, { status: 204 });
+    } catch {
+        return new Response(null, { status: 400 });
+    }
 }

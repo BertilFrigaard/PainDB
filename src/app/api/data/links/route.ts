@@ -12,17 +12,19 @@ export async function GET(req: NextRequest) {
 
     const limitParam = searchParams.get("limit");
 
-    let limit: number;
+    const limit = Number(limitParam);
 
-    try {
-        limit = Number(limitParam);
-    } catch {
-        return Response.error();
+    if (isNaN(limit)) {
+        return new Response(null, { status: 400 });
     }
 
     if (limit <= 0) {
-        return Response.error();
+        return new Response(null, { status: 400 });
     }
 
-    return Response.json(await (await getDuplicateLinks(limit)).json());
+    try {
+        return Response.json(await getDuplicateLinks(limit));
+    } catch {
+        return new Response(null, { status: 500 });
+    }
 }

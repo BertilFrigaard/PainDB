@@ -17,7 +17,7 @@ ORDER BY l.similarity DESC
 LIMIT $1`,
         [limit]
     );
-    return Response.json(res.rows);
+    return res.rows;
 }
 
 export async function verifyDuplicateLink(link: DuplicateLink) {

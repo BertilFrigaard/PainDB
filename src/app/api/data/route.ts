@@ -21,13 +21,10 @@ export async function GET(req: NextRequest) {
 
     const filterForFavorites = filterParam === "favorites";
 
-    let pageSize: number;
-    let pageIndex: number;
+    const pageSize = Number(pageSizeParam);
+    const pageIndex = Number(pageIndexParam);
 
-    try {
-        pageSize = Number(pageSizeParam);
-        pageIndex = Number(pageIndexParam);
-    } catch {
+    if (isNaN(pageSize) || isNaN(pageIndex)) {
         return new Response(null, { status: 400 });
     }
 
@@ -35,10 +32,8 @@ export async function GET(req: NextRequest) {
         return new Response(null, { status: 400 });
     }
 
-    let userID;
-    try {
-        userID = Number(session?.user.id);
-    } catch {
+    const userID = Number(session?.user.id);
+    if (isNaN(userID)) {
         return new Response(null, { status: 500 });
     }
 
