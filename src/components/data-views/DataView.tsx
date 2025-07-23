@@ -6,6 +6,7 @@ import FileSaver from "file-saver";
 import { UseAlerts } from "@/contexts/AlertContext";
 import DropDownSecondaryButton from "../buttons/drop-downs/styles/DropDownSecondaryButton";
 import DropDownPrimaryButton from "../buttons/drop-downs/styles/DropDownPrimaryButton";
+import { FaSearch } from "react-icons/fa";
 
 const orderItemNames = {
     most_recent: "Most Recent",
@@ -169,6 +170,19 @@ export default function DataViewer({
                 </div>
             </div>
             <div className="my-8 space-y-4">
+                {search_field && (
+                    <form className="relative flex items-center w-fit min-w-xl">
+                        <FaSearch className="absolute left-3 text-secondary pointer-events-none" />
+                        <input
+                            id="search"
+                            type="text"
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
+                            placeholder="Search..."
+                            className="w-full pl-10 pr-4 py-2 rounded-xl border border-gray-300 focus:border-primary focus:ring-primary focus:outline-none transition"
+                        />
+                    </form>
+                )}
                 <div className="gap-2 flex">
                     <DropDownPrimaryButton
                         text="Export CSV"
@@ -212,21 +226,6 @@ export default function DataViewer({
                         <DropDownSecondaryButton text={filterItemNames[filter]} items={getFilterDropDownItems()} />
                     )}
                 </div>
-                {search_field && (
-                    <form className="flex space-x-5">
-                        <input
-                            id="search"
-                            type="text"
-                            value={query}
-                            onChange={(e) => {
-                                setQuery(e.target.value);
-                            }}
-                            required
-                            placeholder="Search..."
-                            className="mt-1 w-full rounded-xl border border-gray-300 px-5 py-1 focus:border-primary focus:ring-primary"
-                        />
-                    </form>
-                )}
             </div>
             {loading ? (
                 <>
