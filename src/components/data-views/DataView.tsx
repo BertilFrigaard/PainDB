@@ -7,6 +7,7 @@ import { UseAlerts } from "@/contexts/AlertContext";
 import DropDownSecondaryButton from "../buttons/drop-downs/styles/DropDownSecondaryButton";
 import DropDownPrimaryButton from "../buttons/drop-downs/styles/DropDownPrimaryButton";
 import { FaSearch } from "react-icons/fa";
+import { VscTriangleLeft, VscTriangleRight } from "react-icons/vsc";
 
 const orderItemNames = {
     most_recent: "Most Recent",
@@ -39,14 +40,25 @@ export default function DataViewer({
     const [order, setOrder] = useState(default_order);
     const [filter, setFilter] = useState(default_filter);
     const [query, setQuery] = useState("");
+    const [page, setPage] = useState(0);
     const [loading, setLoading] = useState<boolean>(false);
+    const pageSize = 10;
 
     const { addAlert } = UseAlerts();
 
     useEffect(() => {
         const updateData = async () => {
             const res = await fetch(
-                "/api/data?page-size=10&page-index=0&order=" + order + "&filter=" + filter + "&search=" + query
+                "/api/data?page-size=" +
+                    pageSize +
+                    "&page-index=" +
+                    page +
+                    "&order=" +
+                    order +
+                    "&filter=" +
+                    filter +
+                    "&search=" +
+                    query
             );
             if (res.status === 200) {
                 const rows = await res.json();
@@ -57,7 +69,7 @@ export default function DataViewer({
             setLoading(false);
         };
         updateData();
-    }, [order, filter, query]);
+    }, [order, filter, query, page]);
 
     const getOrderDropDownItems = () => {
         const out: { text: string; link?: string | undefined; func?: (() => void) | undefined }[] = [];
@@ -240,6 +252,29 @@ export default function DataViewer({
                     )}
                 </>
             )}
+            <div className="text-center flex items-center justify-center mt-10 gap-x-5 text-secondary">
+                <VscTriangleLeft
+                    className={page > 0 ? "text-primary cursor-pointer hover:scale-110" : ""}
+                    onClick={() => {
+                        if (page > 0 && !loading) {
+                            setPage((prev) => {
+                                return prev - 1;
+                            });
+                        }
+                    }}
+                />
+                <p className="font-semibold text-sm text-center">Page {page + 1}</p>
+                <VscTriangleRight
+                    className={painPoints.length >= pageSize ? "text-primary cursor-pointer hover:scale-110" : ""}
+                    onClick={() => {
+                        if (painPoints.length >= pageSize && !loading) {
+                            setPage((prev) => {
+                                return prev + 1;
+                            });
+                        }
+                    }}
+                />
+            </div>
         </section>
     );
 }
