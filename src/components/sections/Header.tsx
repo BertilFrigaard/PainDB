@@ -22,7 +22,7 @@ export default async function Header() {
                     PainDB
                 </Link>
                 <div className="flex space-x-8">
-                    {session?.user ? (
+                    {session?.user.role && session?.user.role !== "none" ? (
                         <>
                             <Link className="text-secondary" href="/home">
                                 Home

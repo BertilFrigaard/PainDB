@@ -4,12 +4,14 @@ import { redirect } from "next/navigation";
 
 function getRoleLevel(role: string) {
     if (role === "admin") {
-        return 4;
+        return 5;
     } else if (role === "unlimited") {
-        return 3;
+        return 4;
     } else if (role === "pro") {
-        return 2;
+        return 3;
     } else if (role === "starter") {
+        return 2;
+    } else if (role === "none") {
         return 1;
     } else {
         return 0;
@@ -38,12 +40,16 @@ export async function pageMaxRole({
     role = "none",
     redirectUsers = "/home",
     redirectVisitors = "/signup",
+    session = null,
 }: {
     role?: string;
     redirectUsers?: string;
     redirectVisitors?: string;
+    session?: Session | null;
 }) {
-    const session = await auth();
+    if (!session) {
+        session = await auth();
+    }
 
     const userRole = getRoleLevel(session?.user.role || "none");
     const maxRole = getRoleLevel(role);
@@ -61,12 +67,16 @@ export async function pageMinRole({
     role = "starter",
     redirectUsers = "/",
     redirectVisitors = "/signup",
+    session = null,
 }: {
     role?: string;
     redirectUsers?: string;
     redirectVisitors?: string;
+    session?: Session | null;
 }) {
-    const session = await auth();
+    if (!session) {
+        session = await auth();
+    }
 
     const userRole = getRoleLevel(session?.user.role || "none");
     const minRole = getRoleLevel(role);
