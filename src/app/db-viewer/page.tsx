@@ -1,5 +1,4 @@
 import DataViewer from "@/components/data-views/DataView";
-import SearchableDataViewer from "@/components/data-views/SearchableDataViewer";
 export default function DBViewer() {
     return (
         <main className="mx-30 py-10 space-y-12">
@@ -13,9 +12,7 @@ export default function DBViewer() {
                     </a>
                 </p>
             </section>
-
-            <SearchableDataViewer />
-            <DataViewer title="Pain Points" />
+            <DataViewer title="Pain Points" search_field={true} />
         </main>
     );
 }

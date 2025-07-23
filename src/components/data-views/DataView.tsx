@@ -25,23 +25,28 @@ export default function DataViewer({
     default_filter = "all",
     order_dropdown = true,
     filter_dropdown = true,
+    search_field = false,
 }: {
     title: string;
     default_order?: keyof typeof orderItemNames;
     default_filter?: keyof typeof filterItemNames;
     order_dropdown?: boolean;
     filter_dropdown?: boolean;
+    search_field?: boolean;
 }) {
     const [painPoints, setPainPoints] = useState<PainPoint[]>([]);
     const [order, setOrder] = useState(default_order);
     const [filter, setFilter] = useState(default_filter);
+    const [query, setQuery] = useState("");
     const [loading, setLoading] = useState<boolean>(false);
 
     const { addAlert } = UseAlerts();
 
     useEffect(() => {
         const updateData = async () => {
-            const res = await fetch("/api/data?page-size=10&page-index=0&order=" + order + "&filter=" + filter);
+            const res = await fetch(
+                "/api/data?page-size=10&page-index=0&order=" + order + "&filter=" + filter + "&search=" + query
+            );
             if (res.status === 200) {
                 const rows = await res.json();
                 setPainPoints(rows);
@@ -51,7 +56,7 @@ export default function DataViewer({
             setLoading(false);
         };
         updateData();
-    }, [order, filter]);
+    }, [order, filter, query]);
 
     const getOrderDropDownItems = () => {
         const out: { text: string; link?: string | undefined; func?: (() => void) | undefined }[] = [];
@@ -163,62 +168,66 @@ export default function DataViewer({
                     <span className="text-sm">Click a row to see more details</span>
                 </div>
             </div>
-            <div className="mb-4 gap-2 flex">
-                <DropDownPrimaryButton
-                    text="Export CSV"
-                    items={[
-                        {
-                            text: "All",
-                            func: () => {
-                                exportData(100000);
+            <div className="my-8 space-y-4">
+                <div className="gap-2 flex">
+                    <DropDownPrimaryButton
+                        text="Export CSV"
+                        items={[
+                            {
+                                text: "All",
+                                func: () => {
+                                    exportData(100000);
+                                },
                             },
-                        },
-                        {
-                            text: "Top 100",
-                            func: () => {
-                                exportData(100);
+                            {
+                                text: "Top 100",
+                                func: () => {
+                                    exportData(100);
+                                },
                             },
-                        },
-                        {
-                            text: "Top 250",
-                            func: () => {
-                                exportData(250);
+                            {
+                                text: "Top 250",
+                                func: () => {
+                                    exportData(250);
+                                },
                             },
-                        },
-                        {
-                            text: "Top 500",
-                            func: () => {
-                                exportData(500);
+                            {
+                                text: "Top 500",
+                                func: () => {
+                                    exportData(500);
+                                },
                             },
-                        },
-                        {
-                            text: "Top 1000",
-                            func: () => {
-                                exportData(1000);
+                            {
+                                text: "Top 1000",
+                                func: () => {
+                                    exportData(1000);
+                                },
                             },
-                        },
-                    ]}
-                />
-                {order_dropdown && (
-                    <DropDownSecondaryButton text={orderItemNames[order]} items={getOrderDropDownItems()} />
-                )}
-                {filter_dropdown && (
-                    <DropDownSecondaryButton text={filterItemNames[filter]} items={getFilterDropDownItems()} />
+                        ]}
+                    />
+                    {order_dropdown && (
+                        <DropDownSecondaryButton text={orderItemNames[order]} items={getOrderDropDownItems()} />
+                    )}
+                    {filter_dropdown && (
+                        <DropDownSecondaryButton text={filterItemNames[filter]} items={getFilterDropDownItems()} />
+                    )}
+                </div>
+                {search_field && (
+                    <form className="flex space-x-5">
+                        <input
+                            id="search"
+                            type="text"
+                            value={query}
+                            onChange={(e) => {
+                                setQuery(e.target.value);
+                            }}
+                            required
+                            placeholder="Search..."
+                            className="mt-1 w-full rounded-xl border border-gray-300 px-5 py-1 focus:border-primary focus:ring-primary"
+                        />
+                    </form>
                 )}
             </div>
-            {/*             <form className="flex space-x-5 my-10">
-                <button
-                    type="submit"
-                    className="rounded-xl bg-primary px-7 text-white animating-button hover:bg-primary/90"
-                >
-                    Search
-                </button>
-                <input
-                    type="text"
-                    required
-                    className="mt-1 w-full rounded-xl border border-gray-300 px-7 py-3 focus:border-primary focus:ring-primary"
-                />
-            </form> */}
             {loading ? (
                 <>
                     <PainPointTable setFavorite={setFavorite} painPoints={[]} />

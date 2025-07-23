@@ -1,10 +1,6 @@
 import { auth } from "@/auth";
-import {
-    getLeastRecentPainPoints,
-    getLeastValidatedPainPoints,
-    getMostRecentPainPoints,
-    getMostValidatedPainPoints,
-} from "@/lib/services/dataService";
+import { getPainPoints } from "@/lib/services/dataService";
+import { OrderOptions } from "@/types/OrderOptions";
 import { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -16,6 +12,7 @@ export async function GET(req: NextRequest) {
     const pageIndexParam = searchParams.get("page-index");
     const orderParam = searchParams.get("order");
     const filterParam = searchParams.get("filter");
+    const searchParam = searchParams.get("search");
 
     const filterForFavorites = filterParam === "favorites";
 
@@ -33,31 +30,23 @@ export async function GET(req: NextRequest) {
         return Response.error();
     }
 
-    if (orderParam === "most_recent") {
-        return Response.json(
-            await (
-                await getMostRecentPainPoints(pageSize, pageIndex, Number(session?.user.id), filterForFavorites)
-            ).json()
-        );
-    } else if (orderParam === "least_recent") {
-        return Response.json(
-            await (
-                await getLeastRecentPainPoints(pageSize, pageIndex, Number(session?.user.id), filterForFavorites)
-            ).json()
-        );
-    } else if (orderParam === "most_validation") {
-        return Response.json(
-            await (
-                await getMostValidatedPainPoints(pageSize, pageIndex, Number(session?.user.id), filterForFavorites)
-            ).json()
-        );
-    } else if (orderParam === "least_validation") {
-        return Response.json(
-            await (
-                await getLeastValidatedPainPoints(pageSize, pageIndex, Number(session?.user.id), filterForFavorites)
-            ).json()
-        );
-    } else {
-        return Response.error();
+    let userID;
+    try {
+        userID = Number(session?.user.id);
+    } catch {
+        return Response.json({ error: "Something went wrong" });
     }
+
+    return Response.json(
+        await getPainPoints({
+            pageSize,
+            pageIndex,
+            userID,
+            filterFavorites: filterForFavorites,
+            ...(searchParam && { searchQuery: searchParam }),
+            ...(["most_recent", "least_recent", "most_validation", "least_validation"].includes(
+                orderParam ? orderParam : ""
+            ) && { orderBy: orderParam as OrderOptions }),
+        })
+    );
 }
