@@ -1,8 +1,13 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { DuplicateLink } from "@/types/DuplicateLink";
 import { dismissDuplicateLink } from "@/lib/services/duplicatesService";
+import { apiMinRole } from "@/lib/utils/roleRestrictions";
 
 export async function POST(req: NextRequest) {
+    const rr = apiMinRole({ role: "admin" });
+    if (rr) {
+        return rr;
+    }
     try {
         const body = await req.json();
         if (
@@ -14,15 +19,15 @@ export async function POST(req: NextRequest) {
             typeof body.problem_2 !== "string" ||
             typeof body.similarity !== "number"
         ) {
-            return NextResponse.json({ error: "Invalid DuplicateLink payload" }, { status: 400 });
+            return new Response(null, { status: 400 });
         }
 
         const duplicateLink: DuplicateLink = body;
 
         dismissDuplicateLink(duplicateLink);
 
-        return NextResponse.json({ success: true });
+        return new Response(null, { status: 204 });
     } catch {
-        return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+        return new Response(null, { status: 400 });
     }
 }

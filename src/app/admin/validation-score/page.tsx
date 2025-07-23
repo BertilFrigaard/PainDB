@@ -1,5 +1,5 @@
 import ManageValidationScore from "@/components/ManageValidationScore";
-import { restrictPage } from "@/lib/utils/pageRestriction";
+import { restrictPage } from "@/lib/utils/roleRestrictions";
 
 export default async function ReviewDuplicates() {
     await restrictPage("admin");

@@ -80,8 +80,8 @@ export async function getPainPointById(id: string, userID: number) {
         [userID, id]
     );
     if (res.rows.length === 1) {
-        return Response.json(res.rows[0]);
+        return res.rows[0];
     } else {
-        return Response.error();
+        return null;
     }
 }

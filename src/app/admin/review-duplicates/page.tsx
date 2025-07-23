@@ -1,5 +1,5 @@
 import DuplicateReview from "@/components/DuplicateReview";
-import { restrictPage } from "@/lib/utils/pageRestriction";
+import { restrictPage } from "@/lib/utils/roleRestrictions";
 
 export default async function ReviewDuplicates() {
     await restrictPage("admin");

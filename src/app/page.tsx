@@ -1,9 +1,9 @@
-import { restrictPage } from "@/lib/utils/pageRestriction";
+import { pageMaxRole } from "@/lib/utils/roleRestrictions";
 import Image from "next/image";
 import Link from "next/link";
 
 export default async function Landing() {
-    await restrictPage("none", "/home", "/home", true);
+    await pageMaxRole({});
     return (
         <main className="bg-background min-h-[90vh]">
             <section className="px-36 py-20">
