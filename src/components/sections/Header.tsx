@@ -63,7 +63,7 @@ export default async function Header() {
             </div>
             <div className="flex space-x-4">
                 {session?.user ? (
-                    <DropDownProfile name={session.user.name ? session.user.name : "Dig"} />
+                    <DropDownProfile name={session.user.name ? session.user.name : "You"} />
                 ) : (
                     <>
                         <button

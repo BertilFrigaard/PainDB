@@ -23,7 +23,7 @@ export default function DropDownProfile({ name }: { name: string }) {
                     {name.charAt(0)}
                 </div>
                 <p className="relative text-secondary group-hover:after:w-full group-hover:after:opacity-100 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:bg-secondary after:w-0 after:opacity-0 after:transition-all after:duration-300">
-                    Om {name.split(" ")[0]}
+                    {name.split(" ")[0]}
                 </p>
 
                 <svg
