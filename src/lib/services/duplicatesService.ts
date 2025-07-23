@@ -21,7 +21,7 @@ LIMIT $1`,
 }
 
 export async function verifyDuplicateLink(link: DuplicateLink) {
-    dismissDuplicateLink(link);
+    await dismissDuplicateLink(link);
     const res = await pool.query("SELECT group_id, data_point_id FROM duplicates WHERE data_point_id IN ($1, $2)", [
         link.data_point_id_1,
         link.data_point_id_2,

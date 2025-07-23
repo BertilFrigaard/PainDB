@@ -1,13 +1,19 @@
 "use client";
 
+import { UseAlerts } from "@/contexts/AlertContext";
 import { useState } from "react";
 
 export default function ManageValidationScore() {
     const [loading, setLoading] = useState(false);
 
+    const { addAlert } = UseAlerts();
+
     const updateValidationScores = async () => {
         setLoading(true);
-        fetch("/api/data/validation-scores/refresh", { method: "POST" });
+        const res = await fetch("/api/data/validation-scores/refresh", { method: "POST" });
+        if (res.status !== 204) {
+            addAlert({ message: "Failed to do update", bg: "bg-error" }, 3000);
+        }
         setLoading(false);
     };
 

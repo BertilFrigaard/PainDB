@@ -64,10 +64,11 @@ export default function DataViewer({
                 const rows = await res.json();
                 setPainPoints(rows);
             } else {
-                addAlert({ message: "Something went wrong", bg: "bg-error" }, 3000);
+                addAlert({ message: "Failed to get data (error code: " + res.status + ")", bg: "bg-error" }, 3000);
             }
             setLoading(false);
         };
+        setLoading(true);
         updateData();
     }, [order, filter, query, page]);
 
@@ -120,14 +121,14 @@ export default function DataViewer({
     const exportData = async (amount: number) => {
         try {
             const res = await fetch(`/api/data?page-size=${amount}&page-index=0&order=${order}` + "&filter=" + filter);
-            if (!res.ok) {
-                console.error("Failed to fetch data:", res.status, await res.text());
+            if (res.status !== 200) {
+                addAlert({ message: "Failed to get data (error code: " + res.status + ")", bg: "bg-error" }, 3000);
                 return;
             }
 
             const rows: PainPoint[] = await res.json();
             if (rows.length === 0) {
-                console.log("No data to export");
+                addAlert({ message: "No data to export", bg: "bg-warn" }, 3000);
                 return;
             }
 
@@ -139,8 +140,8 @@ export default function DataViewer({
 
             const csvData = new Blob(["\uFEFF" + csvRows.join("\n")], { type: "text/csv;charset=utf-8;" });
             FileSaver.saveAs(csvData, "paindb_data.csv");
-        } catch (error) {
-            console.error("Export failed:", error);
+        } catch {
+            addAlert({ message: "Export failed", bg: "bg-error" }, 3000);
         }
     };
 
@@ -155,7 +156,11 @@ export default function DataViewer({
             return prev.map((v) => (v.id === row.id ? { ...v, favorite: !wasFavorite } : v));
         });
 
-        await fetch(url, { method: "POST" });
+        const res = await fetch(url, { method: "POST" });
+
+        if (res.status !== 204) {
+            addAlert({ message: "Failed to update favorite (error code: " + res.status + ")", bg: "bg-error" }, 3000);
+        }
     };
 
     return (

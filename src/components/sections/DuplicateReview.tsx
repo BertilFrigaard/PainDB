@@ -1,5 +1,6 @@
 "use client";
 
+import { UseAlerts } from "@/contexts/AlertContext";
 import { DuplicateLink } from "@/types/DuplicateLink";
 import { useEffect, useState } from "react";
 
@@ -7,38 +8,51 @@ export default function DuplicateReview() {
     const [loading, setLoading] = useState(true);
     const [links, setLinks] = useState<DuplicateLink[]>([]);
 
+    const { addAlert } = UseAlerts();
+
     const verifyLink = async () => {
         setLoading(true);
-        await fetch("/api/data/duplicates/verify", {
+        const res = await fetch("/api/data/duplicates/verify", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(links[0]),
         });
-        links.splice(0, 1);
+        if (res.status === 204) {
+            links.splice(0, 1);
+        } else {
+            addAlert({ message: "Failed to make update (error code: " + res.status + ")", bg: "bg-error" }, 3000);
+        }
         setLoading(false);
     };
 
     const dismissLink = async () => {
         setLoading(true);
-        await fetch("/api/data/duplicates/dismiss", {
+        const res = await fetch("/api/data/duplicates/dismiss", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(links[0]),
         });
-        links.splice(0, 1);
+        if (res.status === 204) {
+            links.splice(0, 1);
+        } else {
+            addAlert({ message: "Failed to make update (error code: " + res.status + ")", bg: "bg-error" }, 3000);
+        }
         setLoading(false);
     };
 
     useEffect(() => {
         const updateLinks = async () => {
             const res = await fetch("/api/data/links?limit=20");
-            const json = await res.json();
-            console.log(json);
-            setLinks(json);
+            if (res.status === 200) {
+                const json = await res.json();
+                setLinks(json);
+            } else {
+                addAlert({ message: "Failed to get data (error code: " + res.status + ")", bg: "bg-error" }, 3000);
+            }
             setLoading(false);
         };
 

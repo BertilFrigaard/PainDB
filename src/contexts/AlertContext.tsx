@@ -1,5 +1,5 @@
 "use client";
-import AlertPopup from "@/components/AlertPopup";
+import AlertPopup from "@/components/alert/AlertPopup";
 import { Alert, AlertContextType, AlertDraft } from "@/types/Alert";
 import { createContext, ReactNode, useContext, useState } from "react";
 

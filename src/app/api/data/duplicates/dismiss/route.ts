@@ -4,7 +4,7 @@ import { dismissDuplicateLink } from "@/lib/services/duplicatesService";
 import { apiMinRole } from "@/lib/utils/roleRestrictions";
 
 export async function POST(req: NextRequest) {
-    const rr = apiMinRole({ role: "admin" });
+    const rr = await apiMinRole({ role: "admin" });
     if (rr) {
         return rr;
     }

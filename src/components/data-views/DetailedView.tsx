@@ -4,12 +4,15 @@ import { PainPoint } from "@/types/PainPoint";
 import { useEffect, useRef, useState } from "react";
 import DataTable from "../tables/DataTable/DataTable";
 import { IoClose } from "react-icons/io5";
+import { UseAlerts } from "@/contexts/AlertContext";
 
 export default function DetailedView({ exitFunc, dataPointID }: { exitFunc: () => void; dataPointID: string }) {
     const modalRef = useRef<HTMLDivElement>(null);
     const [painPoint, setPainPoint] = useState<null | PainPoint>(null);
     const [duplicates, setDuplicates] = useState<Map<string, PainPoint>>(new Map());
     const [loading, setLoading] = useState(true);
+
+    const { addAlert } = UseAlerts();
 
     const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
         if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
@@ -21,7 +24,11 @@ export default function DetailedView({ exitFunc, dataPointID }: { exitFunc: () =
         const updateData = async () => {
             setLoading(true);
             const res = await fetch("/api/data/" + dataPointID);
-            setPainPoint(await res.json());
+            if (res.status === 200) {
+                setPainPoint(await res.json());
+            } else {
+                addAlert({ message: "Failed to get data (error code: " + res.status + ")", bg: "bg-error" }, 3000);
+            }
             setLoading(false);
         };
 
@@ -34,6 +41,13 @@ export default function DetailedView({ exitFunc, dataPointID }: { exitFunc: () =
                 painPoint.duplicates.forEach(async (id) => {
                     if (id) {
                         const res = await fetch("/api/data/" + id);
+                        if (res.status !== 200) {
+                            addAlert(
+                                { message: "Failed to get data (error code: " + res.status + ")", bg: "bg-error" },
+                                3000
+                            );
+                            return;
+                        }
                         const json = await res.json();
                         setDuplicates((prev) => {
                             return new Map(prev).set(id, json);
