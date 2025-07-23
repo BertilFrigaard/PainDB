@@ -1,4 +1,4 @@
-import { auth, signIn, signOut } from "@/auth";
+import { auth, signIn } from "@/auth";
 import Link from "next/link";
 import DropDownPlain from "../buttons/drop-downs/styles/DropDownPlain";
 import DropDownProfile from "../buttons/drop-downs/styles/DropDownProfile";
@@ -9,10 +9,6 @@ export default async function Header() {
     const signInClicked = async () => {
         "use server";
         await signIn();
-    };
-    const logOutClicked = async () => {
-        "use server";
-        await signOut();
     };
 
     return (
@@ -67,13 +63,7 @@ export default async function Header() {
             </div>
             <div className="flex space-x-4">
                 {session?.user ? (
-                    <DropDownProfile
-                        name={session.user.name ? session.user.name : "Dig"}
-                        items={[
-                            { text: "Profile", link: "/profile" },
-                            { text: "Sign Out", func: logOutClicked },
-                        ]}
-                    />
+                    <DropDownProfile name={session.user.name ? session.user.name : "Dig"} />
                 ) : (
                     <>
                         <button

@@ -1,16 +1,21 @@
 "use client";
 
+import { signOut } from "next-auth/react";
 import DropDown from "../DropDown";
 import { useState } from "react";
 
-export default function DropDownProfile({
-    name,
-    items,
-}: {
-    name: string;
-    items: { text: string; link?: string; func?: () => void }[];
-}) {
+export default function DropDownProfile({ name }: { name: string }) {
     const [expanded, setExpanded] = useState(false);
+
+    const logOutClicked = async () => {
+        await signOut({ redirectTo: "/" });
+    };
+
+    const items = [
+        { text: "Profile", link: "/profile" },
+        { text: "Sign Out", func: logOutClicked },
+    ];
+
     return (
         <DropDown expanded={expanded} setExpanded={setExpanded} items={items}>
             <div className="flex items-center gap-2 font-semibold group cursor-pointer">

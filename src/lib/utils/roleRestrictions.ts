@@ -23,7 +23,7 @@ export async function apiMinRole({ role = "starter", session = null }: { role?: 
         session = await auth();
     }
 
-    const userRole = getRoleLevel(session?.user.role || "none");
+    const userRole = getRoleLevel(session?.user.role || "");
     const minRole = getRoleLevel(role);
 
     if (minRole > userRole) {
@@ -51,7 +51,7 @@ export async function pageMaxRole({
         session = await auth();
     }
 
-    const userRole = getRoleLevel(session?.user.role || "none");
+    const userRole = getRoleLevel(session?.user.role || "");
     const maxRole = getRoleLevel(role);
 
     if (maxRole < userRole) {
@@ -78,7 +78,7 @@ export async function pageMinRole({
         session = await auth();
     }
 
-    const userRole = getRoleLevel(session?.user.role || "none");
+    const userRole = getRoleLevel(session?.user.role || "");
     const minRole = getRoleLevel(role);
 
     if (minRole > userRole) {
