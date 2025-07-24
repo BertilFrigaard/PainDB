@@ -3,6 +3,7 @@ import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import Nodemailer from "next-auth/providers/nodemailer";
 import { Pool } from "pg";
+import { sendVerificationRequest } from "./lib/email/sendVerificationRequest";
 
 const pool = new Pool({
     host: process.env.DATABASE_HOST,
@@ -20,13 +21,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         Nodemailer({
             server: {
                 host: process.env.EMAIL_HOST,
-                port: process.env.EMAIL_PORT,
+                port: Number(process.env.EMAIL_PORT),
                 auth: {
                     user: process.env.EMAIL_USER,
                     pass: process.env.EMAIL_PASSWORD,
                 },
             },
             from: process.env.EMAIL_FROM,
+            sendVerificationRequest: sendVerificationRequest,
         }),
         Google({
             clientId: process.env.GOOGLE_CLIENT_ID,
