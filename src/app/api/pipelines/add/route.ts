@@ -18,7 +18,11 @@ export async function POST(req: Request) {
 
     const body = await req.json();
 
-    if (typeof body.sub_reddit !== "string" || typeof body.from !== "number") {
+    if (
+        typeof body.sub_reddit !== "string" ||
+        typeof body.from !== "number" ||
+        typeof body.run_retroactive !== "boolean"
+    ) {
         return new Response(null, { status: 400 });
     }
 
@@ -37,16 +41,18 @@ export async function POST(req: Request) {
         return new Response(null, { status: 500 });
     }
 
-    const pipelineRunID = await createPipelineRun(userID, pipelineID);
+    if (body.run_retroactive) {
+        const pipelineRunID = await createPipelineRun(userID, pipelineID);
 
-    if (!pipelineRunID) {
-        return new Response(null, { status: 500 });
-    }
+        if (!pipelineRunID) {
+            return new Response(null, { status: 500 });
+        }
 
-    try {
-        await startPipelineScript(pipelineID, pipelineRunID, body.from);
-    } catch {
-        return new Response(null, { status: 500 });
+        try {
+            await startPipelineScript(pipelineID, pipelineRunID, body.from);
+        } catch {
+            return new Response(null, { status: 500 });
+        }
     }
 
     return new Response(null, { status: 204 });
