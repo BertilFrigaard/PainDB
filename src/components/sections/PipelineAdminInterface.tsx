@@ -18,7 +18,7 @@ export default function PipelineAdminInterface() {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ sub_reddit: "r/sidehustle", from: getRollbackUnixTimestamp(1) }),
+            body: JSON.stringify({ sub_reddit: "r/startups", from: getRollbackUnixTimestamp(1) }),
         });
 
         console.log("status: " + res.status);
