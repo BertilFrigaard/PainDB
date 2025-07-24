@@ -84,6 +84,23 @@ export default function PipelineAdminInterface() {
         }
     };
 
+    const deletePipeline = async (pipelineID: string) => {
+        setLoading(true);
+        const res = await fetch("/api/pipelines/delete", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id: pipelineID }),
+        });
+        if (res.status === 204) {
+            updatePipelines();
+        } else {
+            addAlert({ message: "Deletion failed (error code: " + res.status + ")", bg: "bg-error" }, 3000);
+            setLoading(false);
+        }
+    };
+
     const updatePipelines = async () => {
         setLoading(true);
         const res = await fetch("/api/pipelines");
@@ -191,18 +208,6 @@ export default function PipelineAdminInterface() {
                 </>
             ) : (
                 <>
-                    {/*  <DataTable
-                        data={pipelines.map((p) => {
-                            return {
-                                "Sub Reddit": p.sub_reddit,
-                                Creator: p.creator_name,
-                                "Last Executor": p.executor_name,
-                                "Last Run": p.last_run_started ? new Date(p.last_run_started).toLocaleString() : "None",
-                                Additions: p.last_run_additions || "None",
-                                Status: p.last_run_status || "None",
-                            };
-                        })} 
-                    /> */}
                     <CustomTable
                         columns={[
                             { index: "sub_reddit", name: "Sub Reddit" },
@@ -255,6 +260,11 @@ export default function PipelineAdminInterface() {
                                 buttonClicked: (row) => {
                                     if (row.id) {
                                         runPipeline(row.id);
+                                    } else {
+                                        addAlert(
+                                            { message: "Failed to relate row to pipeline id", bg: "bg-error" },
+                                            3000
+                                        );
                                     }
                                 },
                             },
@@ -268,8 +278,15 @@ export default function PipelineAdminInterface() {
                                     return "bg-error";
                                 },
                                 button: true,
-                                buttonClicked: () => {
-                                    updatePipelines();
+                                buttonClicked: (row) => {
+                                    if (row.id) {
+                                        deletePipeline(row.id);
+                                    } else {
+                                        addAlert(
+                                            { message: "Failed to relate row to pipeline id", bg: "bg-error" },
+                                            3000
+                                        );
+                                    }
                                 },
                             },
                         ]}
