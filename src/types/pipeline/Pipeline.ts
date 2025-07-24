@@ -1,5 +1,5 @@
 export type Pipeline = {
-    id: string; // UUID
+    pipeline_id: string; // UUID
     creator_id: number;
     creator_name: string;
     created: string; // ISO timestamp

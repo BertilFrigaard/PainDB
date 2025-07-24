@@ -7,6 +7,8 @@ import DataTable from "../tables/DataTable/DataTable";
 import SmallButtonSecondary from "../buttons/smallButtons/SmallButtonSecondary";
 import SmallButtonPrimary from "../buttons/smallButtons/SmallButtonPrimary";
 import Popup from "../popups/Popup";
+import CustomTable from "../tables/CustomTable/CustomTable";
+import { getRollbackUnixTimestamp } from "@/lib/utils/timestamps";
 
 export default function PipelineAdminInterface() {
     const [loading, setLoading] = useState(true);
@@ -16,12 +18,6 @@ export default function PipelineAdminInterface() {
     const [createPopup, setCreatePopup] = useState(false);
 
     const { addAlert } = UseAlerts();
-
-    function getRollbackUnixTimestamp(days: number) {
-        const now = new Date();
-        const rollbackDate = new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
-        return Math.floor(rollbackDate.getTime() / 1000);
-    }
 
     const addPipeline = async () => {
         if (!createPopupSubReddit) {
@@ -69,6 +65,23 @@ export default function PipelineAdminInterface() {
             addAlert({ message: "Creation failed (error code: " + res.status + ")", bg: "bg-error" }, 3000);
         }
         setLoading(false);
+    };
+
+    const runPipeline = async (pipelineID: string) => {
+        setLoading(true);
+        const res = await fetch("/api/pipelines/run", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id: pipelineID }),
+        });
+        if (res.status === 204) {
+            updatePipelines();
+        } else {
+            addAlert({ message: "Excecution failed (error code: " + res.status + ")", bg: "bg-error" }, 3000);
+            setLoading(false);
+        }
     };
 
     const updatePipelines = async () => {
@@ -178,7 +191,7 @@ export default function PipelineAdminInterface() {
                 </>
             ) : (
                 <>
-                    <DataTable
+                    {/*  <DataTable
                         data={pipelines.map((p) => {
                             return {
                                 "Sub Reddit": p.sub_reddit,
@@ -188,10 +201,91 @@ export default function PipelineAdminInterface() {
                                 Additions: p.last_run_additions || "None",
                                 Status: p.last_run_status || "None",
                             };
+                        })} 
+                    /> */}
+                    <CustomTable
+                        columns={[
+                            { index: "sub_reddit", name: "Sub Reddit" },
+                            { index: "creator", name: "Creator" },
+                            { index: "last_run", name: "Last Run", defaultValue: "None" },
+                            {
+                                index: "additions",
+                                name: "Additions",
+                                centered: true,
+                                defaultValue: "0",
+                                bubble: true,
+                                bubbleColor: (value) => {
+                                    switch (value) {
+                                        case "0":
+                                            return "bg-error";
+                                        default:
+                                            return "bg-lime-500";
+                                    }
+                                },
+                            },
+                            {
+                                index: "status",
+                                name: "Status",
+                                centered: true,
+                                defaultValue: "waiting",
+                                bubble: true,
+                                bubbleColor: (value) => {
+                                    switch (value) {
+                                        case "finished":
+                                            return "bg-lime-500";
+                                        case "extracting":
+                                            return "bg-yellow-500";
+                                        case "scraping":
+                                            return "bg-yellow-200";
+                                        default:
+                                            return "bg-gray-200";
+                                    }
+                                },
+                            },
+                            {
+                                index: "",
+                                name: "",
+                                centered: true,
+                                defaultValue: "Run",
+                                bubble: true,
+                                bubbleColor: () => {
+                                    return "bg-primary";
+                                },
+                                button: true,
+                                buttonClicked: (row) => {
+                                    if (row.id) {
+                                        runPipeline(row.id);
+                                    }
+                                },
+                            },
+                            {
+                                index: "",
+                                name: "",
+                                defaultValue: "Delete",
+                                centered: true,
+                                bubble: true,
+                                bubbleColor: () => {
+                                    return "bg-error";
+                                },
+                                button: true,
+                                buttonClicked: () => {
+                                    updatePipelines();
+                                },
+                            },
+                        ]}
+                        data={pipelines.map((p) => {
+                            return {
+                                id: p.pipeline_id,
+                                sub_reddit: p.sub_reddit,
+                                status: p.last_run_status,
+                                additions: p.last_run_additions ? String(p.last_run_additions) : null,
+                                creator: p.creator_name,
+                                last_run: p.last_run_started ? new Date(p.last_run_started).toLocaleString() : null,
+                            };
                         })}
                     />
                     {pipelines.length === 0 && (
-                        <p className="text-center p-10 font-bold text-lg text-gray-500">No Data</p>
+                        <p className="text-center p-10 font-bold text-lg text-gray-500 ">No Data</p>
                     )}
                 </>
             )}

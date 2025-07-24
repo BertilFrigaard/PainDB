@@ -34,6 +34,21 @@ export async function getPipelineSubReddit(pipelineID: string): Promise<string |
     }
 }
 
+export async function getPipelinesLastRunStarted(pipelineID: string): Promise<string | null> {
+    const res = await pool.query(
+        `SELECT run_started
+         FROM pipeline_runs
+         WHERE pipeline_id = $1
+         ORDER BY run_started DESC
+         LIMIT 1`,
+        [pipelineID]
+    );
+
+    if (res.rowCount !== 1) return null;
+
+    return res.rows[0].run_started;
+}
+
 export async function getPipelinesWithLastRun(): Promise<PipelineWithLastRun[]> {
     const res = await pool.query<PipelineWithLastRun>(`SELECT 
     p.id AS pipeline_id,

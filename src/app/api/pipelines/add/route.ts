@@ -2,12 +2,7 @@ import { auth } from "@/auth";
 import { createPipeline, createPipelineRun } from "@/lib/services/pipelineService";
 import { startPipelineScript } from "@/lib/services/scriptService";
 import { apiMinRole } from "@/lib/utils/roleRestrictions";
-
-function getRollbackUnixTimestamp(days: number) {
-    const now = new Date();
-    const rollbackDate = new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
-    return Math.floor(rollbackDate.getTime() / 1000);
-}
+import { getRollbackUnixTimestamp } from "@/lib/utils/timestamps";
 
 export async function POST(req: Request) {
     const session = await auth();
