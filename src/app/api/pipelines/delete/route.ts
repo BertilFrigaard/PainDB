@@ -16,8 +16,7 @@ export async function POST(req: NextRequest) {
     try {
         await deletePipeline(body.id);
         return new Response(null, { status: 204 });
-    } catch (e) {
-        console.log(e);
+    } catch {
         return new Response(null, { status: 500 });
     }
 }

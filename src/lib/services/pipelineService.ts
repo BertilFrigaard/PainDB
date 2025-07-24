@@ -49,6 +49,10 @@ export async function getPipelinesLastRunStarted(pipelineID: string): Promise<st
     return res.rows[0].run_started;
 }
 
+export async function deletePipeline(pipelineID: string) {
+    await pool.query("DELETE FROM pipelines WHERE id = $1", [pipelineID]);
+}
+
 export async function getPipelinesWithLastRun(): Promise<PipelineWithLastRun[]> {
     const res = await pool.query<PipelineWithLastRun>(`SELECT 
     p.id AS pipeline_id,
