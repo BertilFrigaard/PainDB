@@ -11,6 +11,11 @@ def info(message: str):
     else:
         print("logger_pipeline_run_id NOT SET!")
 
+def debug(message: str):
+    if logger_pipeline_run_id is not None:
+        log(logger_pipeline_run_id, message, "debug")
+    else:
+        print("logger_pipeline_run_id NOT SET!")
 
 def status(message: str):
     if logger_pipeline_run_id is not None:

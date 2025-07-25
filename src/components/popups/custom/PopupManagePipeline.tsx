@@ -31,6 +31,23 @@ export default function PopupManagePipeline({ exitFunc, pipelineID }: { exitFunc
         }
     };
 
+    const runPipeline = async () => {
+        setLoading(true);
+        const res = await fetch("/api/pipelines/run", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id: pipelineID }),
+        });
+        if (res.status === 204) {
+            updatePipeline();
+        } else {
+            addAlert({ message: "Excecution failed (error code: " + res.status + ")", bg: "bg-error" }, 3000);
+            setLoading(false);
+        }
+    };
+
     const updatePipeline = async () => {
         setLoading(true);
         const res = await fetch("/api/pipelines/" + pipelineID);
@@ -74,7 +91,7 @@ export default function PopupManagePipeline({ exitFunc, pipelineID }: { exitFunc
             ) : (
                 <>
                     <div className="flex gap-10">
-                        <div className="bg-white rounded-xl p-10 my-5">
+                        <div className="bg-white rounded-xl p-10 my-5 w-full">
                             <div className="py-2">
                                 <p className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
                                     {pipeline.sub_reddit}
@@ -130,7 +147,8 @@ export default function PopupManagePipeline({ exitFunc, pipelineID }: { exitFunc
                                 </p>
                             </div>
                             <div className="flex flex-col gap-2">
-                                <BubbleButton onClick={updatePipeline} text="Reload" />
+                                <BubbleButton onClick={updatePipeline} text="Reload" bg="bg-purple-400" />
+                                <BubbleButton onClick={runPipeline} text="Run" bg="bg-lime-400" />
                                 <BubbleButton onClick={deletePipeline} bg="bg-error" text="Delete" />
                             </div>
                         </div>
@@ -158,6 +176,8 @@ export default function PopupManagePipeline({ exitFunc, pipelineID }: { exitFunc
                                                 return "bg-error";
                                             case "info":
                                                 return "bg-[#ac80ff]";
+                                            case "debug":
+                                                return "bg-lime-400";
                                             default:
                                                 return "bg-gray-200";
                                         }

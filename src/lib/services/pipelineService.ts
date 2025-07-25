@@ -123,7 +123,7 @@ export async function getPipelineWithLastRunByID(pipelineID: string) {
 
 export async function getLogsByPipelineRunID(pipelineRunID: string) {
     const res = await pool.query<PipelineLog>(
-        "SELECT * FROM pipeline_run_logs WHERE pipeline_run_id = $1 ORDER BY time ASC",
+        "SELECT * FROM pipeline_run_logs WHERE pipeline_run_id = $1 ORDER BY time DESC",
         [pipelineRunID]
     );
     return res.rows;

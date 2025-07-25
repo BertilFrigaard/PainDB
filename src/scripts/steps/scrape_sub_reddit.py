@@ -52,6 +52,7 @@ def scrape(sub_reddit, stop_date):
         json = res.json()
 
         after = getAfter(json)
+        logger.debug("Set after to: " + str(after))
         for child in json["data"]["children"]:
             post = extract_post(child)
             if int(post["created"]) < stop_date:
