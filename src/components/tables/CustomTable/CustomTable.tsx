@@ -63,8 +63,9 @@ export default function DataTable({ columns, data, rowClick }: DataTableProps) {
                                             }
                                         }}
                                         className={
-                                            "" +
-                                            (column.textColor ? column.textColor : " text-black ") +
+                                            " " +
+                                            (column.textColor ? column.textColor : "text-black") +
+                                            " " +
                                             (column.bubble &&
                                                 "inline-block px-3 py-1 rounded-full text-sm " +
                                                     (column.bubbleColor
@@ -74,7 +75,7 @@ export default function DataTable({ columns, data, rowClick }: DataTableProps) {
                                                                   ? column.defaultValue || ""
                                                                   : row[column.index]!
                                                           )
-                                                        : "primary") +
+                                                        : "bg-primary") +
                                                     " ") +
                                             (column.button && "cursor-pointer hover:scale-110 px-5 py-2 duration-100")
                                         }

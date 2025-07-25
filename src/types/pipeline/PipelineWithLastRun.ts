@@ -1,6 +1,7 @@
 import { Pipeline } from "./Pipeline";
 
 export type PipelineWithLastRun = Pipeline & {
+    last_run_id: number;
     last_run_started: string | null;
     last_run_ended: string | null;
     last_run_status: string | null;

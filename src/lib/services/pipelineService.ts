@@ -1,5 +1,6 @@
 import { PipelineWithLastRun } from "@/types/pipeline/PipelineWithLastRun";
 import { pool } from "../utils/database";
+import { PipelineLog } from "@/types/pipeline/PipelineLog";
 
 export async function createPipeline(userID: number, subReddit: string): Promise<string | null> {
     const res = await pool.query("INSERT INTO pipelines (creator_id, sub_reddit) VALUES ($1, $2) RETURNING id", [
@@ -60,6 +61,7 @@ export async function getPipelinesWithLastRun(): Promise<PipelineWithLastRun[]> 
     u_creator.name AS creator_name,
     p.created,
     p.sub_reddit,
+    pr_last.id AS last_run_id,
     pr_last.run_started AS last_run_started,
     pr_last.run_ended AS last_run_ended,
     pr_last.status AS last_run_status,
@@ -78,5 +80,50 @@ LEFT JOIN LATERAL (
 LEFT JOIN users u_executor ON u_executor.id = pr_last.executor;
 `);
 
+    return res.rows;
+}
+
+export async function getPipelineWithLastRunByID(pipelineID: string) {
+    const res = await pool.query<PipelineWithLastRun>(
+        `
+    SELECT 
+        p.id AS pipeline_id,
+        p.creator_id,
+        u_creator.name AS creator_name,
+        p.created,
+        p.sub_reddit,
+        pr_last.id AS last_run_id,
+        pr_last.run_started AS last_run_started,
+        pr_last.run_ended AS last_run_ended,
+        pr_last.status AS last_run_status,
+        pr_last.additions AS last_run_additions,
+        pr_last.executor AS last_run_executor,
+        u_executor.name AS executor_name
+    FROM pipelines p
+    JOIN users u_creator ON u_creator.id = p.creator_id
+    LEFT JOIN LATERAL (
+        SELECT *
+        FROM pipeline_runs pr
+        WHERE pr.pipeline_id = p.id
+        ORDER BY pr.run_started DESC
+        LIMIT 1
+    ) pr_last ON true
+    LEFT JOIN users u_executor ON u_executor.id = pr_last.executor
+    WHERE p.id = $1
+`,
+        [pipelineID]
+    );
+
+    if (res.rowCount === 1) {
+        return res.rows[0];
+    } else {
+        return null;
+    }
+}
+
+export async function getLogsByPipelineRunID(pipelineRunID: string) {
+    const res = await pool.query<PipelineLog>("SELECT * FROM pipeline_run_logs WHERE pipeline_run_id = $1 LIMIT 10", [
+        pipelineRunID,
+    ]);
     return res.rows;
 }

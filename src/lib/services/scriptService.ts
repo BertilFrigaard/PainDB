@@ -17,7 +17,12 @@ export async function startPipelineScript(pipelineID: string, pipelineRunID: num
         pipelineRunID.toString(),
         subReddit,
         stopTimestamp.toString(),
+        "-u",
     ]);
+
+    pipelineProcess.on("error", (err) => {
+        console.error("[PIPELINE ERROR]: Failed to start process: ", err);
+    });
 
     pipelineProcess.stdout.on("data", (data) => {
         console.log(`[PIPELINE STDOUT]: ${data}`);

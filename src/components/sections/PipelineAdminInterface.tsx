@@ -9,6 +9,7 @@ import SmallButtonPrimary from "../buttons/smallButtons/SmallButtonPrimary";
 import Popup from "../popups/Popup";
 import CustomTable from "../tables/CustomTable/CustomTable";
 import { getRollbackUnixTimestamp } from "@/lib/utils/timestamps";
+import PopupManagePipeline from "../popups/custom/PopupManagePipeline";
 
 export default function PipelineAdminInterface() {
     const [loading, setLoading] = useState(true);
@@ -16,6 +17,8 @@ export default function PipelineAdminInterface() {
     const [createPopupSubReddit, setCreatePopupSubReddit] = useState("");
     const [createPopupRetroactiveDays, setCreatePopupRetroactiveDays] = useState("0");
     const [createPopup, setCreatePopup] = useState(false);
+    const [managePopupPipelineID, setManagePopupPipelineID] = useState<null | string>(null);
+    const [managePopup, setManagePopup] = useState(false);
 
     const { addAlert } = UseAlerts();
 
@@ -84,23 +87,6 @@ export default function PipelineAdminInterface() {
         }
     };
 
-    const deletePipeline = async (pipelineID: string) => {
-        setLoading(true);
-        const res = await fetch("/api/pipelines/delete", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ id: pipelineID }),
-        });
-        if (res.status === 204) {
-            updatePipelines();
-        } else {
-            addAlert({ message: "Deletion failed (error code: " + res.status + ")", bg: "bg-error" }, 3000);
-            setLoading(false);
-        }
-    };
-
     const updatePipelines = async () => {
         setLoading(true);
         const res = await fetch("/api/pipelines");
@@ -126,7 +112,7 @@ export default function PipelineAdminInterface() {
                     }}
                     title="Create New Pipeline"
                 >
-                    <form action={addPipeline} className="flex flex-col gap-8 w-full max-w-md">
+                    <form action={addPipeline} className="flex flex-col gap-8 w-full max-w-md mt-6">
                         <div className="flex flex-col gap-5">
                             <div className="flex flex-col gap-1">
                                 <label htmlFor="subreddit" className="text-sm text-muted font-medium">
@@ -168,6 +154,15 @@ export default function PipelineAdminInterface() {
                         </button>
                     </form>
                 </Popup>
+            )}
+            {managePopup && managePopupPipelineID !== null && (
+                <PopupManagePipeline
+                    exitFunc={() => {
+                        setManagePopup(false);
+                        updatePipelines();
+                    }}
+                    pipelineID={managePopupPipelineID}
+                />
             )}
             <div className="flex items-center justify-between mb-5">
                 <h2 className="text-2xl font-semibold text-gray-800">Current Pipelines</h2>
@@ -238,8 +233,10 @@ export default function PipelineAdminInterface() {
                                     switch (value) {
                                         case "finished":
                                             return "bg-lime-500";
+                                        case "embedding":
+                                            return "bg-yellow-600";
                                         case "extracting":
-                                            return "bg-yellow-500";
+                                            return "bg-yellow-400";
                                         case "scraping":
                                             return "bg-yellow-200";
                                         default:
@@ -254,7 +251,7 @@ export default function PipelineAdminInterface() {
                                 defaultValue: "Run",
                                 bubble: true,
                                 bubbleColor: () => {
-                                    return "bg-primary";
+                                    return "bg-lime-500";
                                 },
                                 button: true,
                                 buttonClicked: (row) => {
@@ -271,16 +268,17 @@ export default function PipelineAdminInterface() {
                             {
                                 index: "",
                                 name: "",
-                                defaultValue: "Delete",
+                                defaultValue: "Manage",
                                 centered: true,
                                 bubble: true,
                                 bubbleColor: () => {
-                                    return "bg-error";
+                                    return "bg-primary";
                                 },
                                 button: true,
                                 buttonClicked: (row) => {
                                     if (row.id) {
-                                        deletePipeline(row.id);
+                                        setManagePopupPipelineID(row.id);
+                                        setManagePopup(true);
                                     } else {
                                         addAlert(
                                             { message: "Failed to relate row to pipeline id", bg: "bg-error" },

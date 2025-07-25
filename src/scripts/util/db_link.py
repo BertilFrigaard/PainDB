@@ -19,6 +19,10 @@ def upload_extracted_row(problem, description, created_timestamp):
         print("Returning first")
     return record[0][0]
 
+def upload_embedding(data_point_id, embedding):
+    cursor.execute("INSERT INTO metadata (data_point_id, problem_embedding) VALUES (%s, %s) ON CONFLICT (data_point_id) DO UPDATE SET problem_embedding = EXCLUDED.problem_embedding", (data_point_id, embedding))
+    connection.commit()
+
 def upload_links(links):
     for link in links:
         cursor.execute("INSERT INTO data_point_links (data_point_id_1, data_point_id_2, similarity) VALUES (%s, %s, %s)", (link["data_point_id_1"], link["data_point_id_2"], link["similarity"]))
@@ -26,6 +30,10 @@ def upload_links(links):
 
 def set_pipeline_run_status(pipeline_run_id, status):
     cursor.execute("UPDATE pipeline_runs SET status = %s WHERE id = %s", (status, pipeline_run_id))
+    connection.commit()
+
+def log(pipeline_run_id, text, level):
+    cursor.execute("INSERT INTO pipeline_run_logs (pipeline_run_id, message, level) VALUES (%s, %s, %s)", [pipeline_run_id, text, level])
     connection.commit()
 
 def finish_pipeline(pipeline_run_id, additions):

@@ -20,6 +20,20 @@ For each post, return one JSON object like this:
 Only return a JSON list of results in the same order as the input posts.
 """
 
+SYSTEM_PROMPT_2 = """You are an AI that identifies and extracts concrete, specific pain points from Reddit posts.
+
+A pain point is a real, clearly expressed problem, obstacle, or unmet need that the author is currently experiencing. 
+
+You must be absolutely certain a specific, real problem is being described. If the post is vague, reflective, speculative, or lacks a clearly articulated issue — return false.
+
+For each post, return a JSON object in this format:
+{ "ok": true/false, "problem": "", "description": "" }
+
+- "problem" is a short, precise summary of the core issue. Include only the context strictly necessary to understand the problem.
+- "description" provides a slightly more detailed explanation or interpretation of the issue — still concise, but with a bit more nuance (e.g. cause/effect, conditions, consequences).
+
+Always return a JSON array of results in the same order as the input posts."""
+
 def classify(post):
     user_prompt = f"""
                         Title: {post["title"]}
@@ -35,15 +49,33 @@ def classify(post):
 
                         Always return JSON
                     """
+    user_prompt_2 = f"""Given the following Reddit post:
+
+Title: {post["title"]}
+Body: {post["selftext"]}
+
+Determine whether the post contains a clearly stated, specific pain point.
+
+If yes, return:
+{{
+  "ok": true,
+  "problem": "[A short and precise summary of the main problem. Only include context that is strictly necessary.]",
+  "description": "[A slightly more detailed but still concise explanation of the problem. Add nuance if available, such as cause, consequence, or clarifying conditions.]"
+}}
+
+If no specific or clearly described problem is present, return:
+{{ "ok": false }}
+
+Always return valid JSON."""
     try:
         response = openai.chat.completions.create(model=MODEL, messages=[
             {
                 "role": "system",
-                "content": SYSTEM_PROMPT
+                "content": SYSTEM_PROMPT_2
             },
             {
                 "role": "user",
-                "content": user_prompt
+                "content": user_prompt_2
             }
         ])
         match = re.search(r'\{.*\}', response.choices[0].message.content, re.DOTALL)

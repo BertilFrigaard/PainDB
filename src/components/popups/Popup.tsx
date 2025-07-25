@@ -35,7 +35,7 @@ export default function Popup({
                 >
                     <IoClose size={28} />
                 </button>
-                <div className="flex-1 p-10 flex flex-col gap-8 bg-background rounded-3xl">
+                <div className="flex-1 p-10 flex flex-col bg-background rounded-3xl max-h-[90vh] overflow-y-auto">
                     <h2 className="text-3xl font-bold text-secondary mb-2">{title}</h2>
                     {children}
                 </div>
