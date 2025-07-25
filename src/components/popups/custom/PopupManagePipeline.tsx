@@ -82,6 +82,10 @@ export default function PopupManagePipeline({ exitFunc, pipelineID }: { exitFunc
                             </div>
                             <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-zinc-700 dark:text-zinc-300">
                                 <div>
+                                    <p className="font-medium text-zinc-600 dark:text-zinc-400">Pipeline ID</p>
+                                    <p className="break-all">{pipeline.pipeline_id}</p>
+                                </div>
+                                <div>
                                     <p className="font-medium text-zinc-600 dark:text-zinc-400">Created</p>
                                     <p>{pipeline.created}</p>
                                 </div>
@@ -90,28 +94,32 @@ export default function PopupManagePipeline({ exitFunc, pipelineID }: { exitFunc
                                     <p>{pipeline.creator_name}</p>
                                 </div>
                                 <div>
-                                    <p className="font-medium text-zinc-600 dark:text-zinc-400">Pipeline ID</p>
-                                    <p className="break-all">{pipeline.pipeline_id}</p>
-                                </div>
-                                <div>
                                     <p className="font-medium text-zinc-600 dark:text-zinc-400">Executor</p>
-                                    <p>{pipeline.executor_name}</p>
+                                    <p>{pipeline.executor_name || "None"}</p>
                                 </div>
                                 <div>
                                     <p className="font-medium text-zinc-600 dark:text-zinc-400">Last Run Started</p>
-                                    <p>{pipeline.last_run_started}</p>
+                                    <p>
+                                        {pipeline.last_run_started
+                                            ? new Date(pipeline.last_run_started).toLocaleString()
+                                            : "None"}
+                                    </p>
                                 </div>
                                 <div>
                                     <p className="font-medium text-zinc-600 dark:text-zinc-400">Last Run Ended</p>
-                                    <p>{pipeline.last_run_ended ?? "—"}</p>
+                                    <p>
+                                        {pipeline.last_run_ended
+                                            ? new Date(pipeline.last_run_ended).toLocaleString()
+                                            : "None"}
+                                    </p>
                                 </div>
                                 <div>
                                     <p className="font-medium text-zinc-600 dark:text-zinc-400">Status</p>
-                                    <p>{pipeline.last_run_status}</p>
+                                    <p>{pipeline.last_run_status || "None"}</p>
                                 </div>
                                 <div>
                                     <p className="font-medium text-zinc-600 dark:text-zinc-400">Additions</p>
-                                    <p>{pipeline.last_run_additions ?? "—"}</p>
+                                    <p>{pipeline.last_run_additions || "None"}</p>
                                 </div>
                             </div>
                         </div>
