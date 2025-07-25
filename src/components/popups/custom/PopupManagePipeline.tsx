@@ -145,7 +145,11 @@ export default function PopupManagePipeline({ exitFunc, pipelineID }: { exitFunc
                                             case "warn":
                                                 return "bg-warn";
                                             case "error":
+                                                return "bg-[#e84023]";
+                                            case "critical":
                                                 return "bg-error";
+                                            case "info":
+                                                return "bg-[#ac80ff]";
                                             default:
                                                 return "bg-gray-200";
                                         }

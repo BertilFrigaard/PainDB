@@ -1,5 +1,7 @@
 import json
+import traceback
 from typing import List
+from util import logger
 import openai
 import os
 import re
@@ -80,6 +82,7 @@ Always return valid JSON."""
         ])
         match = re.search(r'\{.*\}', response.choices[0].message.content, re.DOTALL)
         if not match:
+            logger.warn("The following ai output did not match JSON regex: " + response)
             return None
         else:
             jsonRes = json.loads(match.group())
@@ -89,7 +92,10 @@ Always return valid JSON."""
                     "description": jsonRes.get("description", "")
                 }
                 return output_row
+            else:
+                logger.info("AI extraction returned no problem")
         
-    except:
-        print("Something went wrong")
+    except Exception as e:
+        error_msg = "".join(traceback.format_exception(type(e), e, e.__traceback__))
+        logger.error(error_msg)
     return None

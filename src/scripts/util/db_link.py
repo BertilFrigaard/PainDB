@@ -1,6 +1,7 @@
 import psycopg2
 import os
 from datetime import datetime, timezone
+from util import logger
 
 connection = psycopg2.connect(database=os.environ.get("PGDATABASE"), user=os.environ.get("PGUSER"), password=os.environ.get("PGPASSWORD"), host=os.environ.get("PGHOST"), port=os.environ.get("PGPORT"))
 
@@ -15,8 +16,7 @@ def upload_extracted_row(problem, description, created_timestamp):
     connection.commit()
     record = cursor.fetchall()
     if len(record) != 1:
-        print("multiple records in one upload: (record: " + str(record) + ")")
-        print("Returning first")
+        logger.warn("multiple records in one upload: (record: " + str(record) + ") Returning first occurrence")
     return record[0][0]
 
 def upload_embedding(data_point_id, embedding):

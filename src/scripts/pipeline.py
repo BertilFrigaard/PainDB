@@ -3,7 +3,8 @@ import traceback
 from steps.scrape_sub_reddit import scrape
 from steps.openai_extractor import classify
 from steps.openai_embedder import embed
-from util.db_link import set_pipeline_run_status, upload_extracted_row, finish_pipeline, upload_raw_reddit_row, upload_embedding, log
+from util.db_link import set_pipeline_run_status, upload_extracted_row, finish_pipeline, upload_raw_reddit_row, upload_embedding
+from util import logger
 import io
 import os
 import csv
@@ -20,17 +21,24 @@ pipeline_run_id = int(sys.argv[2])
 sub_reddit = sys.argv[3]
 timestamp_end = int(sys.argv[4])
 
+# Setup logging
+logger.set_pipeline_run_id(pipeline_run_id)
+
 # Tracking
 additions = 0
+scraped = 0
 
 # Begin
 def step_scrape():
+    global scraped
     # Update status
     set_pipeline_run_status(pipeline_run_id, "scraping")
 
     posts = scrape(sub_reddit, timestamp_end)
 
-    log(pipeline_run_id, "Scraped " + str(len(posts)) + " posts", "info")
+    scraped = len(posts)
+
+    logger.info("Scraped " + str(scraped) + " posts")
 
     with open(DATA_FOLDER + "/1-" + str(pipeline_run_id) + ".csv", "w", newline="", encoding="utf-8") as csvfile:
         fieldnames = ["title", "selftext", "created", "name", "num_comments", "upvotes"]
@@ -40,7 +48,7 @@ def step_scrape():
         print("Output in " + csvfile.name)
 
 def step_extraction():
-    global additions
+    global additions, scraped
 
     # Ensure file exists
     if not os.path.isfile(DATA_FOLDER + "/1-" + str(pipeline_run_id) + ".csv"):
@@ -61,8 +69,13 @@ def step_extraction():
             writer = csv.DictWriter(csvfile2, fieldnames=fieldnames, quoting=csv.QUOTE_MINIMAL)
             writer.writeheader()
 
+            # Tracking
+            index = 0
+
             # Start Extracting
             for row in reader:
+                index += 1
+                logger.status(f"Extracting row ({str(index)}/{str(scraped)})")
                 classification = classify(row)
                 if classification != None:
                     id = upload_extracted_row(classification["problem"], classification["description"], row["created"])
@@ -73,6 +86,7 @@ def step_extraction():
                     writer.writerow({"data_point_id": id, "problem": classification["problem"]})
     
 def step_embed():
+    global scraped
 
     # Ensure file exists
     if not os.path.isfile(DATA_FOLDER + "/2-" + str(pipeline_run_id) + ".csv"):
@@ -84,7 +98,10 @@ def step_embed():
     # Open file to read from
     with open(DATA_FOLDER + "/2-" + str(pipeline_run_id) + ".csv", encoding="utf-8") as csvfile:
         reader = csv.DictReader(csvfile)
+        index = 0
         for row in reader:
+            index += 1
+            logger.status(f"Embedding row ({str(index)}/{str(scraped)})")
             embedding = embed(row["problem"])
             upload_embedding(row["data_point_id"], embedding)
     
@@ -92,18 +109,18 @@ def step_embed():
 
 
 try:
-    log(pipeline_run_id, "Starting scraping", "info")
+    logger.info("Starting Scraping")
     step_scrape()
-    log(pipeline_run_id, "Starting Extraction", "info")
+    logger.info("Starting Extraction")
     step_extraction()
-    log(pipeline_run_id, "Starting Embedding", "info")
+    logger.info("Starting Embedding")
     step_embed()
-    log(pipeline_run_id, "Finishing", "info")
-    set_pipeline_run_status(pipeline_run_id, "finished")
+    logger.info("Finishing")
     finish_pipeline(pipeline_run_id, additions)
-    log(pipeline_run_id, "Cleanup csv NOT IMPLEMENTED", "warn")
+    set_pipeline_run_status(pipeline_run_id, "finished")
+    logger.warn("Cleanup csv NOT IMPLEMENTED")
 except Exception as e:
     error_msg = "".join(traceback.format_exception(type(e), e, e.__traceback__))
-    log(pipeline_run_id, error_msg, "error")
-    log(pipeline_run_id, "Shutting Down", "warn")
+    logger.error(error_msg)
+    logger.warn("Shutting down")
     set_pipeline_run_status(pipeline_run_id, "failed")
