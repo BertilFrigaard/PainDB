@@ -30,6 +30,8 @@ def step_scrape():
 
     posts = scrape(sub_reddit, timestamp_end)
 
+    log(pipeline_run_id, "Scraped " + len(posts) + " posts", "info")
+
     with open(DATA_FOLDER + "/1-" + str(pipeline_run_id) + ".csv", "w", newline="", encoding="utf-8") as csvfile:
         fieldnames = ["title", "selftext", "created", "name", "num_comments", "upvotes"]
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames, quoting=csv.QUOTE_MINIMAL)
