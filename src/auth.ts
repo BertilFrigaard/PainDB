@@ -46,5 +46,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             session.user.role = user.role ? user.role : "";
             return session;
         },
+        async redirect({ url, baseUrl }) {
+            // Allows relative callback URLs
+            if (url.startsWith("/")) return `${baseUrl}${url}`;
+
+            // Allows callback URLs on the same origin
+            if (new URL(url).origin === baseUrl) return url;
+
+            if ([process.env.STRIPE_SHOP_PRO_LINK].includes(url)) {
+                return url;
+            }
+
+            return baseUrl;
+        },
     },
 });

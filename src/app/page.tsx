@@ -80,7 +80,11 @@ export default async function Landing() {
                         </ul>
 
                         <Link
-                            href={session?.user ? "https://buy.stripe.com/test_eVqeVf994aZDgck7uQdUY02" : "/signup"}
+                            href={
+                                session?.user
+                                    ? process.env.STRIPE_SHOP_PRO_LINK || ""
+                                    : "/signup?callbackUrl=" + process.env.STRIPE_SHOP_PRO_LINK
+                            }
                             className="inline-block px-6 py-3 bg-primary text-white font-semibold rounded-xl hover:brightness-110 transition"
                         >
                             Get Pro

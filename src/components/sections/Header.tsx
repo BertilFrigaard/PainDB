@@ -1,15 +1,10 @@
-import { auth, signIn } from "@/auth";
+import { auth } from "@/auth";
 import Link from "next/link";
 import DropDownPlain from "../buttons/drop-downs/styles/DropDownPlain";
 import DropDownProfile from "../buttons/drop-downs/styles/DropDownProfile";
 
 export default async function Header() {
     const session = await auth();
-
-    const signInClicked = async () => {
-        "use server";
-        await signIn();
-    };
 
     return (
         <nav className="flex justify-between items-center px-10 py-5 bg-background">
@@ -67,18 +62,18 @@ export default async function Header() {
                     <DropDownProfile name={session.user.name ? session.user.name : "You"} />
                 ) : (
                     <>
-                        <button
+                        <Link
                             className="px-7 py-3 border border-gray-500 rounded-2xl animating-button hover:bg-gray-200"
-                            onClick={signInClicked}
+                            href={"/signup"}
                         >
                             Login
-                        </button>
-                        <button
+                        </Link>
+                        <Link
                             className="px-7 py-3 rounded-2xl bg-primary text-white animating-button hover:bg-primary/90"
-                            onClick={signInClicked}
+                            href={"/signup"}
                         >
                             Sign Up
-                        </button>
+                        </Link>
                     </>
                 )}
             </div>

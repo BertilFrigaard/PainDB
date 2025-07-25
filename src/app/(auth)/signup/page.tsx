@@ -1,16 +1,20 @@
 "use client";
 import GithubContinueButton from "@/components/buttons/GithubContinueButton";
 import { signIn } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { FormEvent, useState } from "react";
 
 export default function SignUp() {
+    const searchParams = useSearchParams();
     const [email, setEmail] = useState("");
+
+    console.log(searchParams.get("callbackUrl"));
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         signIn("nodemailer", {
             email,
-            callbackUrl: "/home",
+            redirectTo: searchParams.get("callbackUrl") || "/home",
         });
     };
 
@@ -24,6 +28,7 @@ export default function SignUp() {
                 <p className="text-center text-secondary">
                     Access the Pain Point Database and start exploring — just enter your email below.
                 </p>
+                <ErrorMessage message={searchParams.get("error")} />
                 <form className="space-y-4" onSubmit={handleSubmit}>
                     <div>
                         <label htmlFor="email" className="px-3 block text-sm font-medium text-gray-700">
@@ -53,11 +58,27 @@ export default function SignUp() {
                     <span className="mx-4 text-sm text-gray-400">or</span>
                     <div className="flex-grow h-px bg-gray-200"></div>
                 </div>
-                <GithubContinueButton />
+                <GithubContinueButton redirectTo={searchParams.get("callbackUrl") || "/home"} />
                 <p className="text-center text-sm text-secondary">
                     By continuing, you agree to our Terms of Service and Privacy Policy.
                 </p>
             </div>
         </div>
     );
+}
+
+function ErrorMessage({ message }: { message: string | null }) {
+    const getMessage = () => {
+        switch (message) {
+            case "OAuthAccountNotLinked":
+                return "Your account is not set up with Google. Please log in with email instead.";
+            default:
+                return "Something went wrong. If the issue persists, please contact support.";
+        }
+    };
+    if (!message) {
+        return null;
+    } else {
+        return <p className="text-center text-error font-semibold">{getMessage()}</p>;
+    }
 }
