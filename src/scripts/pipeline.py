@@ -105,3 +105,5 @@ try:
 except Exception as e:
     error_msg = "".join(traceback.format_exception(type(e), e, e.__traceback__))
     log(pipeline_run_id, error_msg, "error")
+    log(pipeline_run_id, "Shutting Down", "warn")
+    set_pipeline_run_status(pipeline_run_id, "failed")

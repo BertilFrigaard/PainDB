@@ -239,6 +239,8 @@ export default function PipelineAdminInterface() {
                                             return "bg-yellow-400";
                                         case "scraping":
                                             return "bg-yellow-200";
+                                        case "failed":
+                                            return "bg-error";
                                         default:
                                             return "bg-gray-200";
                                     }
