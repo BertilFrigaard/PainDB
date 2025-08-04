@@ -1,10 +1,10 @@
+import { ensureEnv } from "@/lib/utils/envEnsurer";
 import { signIn } from "next-auth/react";
 import { FcGoogle } from "react-icons/fc";
 
+ensureEnv(["NEXT_PUBLIC_BACKEND_GOOGLE_URL"]);
+
 export default function GoogleContinueButton({ redirectTo }: { redirectTo: string }) {
-    if (!process.env.NEXT_PUBLIC_BACKEND_GOOGLE_URL) {
-        throw new Error("Missing environment varibles");
-    }
     const signInWithGoogle = () => {
         signIn("google", { redirectTo: redirectTo });
     };

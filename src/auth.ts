@@ -2,18 +2,20 @@ import PostgresAdapter from "@auth/pg-adapter";
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import Nodemailer from "next-auth/providers/nodemailer";
-import { Pool } from "pg";
 import { sendVerificationRequest } from "./lib/email/sendVerificationRequest";
+import { pool } from "./lib/utils/database";
+import { ensureEnv } from "./lib/utils/envEnsurer";
 
-const pool = new Pool({
-    host: process.env.DATABASE_HOST,
-    user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASSWORD,
-    database: process.env.DATABASE_NAME,
-    max: 20,
-    idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 2000,
-});
+ensureEnv([
+    "EMAIL_HOST",
+    "EMAIL_PORT",
+    "EMAIL_USER",
+    "EMAIL_PASSWORD",
+    "EMAIL_FROM",
+    "GOOGLE_CLIENT_ID",
+    "GOOGLE_CLIENT_SECRET",
+    "STRIPE_SHOP_PRO_LINK",
+]);
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
     adapter: PostgresAdapter(pool),

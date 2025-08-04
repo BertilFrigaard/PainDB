@@ -1,5 +1,14 @@
 import { ensureUser } from "@/lib/services/userService";
+import { ensureEnv } from "@/lib/utils/envEnsurer";
 import Stripe from "stripe";
+
+ensureEnv([
+    "STRIPE_SECRET_KEY",
+    "STRIPE_WEBHOOK_SECRET",
+    "STRIPE_STARTER_PAYMENT_LINK",
+    "STRIPE_PRO_PAYMENT_LINK",
+    "STRIPE_UNLIMITED_PAYMENT_LINK",
+]);
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
     apiVersion: "2025-06-30.basil",

@@ -1,14 +1,7 @@
 import { Pool } from "pg";
+import { ensureEnv } from "./envEnsurer";
 
-if (
-    !process.env.PGUSER ||
-    !process.env.PGPASSWORD ||
-    !process.env.PGHOST ||
-    !process.env.PGPORT ||
-    !process.env.PGDATABASE
-) {
-    throw new Error("PostgreSQL enviroment variables not set");
-}
+ensureEnv(["PGUSER", "PGPASSWORD", "PGHOST", "PGPORT", "PGDATABASE"]);
 
 export const pool: Pool = new Pool({
     user: process.env.PGUSER,

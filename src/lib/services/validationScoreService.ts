@@ -1,5 +1,8 @@
 import { pool } from "../utils/database";
 import { FullPainPoint } from "@/types/painpoint/FullPainPoint";
+import { ensureEnv } from "../utils/envEnsurer";
+
+ensureEnv(["DATA_MIN_SIMILARITY"]);
 
 export default async function updateValidationScores() {
     const minSimilarity = Number(process.env.DATA_MIN_SIMILARITY);

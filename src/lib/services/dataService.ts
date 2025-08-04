@@ -2,6 +2,9 @@ import { PainPoint } from "@/types/painpoint/PainPoint";
 import { pool } from "../utils/database";
 import { OrderOptions } from "@/types/OrderOptions";
 import { BigPainPoint } from "@/types/painpoint/BigPainPoint";
+import { ensureEnv } from "../utils/envEnsurer";
+
+ensureEnv(["DATA_MIN_SIMILARITY"]);
 
 export async function getPainPoints({
     pageSize,
