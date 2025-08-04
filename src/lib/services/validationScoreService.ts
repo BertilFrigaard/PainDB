@@ -63,8 +63,19 @@ function calculateValidationScore(painPoint: FullPainPoint): number {
     const comments = painPoint.reddit_comments || 0;
     const ups = painPoint.reddit_ups || 0;
     const similar = painPoint.similar.length;
-    const time_since = Date.now() - new Date(painPoint.created).getTime();
-    const days_since = time_since / (1000 * 60 * 60 * 24);
 
-    return Math.round((comments * 0.8 + ups * 1.1 + similar * 5 - Math.max(5 - days_since, 0)) * 10) / 10;
+    const createdDate = new Date(painPoint.created).getTime();
+    const daysSince = (Date.now() - createdDate) / (1000 * 60 * 60 * 24);
+
+    const timeDecay = 1 / (1 + Math.exp((daysSince - 7) / 3));
+
+    const commentWeight = 1.2;
+    const upvoteWeight = 1.0;
+    const similarWeight = 4.0;
+
+    const rawScore = comments * commentWeight + ups * upvoteWeight + similar * similarWeight;
+
+    const finalScore = rawScore * timeDecay;
+
+    return Math.round(finalScore * 10) / 10;
 }
