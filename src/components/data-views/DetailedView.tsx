@@ -1,15 +1,16 @@
 "use client";
 
-import { PainPoint } from "@/types/PainPoint";
+import { PainPoint } from "@/types/painpoint/PainPoint";
 import { useEffect, useRef, useState } from "react";
 import DataTable from "../tables/DataTable/DataTable";
 import { IoClose } from "react-icons/io5";
 import { UseAlerts } from "@/contexts/AlertContext";
+import { BigPainPoint } from "@/types/painpoint/BigPainPoint";
 
 export default function DetailedView({ exitFunc, dataPointID }: { exitFunc: () => void; dataPointID: string }) {
     const modalRef = useRef<HTMLDivElement>(null);
-    const [painPoint, setPainPoint] = useState<null | PainPoint>(null);
-    const [duplicates, setDuplicates] = useState<Map<string, PainPoint>>(new Map());
+    const [painPoint, setPainPoint] = useState<null | BigPainPoint>(null);
+    const [similar, setSimilar] = useState<Map<string, PainPoint>>(new Map());
     const [loading, setLoading] = useState(true);
 
     const { addAlert } = UseAlerts();
@@ -37,8 +38,8 @@ export default function DetailedView({ exitFunc, dataPointID }: { exitFunc: () =
 
     useEffect(() => {
         if (painPoint) {
-            const updateDuplicates = async () => {
-                painPoint.duplicates.forEach(async (id) => {
+            const updateSimilar = async () => {
+                painPoint.similar.slice(0, 3).forEach(async (id) => {
                     if (id) {
                         const res = await fetch("/api/data/" + id);
                         if (res.status !== 200) {
@@ -49,13 +50,13 @@ export default function DetailedView({ exitFunc, dataPointID }: { exitFunc: () =
                             return;
                         }
                         const json = await res.json();
-                        setDuplicates((prev) => {
+                        setSimilar((prev) => {
                             return new Map(prev).set(id, json);
                         });
                     }
                 });
             };
-            updateDuplicates();
+            updateSimilar();
         }
     }, [painPoint]);
 
@@ -123,12 +124,14 @@ export default function DetailedView({ exitFunc, dataPointID }: { exitFunc: () =
                             </div>
                             <div>
                                 <DataTable
-                                    data={Array.from(duplicates.values()).map((painPoint) => {
-                                        return {
-                                            "Similar Problems": painPoint.problem,
-                                            Validation: painPoint.validation,
-                                        };
-                                    })}
+                                    data={Array.from(similar.values())
+                                        .slice(0, 3)
+                                        .map((painPoint) => {
+                                            return {
+                                                "Similar Problems": painPoint.problem,
+                                                Validation: painPoint.validation,
+                                            };
+                                        })}
                                 />
                                 {/* <PainPointTable painPoints={painPoint ? [painPoint] : []} setFavorite={(row) => {}} /> */}
                             </div>

@@ -4,6 +4,5 @@ export type PainPoint = {
     description: string;
     created: Date;
     validation: number | null;
-    duplicates: string[];
     favorite: boolean;
 };

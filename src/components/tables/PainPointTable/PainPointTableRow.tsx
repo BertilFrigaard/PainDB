@@ -1,4 +1,4 @@
-import { PainPoint } from "@/types/PainPoint";
+import { PainPoint } from "@/types/painpoint/PainPoint";
 import { FaRegStar, FaStar } from "react-icons/fa6";
 
 export default function PainPointTableRow({

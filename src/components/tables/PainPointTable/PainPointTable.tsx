@@ -1,4 +1,4 @@
-import { PainPoint } from "@/types/PainPoint";
+import { PainPoint } from "@/types/painpoint/PainPoint";
 import PainPointTableRow from "./PainPointTableRow";
 import { useState } from "react";
 import DetailedView from "@/components/data-views/DetailedView";

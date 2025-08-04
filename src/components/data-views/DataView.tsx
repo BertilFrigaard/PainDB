@@ -1,5 +1,5 @@
 "use client";
-import { PainPoint } from "@/types/PainPoint";
+import { PainPoint } from "@/types/painpoint/PainPoint";
 import { useEffect, useState } from "react";
 import PainPointTable from "../tables/PainPointTable/PainPointTable";
 import FileSaver from "file-saver";

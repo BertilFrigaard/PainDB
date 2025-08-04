@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { getPainPointById } from "@/lib/services/dataService";
 import { apiMinRole } from "@/lib/utils/roleRestrictions";
-import { PainPoint } from "@/types/PainPoint";
+import { PainPoint } from "@/types/painpoint/PainPoint";
 import { NextRequest } from "next/server";
 
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {

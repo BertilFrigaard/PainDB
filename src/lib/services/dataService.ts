@@ -1,6 +1,7 @@
-import { PainPoint } from "@/types/PainPoint";
+import { PainPoint } from "@/types/painpoint/PainPoint";
 import { pool } from "../utils/database";
 import { OrderOptions } from "@/types/OrderOptions";
+import { BigPainPoint } from "@/types/painpoint/BigPainPoint";
 
 export async function getPainPoints({
     pageSize,
@@ -38,13 +39,9 @@ export async function getPainPoints({
             dp.description,
             dp.created,
             m.validation,
-            COALESCE(array_agg(DISTINCT d2.data_point_id)
-                FILTER (WHERE d2.data_point_id IS DISTINCT FROM dp.id), '{}') AS duplicates,
             (f.user_id IS NOT NULL) AS favorite
         FROM data_points dp
         LEFT JOIN metadata m ON dp.id = m.data_point_id
-        LEFT JOIN duplicates d1 ON dp.id = d1.data_point_id
-        LEFT JOIN duplicates d2 ON d1.group_id = d2.group_id
         ${filterFavorites ? "INNER" : "LEFT"} JOIN favorites f ON f.data_point_id = dp.id AND f.user_id = $1
         ${whereClause}
         GROUP BY dp.id, m.validation, f.user_id
@@ -58,27 +55,35 @@ export async function getPainPoints({
 }
 
 export async function getPainPointById(id: string, userID: number) {
-    const res = await pool.query<PainPoint>(
+    const minSimilarity = Number(process.env.DATA_MIN_SIMILARITY);
+    if (isNaN(minSimilarity)) {
+        return null;
+    }
+    const res = await pool.query<BigPainPoint>(
         `SELECT 
-      dp.id,
-      dp.problem,
-      dp.description,
-      dp.created,
-      COALESCE(m.validation) AS validation,
-      COALESCE(array_agg(DISTINCT d2.data_point_id) 
-               FILTER (WHERE d2.data_point_id IS DISTINCT FROM dp.id), '{}') AS duplicates,
-        (f.user_id IS NOT NULL) AS favorite
-    FROM data_points dp
-    LEFT JOIN metadata m ON dp.id = m.data_point_id
-    LEFT JOIN duplicates d1 ON dp.id = d1.data_point_id
-    LEFT JOIN duplicates d2 ON d1.group_id = d2.group_id
-        LEFT JOIN favorites f ON f.data_point_id = dp.id AND f.user_id = $1
-    WHERE dp.id = $2
-    GROUP BY dp.id, dp.problem, dp.description, dp.created, m.validation, f.user_id
-    LIMIT 1
-    `,
-        [userID, id]
+    dp.id,
+    dp.problem,
+    dp.description,
+    dp.created,
+    COALESCE(m.validation) AS validation,
+    COALESCE(ARRAY_AGG(nn.data_point_id), '{}') AS similar,
+    (f.user_id IS NOT NULL) AS favorite
+  FROM data_points dp
+  LEFT JOIN metadata m ON dp.id = m.data_point_id
+  LEFT JOIN LATERAL (
+    SELECT m2.data_point_id
+    FROM metadata m2
+    WHERE m2.data_point_id != dp.id
+      AND 1 - (m.problem_embedding <=> m2.problem_embedding) >= $3
+    ORDER BY m.problem_embedding <=> m2.problem_embedding
+  ) AS nn ON true
+  LEFT JOIN favorites f ON f.data_point_id = dp.id AND f.user_id = $1
+  WHERE dp.id = $2
+  GROUP BY dp.id, dp.problem, dp.description, dp.created, m.validation, f.user_id
+  LIMIT 1`,
+        [userID, id, minSimilarity]
     );
+
     if (res.rows.length === 1) {
         return res.rows[0];
     } else {
