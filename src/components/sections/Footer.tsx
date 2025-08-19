@@ -56,21 +56,16 @@ export default async function Footer() {
                         </ul>
                     </div>
                     <div>
-                        <h4 className="font-semibold text-secondary mb-3">Learn</h4>
+                        <h4 className="font-semibold text-secondary mb-3">Legal</h4>
                         <ul className="space-y-2 text-gray-600 text-sm">
                             <li>
-                                <a href="#" className="hover:text-primary transition">
-                                    Blog
+                                <a href="/terms-of-service" className="hover:text-primary transition">
+                                    Terms of Service
                                 </a>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-primary transition">
-                                    Guides
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" className="hover:text-primary transition">
-                                    Templates
+                                <a href="/privacy-policy" className="hover:text-primary transition">
+                                    Privacy Policy
                                 </a>
                             </li>
                         </ul>

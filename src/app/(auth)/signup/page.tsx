@@ -19,7 +19,7 @@ export default function SignUp() {
     };
 
     return (
-        <div className="flex my-25 items-center justify-center bg-background px-4">
+        <main className="flex my-25 items-center justify-center bg-background px-4">
             <div className="w-full max-w-md space-y-6 bg-white p-8 rounded-2xl shadow-md">
                 <h1 className="text-4xl font-bold text-center">
                     Welcome to <br />
@@ -60,10 +60,18 @@ export default function SignUp() {
                 </div>
                 <GithubContinueButton redirectTo={searchParams.get("callbackUrl") || "/home"} />
                 <p className="text-center text-sm text-secondary">
-                    By continuing, you agree to our Terms of Service and Privacy Policy.
+                    By continuing, you agree to our{" "}
+                    <a href="/terms-of-service" className="underline">
+                        Terms of Service
+                    </a>{" "}
+                    and{" "}
+                    <a href="/privacy-policy" className="underline">
+                        Privacy Policy
+                    </a>{" "}
+                    .
                 </p>
             </div>
-        </div>
+        </main>
     );
 }
 

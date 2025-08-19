@@ -1,8 +1,9 @@
-import { ensureEnv } from "@/lib/utils/envEnsurer";
 import { signIn } from "next-auth/react";
 import { FcGoogle } from "react-icons/fc";
 
-ensureEnv(["NEXT_PUBLIC_BACKEND_GOOGLE_URL"]);
+if (process.env.NEXT_PUBLIC_BACKEND_GOOGLE_URL === undefined) {
+    throw new Error("Environment variable 'NEXT_PUBLIC_BACKEND_GOOGLE_URL' not set!");
+}
 
 export default function GoogleContinueButton({ redirectTo }: { redirectTo: string }) {
     const signInWithGoogle = () => {
