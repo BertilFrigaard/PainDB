@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import ProfileSection from "@/components/sections/ProfileSection";
+import FeedbackSection from "@/components/sections/FeedbackSection";
 import { pageMinRole } from "@/lib/utils/roleRestrictions";
 
 export default async function Profile() {
@@ -7,7 +7,7 @@ export default async function Profile() {
     await pageMinRole({ role: "none", session: session });
     return (
         <main className="max-w-2xl mx-auto px-6 py-16">
-            <ProfileSection session={session!} />
+            <FeedbackSection />
         </main>
     );
 }

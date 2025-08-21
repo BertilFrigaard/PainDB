@@ -31,6 +31,7 @@ export default function ProfileSection({ session }: { session: Session }) {
     return (
         <>
             <div className="bg-white rounded-2xl shadow-md p-8 space-y-6 border border-gray-200">
+                <h1 className="text-3xl font-bold text-secondary mb-8">Your Profile</h1>
                 {/* User Info */}
                 <div>
                     <form onSubmit={changeName}>
@@ -50,7 +51,7 @@ export default function ProfileSection({ session }: { session: Session }) {
                             <input
                                 value={"Change name"}
                                 type="submit"
-                                className="bg-primary rounded-xl text-white px-5 py-1 animating-button hover:bg-primary/90 flex items-center gap-1 mt-5"
+                                className="bg-primary rounded-xl text-white px-5 py-2 animating-button hover:bg-primary/90 flex items-center gap-1 mt-5"
                             />
                         )}
                     </form>

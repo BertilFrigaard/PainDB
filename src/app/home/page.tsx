@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import DataViewer from "@/components/data-views/DataView";
 import { pageMinRole } from "@/lib/utils/roleRestrictions";
+import Link from "next/link";
 
 export default async function Home() {
     await pageMinRole({ role: "starter" });
@@ -13,15 +14,24 @@ export default async function Home() {
             <section className="mx-auto bg-white rounded-xl shadow-md py-8 px-13 my-10">
                 <h2 className="text-2xl font-semibold text-secondary mb-4">Quick Access</h2>
                 <div className="flex gap-5">
-                    <button className="px-7 py-3 rounded-2xl bg-primary text-white animating-button hover:bg-primary/90">
+                    <Link
+                        href={"/db-viewer"}
+                        className="px-7 py-3 rounded-2xl bg-primary text-white animating-button hover:bg-primary/90"
+                    >
                         Search Data
-                    </button>
-                    <button className="px-7 py-3 rounded-2xl bg-primary text-white animating-button hover:bg-primary/90">
-                        Create Pipeline
-                    </button>
-                    <button className="px-7 py-3 rounded-2xl bg-primary text-white animating-button hover:bg-primary/90">
+                    </Link>
+                    <Link
+                        href={"/feedback"}
+                        className="px-7 py-3 rounded-2xl bg-primary text-white animating-button hover:bg-primary/90"
+                    >
                         Provide Feedback
-                    </button>
+                    </Link>
+                    <Link
+                        href={"/help"}
+                        className="px-7 py-3 rounded-2xl bg-primary text-white animating-button hover:bg-primary/90"
+                    >
+                        Get Help
+                    </Link>
                 </div>
             </section>
             <DataViewer
