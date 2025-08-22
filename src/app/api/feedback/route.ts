@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { apiMinRole } from "@/lib/utils/roleRestrictions";
 import { auth } from "@/auth";
-import { addFeedback } from "@/lib/services/feedbackService";
+import { addFeedback, getFeedback } from "@/lib/services/feedbackService";
 
 export async function POST(req: NextRequest) {
     const session = await auth();
@@ -25,5 +25,31 @@ export async function POST(req: NextRequest) {
         return new Response(null, { status: 204 });
     } catch {
         return new Response(null, { status: 400 });
+    }
+}
+
+export async function GET(req: NextRequest) {
+    const session = await auth();
+    const rr = await apiMinRole({ role: "admin", session: session });
+    if (rr) {
+        return rr;
+    }
+
+    const searchParams = req.nextUrl.searchParams;
+
+    const pageSizeParam = searchParams.get("page-size");
+    const pageIndexParam = searchParams.get("page-index");
+
+    const pageSize = Number(pageSizeParam);
+    const pageIndex = Number(pageIndexParam);
+
+    if (isNaN(pageSize) || isNaN(pageIndex)) {
+        return new Response(null, { status: 400 });
+    }
+
+    try {
+        return Response.json(await getFeedback(10, 0));
+    } catch {
+        return new Response(null, { status: 500 });
     }
 }

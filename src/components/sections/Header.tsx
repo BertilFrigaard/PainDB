@@ -26,6 +26,7 @@ export default async function Header() {
                                     text="Admin"
                                     items={[
                                         { text: "Manage Pipelines", link: "/admin/manage-pipelines" },
+                                        { text: "View Feedback", link: "/admin/view-feedback" },
                                         { text: "Manage Validation Scores", link: "/admin/validation-score" },
                                     ]}
                                 />
