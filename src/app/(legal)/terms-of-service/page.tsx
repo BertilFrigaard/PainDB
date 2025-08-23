@@ -3,46 +3,36 @@ export default function TOS() {
         <main className="mx-auto py-10 space-y-10 max-w-7xl mb-20">
             <div>
                 <h1 className="font-bold text-4xl mb-2">Terms Of Service</h1>
-                <p className="font-light text-xl text-secondary">Last update [8/18 2025]</p>
+                <p className="font-light text-xl text-secondary">Last update [8/23 2025]</p>
             </div>
 
             <div>
                 <h2 className="font-bold text-2xl">Overview</h2>
-                <p>
-                    This website (“Service”) allows registered users to search through and download data from a curated
-                    database derived from Reddit scraping and AI processing. The Service is operated in Denmark
-                    (Sjælland). By registering or using the Service, you agree to these Terms of Service.
+                <p className="py-2">
+                    These Terms of Service (Terms) govern your access to and use of (the website paindb.com). By
+                    creating an account or using the Service, you agree to be bound by these Terms.
                 </p>
             </div>
 
             <div>
-                <h2 className="font-bold text-2xl">Accounts and Access</h2>
-                <ul className="list-disc pl-5 mt-2 text-base space-y-3">
-                    <li>
-                        You must register an account (email and name required) to access or download database contents.
-                    </li>
-                    <li>
-                        Free accounts exist but offer no features; full access requires a one-time payment processed via
-                        Stripe.
-                    </li>
-                    <li>
-                        You are responsible for all activities under your account and must keep your login credentials
-                        secure.
-                    </li>
-                </ul>
+                <h2 className="font-bold text-2xl">Acceptance of Terms</h2>
+                <p className="py-2">
+                    By accessing or using the Service, you agree to these Terms. If you do not agree, you must not use
+                    the Service.
+                </p>
             </div>
 
             <div>
-                <h2 className="font-bold text-2xl">Use of the Service</h2>
+                <h2 className="font-bold text-2xl">Accounts</h2>
                 <ul className="list-disc pl-5 mt-2 text-base space-y-3">
+                    <li>To use certain features, you must create an account.</li>
                     <li>
-                        Do not misuse the Service (e.g., no scraping, reverse engineering, or violating applicable
-                        laws).
+                        You are responsible for keeping your login credentials secure and for all activity under your
+                        account.
                     </li>
-                    <li>You may not redistribute or resell the database content unless explicitly permitted.</li>
                     <li>
-                        The Service is provided “as is.” Content may contain inaccuracies, and the operator makes no
-                        warranties regarding completeness or reliability.
+                        You must be at least 13 years old (or the minimum age required by law in your country) to create
+                        an account.
                     </li>
                 </ul>
             </div>
@@ -50,44 +40,75 @@ export default function TOS() {
             <div>
                 <h2 className="font-bold text-2xl">Payment and Refunds</h2>
                 <ul className="list-disc pl-5 mt-2 text-base space-y-3">
-                    <li>Payments are one-time charges processed by Stripe.</li>
-                    <li>Except where mandated by law, payments are non-refundable.</li>
-                    <li>Stripe’s terms and privacy policy govern payment processing.</li>
+                    <li>
+                        Some parts of the Service may require payment (e.g., subscriptions, one-time purchases).
+                        Payments are processed securely by Stripe.
+                    </li>
+                    <li>All fees are displayed before purchase.</li>
+                    <li>Unless otherwise stated, payments are non-refundable, except as required by applicable law.</li>
                 </ul>
             </div>
 
             <div>
-                <h2 className="font-bold text-2xl">Termination</h2>
+                <h2 className="font-bold text-2xl">Acceptable Use</h2>
+                <p className="py-2">You agree not to:</p>
+                <ul className="list-disc pl-5 mt-2 text-base space-y-3">
+                    <li>Use the Service for unlawful purposes.</li>
+                    <li>Attempt to gain unauthorized access, interfere with, or disrupt the Service.</li>
+                    <li>Reverse-engineer, copy, or resell the Service without permission.</li>
+                </ul>
+            </div>
+
+            <div>
+                <h2 className="font-bold text-2xl">Service Availability</h2>
+                <p className="py-2">
+                    The Service is provided on an &quot;as is&quot; and &quot;as available&quot; basis.
+                </p>
                 <ul className="list-disc pl-5 mt-2 text-base space-y-3">
                     <li>
-                        The operator may suspend or terminate your account for any reason, including breach of these
-                        Terms.
+                        We make reasonable efforts to keep the Service running but do not guarantee uninterrupted
+                        availability.
                     </li>
-                    <li>You may delete your account at any time by contacting bertilfrigaard@gmail.com.</li>
+                    <li>We may modify, suspend, or discontinue parts of the Service at any time without liability.</li>
                 </ul>
             </div>
 
             <div>
                 <h2 className="font-bold text-2xl">Limitation of Liability</h2>
+                <p className="py-2">To the maximum extent permitted by law:</p>
                 <ul className="list-disc pl-5 mt-2 text-base space-y-3">
-                    <li>To the extent permitted by Danish law, the Service is provided without warranties.</li>
+                    <li>The Service is provided without warranties.</li>
                     <li>
-                        The operator is not liable for indirect or consequential damages, data loss, or loss of profits
-                        arising from use of the Service.
+                        We shall not be liable for any indirect, incidental, or consequential damages resulting from
+                        your use of the Service.
+                    </li>
+                    <li>
+                        Our total liability for any claim shall not exceed the amount you paid for the Service in the
+                        last 12 months.
                     </li>
                 </ul>
             </div>
 
             <div>
                 <h2 className="font-bold text-2xl">Changes</h2>
-                <ul className="list-disc pl-5 mt-2 text-base space-y-3">
-                    <li>Terms may be updated from time to time; continued use after updates constitutes acceptance.</li>
-                    <li>Significant changes will be notified via email or through the Service.</li>
-                </ul>
+                <p className="py-2">
+                    We may update these Terms from time to time. If changes are significant, we will provide notice
+                    (e.g., by email or within the Service). Continued use of the Service after changes means you accept
+                    the updated Terms.
+                </p>
+            </div>
+
+            <div>
+                <h2 className="font-bold text-2xl">Governing Law</h2>
+                <p className="py-2">
+                    These Terms are governed by the laws of Denmark. Any disputes shall be handled by the competent
+                    courts in Denmark, unless mandatory law provides otherwise.
+                </p>
             </div>
 
             <div>
                 <h2 className="font-bold text-2xl">Contact</h2>
+
                 <ul className="list-disc pl-5 mt-2 text-base space-y-3">
                     <li>For questions regarding these Terms, contact: bertilfrigaard@gmail.com</li>
                 </ul>
