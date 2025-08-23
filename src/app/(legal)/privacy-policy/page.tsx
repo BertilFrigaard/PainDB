@@ -64,13 +64,18 @@ export default function PRIVACY() {
                         Hosting: The app runs on servers provided by Hetzner Online GmbH. Hetzner automatically collects
                         server logs (including IP addresses, request details, and browser information) for security,
                         stability, and abuse prevention. See Hetzner’s{" "}
-                        <a href="https://www.hetzner.com/legal/privacy-policy">Privacy Policy</a>.
+                        <a className="underline" href="https://www.hetzner.com/legal/privacy-policy">
+                            Privacy Policy
+                        </a>
+                        .
                     </li>
                     <li>
                         Payments: Payments are processed securely by Stripe. Stripe may collect payment and billing
                         details directly from you in accordance with their{" "}
-                        <a href="https://stripe.com/en-dk/privacy">Privacy Policy</a>. We do not store card details on
-                        our servers.
+                        <a className="underline" href="https://stripe.com/en-dk/privacy">
+                            Privacy Policy
+                        </a>
+                        . We do not store card details on our servers.
                     </li>
                 </ul>
             </div>
@@ -120,7 +125,10 @@ export default function PRIVACY() {
                 <p className="py-2">To exercise these rights, contact us at bertilfrigaard@gmail.com</p>
                 <p className="py-2">
                     You also have the right to complain to the{" "}
-                    <a href="www.datatilsynet.dk">Danish Data Protection Authority</a>.
+                    <a className="underline" href="https://www.datatilsynet.dk">
+                        Danish Data Protection Authority
+                    </a>
+                    .
                 </p>
             </div>
 

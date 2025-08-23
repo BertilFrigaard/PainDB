@@ -226,7 +226,7 @@ export default function Test() {
                             Get Pro
                         </Link>
 
-                        <p className="mt-4 text-xs text-secondary/60">Secure checkout • 14-day money-back guarantee</p>
+                        <p className="mt-4 text-xs text-secondary/60">Secure checkout through Stripe</p>
                     </div>
                 </div>
             </section>
