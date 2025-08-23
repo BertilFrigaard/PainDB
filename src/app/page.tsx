@@ -49,14 +49,60 @@ export default async function Landing() {
                 </div>
             </section>
             <section>
-                <div className="bg-[#023347] px-36 py-20">
-                    <h2 className="text-2xl font-bold text-primary">Pricing</h2>
-                    <h3 className="text-4xl font-semibold text-white max-w-[60%]">
+                <div className="bg-secondary px-36 py-20">
+                    <h2 className="text-2xl font-bold text-primary">Our Message</h2>
+                    <p className="text-4xl font-semibold text-white max-w-[60%]">
                         Start building apps that users actually need, with instant access to market insights. Start
                         finding your next big idea today.
-                    </h3>
+                    </p>
                 </div>
             </section>
+
+            <section>
+                <div className="bg-white px-36 py-20">
+                    <h2 className="text-2xl font-bold text-primary">We Help</h2>
+                    <p className="text-4xl font-semibold text-secondary max-w-[60%]">PainDB can help you</p>
+                    <ul>
+                        <li>Save time</li>
+                        <li>Save money</li>
+                        <li>Iterate faster</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <div className="bg-secondary px-36 py-20">
+                    <h2 className="text-2xl font-bold text-primary">The Problem</h2>
+                    <p className="text-4xl font-semibold text-white max-w-[60%]">
+                        Too many developers build without validating their ideas first. This leads to over{" "}
+                        <span className="text-error">99%</span> of apps failing.
+                    </p>
+                </div>
+            </section>
+
+            <section>
+                <div className="bg-white px-36 py-20">
+                    <h2 className="text-2xl font-bold text-primary">What we do</h2>
+                    <p className="text-4xl font-semibold text-secondary max-w-[60%]">
+                        We provide you with uniqe market data with the purpose of helping you find real problems.
+                    </p>
+                    <p className="text-4xl font-semibold text-secondary max-w-[60%]">
+                        This way you can focus your energy on developing, and skip the initial market research - which
+                        can often take days.
+                    </p>
+                </div>
+            </section>
+
+            <section>
+                <div className="bg-white px-36 py-20">
+                    <h2 className="text-2xl font-bold text-primary">Our process</h2>
+                    <p className="text-4xl font-semibold text-secondary max-w-[60%]">
+                        By analyzing large amounts of data our algorithms can show you which common problems have the
+                        most traction. This data is available for filtering, searching and even downloading.
+                    </p>
+                </div>
+            </section>
+
             <section className="px-6 md:px-20 lg:px-36 py-20 bg-white text-center">
                 <div>
                     <h2 className="text-3xl font-bold text-primary mb-4">Pricing</h2>
