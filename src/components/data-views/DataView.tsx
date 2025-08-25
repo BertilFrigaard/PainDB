@@ -28,6 +28,7 @@ export default function DataViewer({
     order_dropdown = true,
     filter_dropdown = true,
     search_field = false,
+    endpoint = "/api/data",
 }: {
     title: string;
     default_order?: keyof typeof orderItemNames;
@@ -35,6 +36,7 @@ export default function DataViewer({
     order_dropdown?: boolean;
     filter_dropdown?: boolean;
     search_field?: boolean;
+    endpoint?: string;
 }) {
     const [painPoints, setPainPoints] = useState<PainPoint[]>([]);
     const [order, setOrder] = useState(default_order);
@@ -49,7 +51,8 @@ export default function DataViewer({
     useEffect(() => {
         const updateData = async () => {
             const res = await fetch(
-                "/api/data?page-size=" +
+                endpoint +
+                    "?page-size=" +
                     pageSize +
                     "&page-index=" +
                     page +

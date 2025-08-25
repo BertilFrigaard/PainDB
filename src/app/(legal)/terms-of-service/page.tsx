@@ -110,7 +110,7 @@ export default function TOS() {
                 <h2 className="font-bold text-2xl">Contact</h2>
 
                 <ul className="list-disc pl-5 mt-2 text-base space-y-3">
-                    <li>For questions regarding these Terms, contact: bertilfrigaard@gmail.com</li>
+                    <li>For questions regarding these Terms, contact: legal@paindb.com</li>
                 </ul>
             </div>
         </main>
