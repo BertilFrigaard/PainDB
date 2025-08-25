@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { FaLinkedin, FaTwitter, FaFacebook } from "react-icons/fa";
 
 export default async function Footer() {
@@ -14,24 +15,24 @@ export default async function Footer() {
                         <h4 className="font-semibold text-secondary mb-3">Solutions</h4>
                         <ul className="space-y-2 text-gray-600 text-sm">
                             <li>
-                                <a href="#" className="hover:text-primary transition">
+                                <Link href="#" className="hover:text-primary transition">
                                     Startups
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-primary transition">
+                                <Link href="#" className="hover:text-primary transition">
                                     Freelancers
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-primary transition">
+                                <Link href="#" className="hover:text-primary transition">
                                     Teams
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-primary transition">
+                                <Link href="#" className="hover:text-primary transition">
                                     Market Research
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     </div>
@@ -39,19 +40,14 @@ export default async function Footer() {
                         <h4 className="font-semibold text-secondary mb-3">Company</h4>
                         <ul className="space-y-2 text-gray-600 text-sm">
                             <li>
-                                <a href="#" className="hover:text-primary transition">
+                                <Link href="/about" className="hover:text-primary transition">
                                     About Us
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-primary transition">
-                                    Careers
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" className="hover:text-primary transition">
+                                <Link href="/contact" className="hover:text-primary transition">
                                     Contact
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     </div>
@@ -59,14 +55,14 @@ export default async function Footer() {
                         <h4 className="font-semibold text-secondary mb-3">Legal</h4>
                         <ul className="space-y-2 text-gray-600 text-sm">
                             <li>
-                                <a href="/terms-of-service" className="hover:text-primary transition">
+                                <Link href="/terms-of-service" className="hover:text-primary transition">
                                     Terms of Service
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="/privacy-policy" className="hover:text-primary transition">
+                                <Link href="/privacy-policy" className="hover:text-primary transition">
                                     Privacy Policy
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     </div>
@@ -75,15 +71,15 @@ export default async function Footer() {
                 <div className="flex flex-col items-start gap-4">
                     <span className="text-secondary font-semibold">Follow us on</span>
                     <div className="flex gap-4 text-xl text-gray-600">
-                        <a href="#" aria-label="Twitter" className="hover:text-primary">
+                        <Link href="#" aria-label="Twitter" className="hover:text-primary">
                             <FaTwitter />
-                        </a>
-                        <a href="#" aria-label="LinkedIn" className="hover:text-primary">
+                        </Link>
+                        <Link href="#" aria-label="LinkedIn" className="hover:text-primary">
                             <FaLinkedin />
-                        </a>
-                        <a href="#" aria-label="Facebook" className="hover:text-primary">
+                        </Link>
+                        <Link href="#" aria-label="Facebook" className="hover:text-primary">
                             <FaFacebook />
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>
