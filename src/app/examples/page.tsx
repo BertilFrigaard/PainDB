@@ -40,7 +40,7 @@ export default function Examples() {
                     <div className="relative">
                         {/* Put your provided image in /public/images/examples/painpoints.png */}
                         <Image
-                            src="/images/teaser3.png"
+                            src="/images/teasers/data-view.png"
                             alt="PainDB sample of high-signal pain points with validation scores"
                             width={1920}
                             height={1080}
@@ -54,34 +54,33 @@ export default function Examples() {
                 </p>
             </section>
 
-            {/* What you can do */}
             <section className="max-w-6xl mx-auto">
-                <h2 className="text-2xl font-bold text-primary text-center">What you can do with PainDB</h2>
+                <h2 className="text-2xl font-bold text-primary text-center">Example Pain-Points</h2>
                 <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {[
                         {
-                            title: "Find validated problems fast",
-                            desc: "Search across thousands of high-signal pain points and sort by traction to avoid dead ends.",
+                            title: "Difficulty finding quality YouTube videos on making money.",
+                            desc: "The author feels frustrated by the abundance of low-effort suggestions and sales pitches in money-making content, and is specifically seeking genuine recommendations for valuable YouTube channels or videos.",
                         },
                         {
-                            title: "See evidence at a glance",
-                            desc: "Each pain point is analyzed on popularity and recency so you can measure momentum without manual research.",
+                            title: "Need for high-quality text-to-voice engines for professional use.",
+                            desc: "The author requires recommendations for text-to-voice engines that provide multiple character voices, can generate substantial audio files weekly (around 4000 words), handle voice tonality well, and fit within a cost-effective budget.",
                         },
                         {
-                            title: "Save for later",
-                            desc: "Bookmark your favorite pain points so they’re easy to revisit and won’t get lost in the noise.",
+                            title: "Transitioning to a WFH model may compromise work quality due to a lack of accountability.",
+                            desc: "The author is worried that moving back to a WFH model will lead to the same issues of poor communication and slow work delivery as before, particularly because their team consists largely of freshers who may not take ownership of their tasks. This concern is exacerbated by recent staff layoffs and a downturn in business performance.",
                         },
                         {
-                            title: "Spot patterns",
-                            desc: "Compare related problems and validation scores to pick the most promising opportunity.",
+                            title: "Need for reliable international business data",
+                            desc: "The author is expanding their SaaS business into Europe and Asia but is struggling to find structured and compliant company data to create prospect lists, emphasizing the necessity for verified details rather than generic email lists.",
                         },
                         {
-                            title: "Reduce idea risk",
-                            desc: "Build from verified demand, not gut feelings — shorten the path to profit.",
+                            title: "Desire to avoid excessive social media use",
+                            desc: "The author is frustrated with spending too much time on social media and is seeking alternative websites or resources that can provide value related to business instead.",
                         },
                         {
-                            title: "Export data",
-                            desc: "Save and export data for further analysis or share with your team to plan next steps.",
+                            title: "Need help setting up an LLC to avoid double taxation.",
+                            desc: "The author is seeking an accountant in Canada to assist in forming an LLC in the U.S. alongside their American partner. They want to ensure they do not face double taxation due to their cross-border business situation.",
                         },
                     ].map((c) => (
                         <div
@@ -95,8 +94,35 @@ export default function Examples() {
                 </div>
             </section>
 
-            {/* Sample searches */}
             <section className="max-w-6xl mx-auto">
+                <h2 className="text-2xl font-bold text-primary text-center">Detailed view</h2>
+                <p className="max-w-[70%] m-auto text-center text-lg text-secondary/80">
+                    Explorer every pain point further in our detailed view. Here you can see similar problems and also
+                    get a more detailed explanation of the collected problem.
+                </p>
+                <div className="mt-8 rounded-2xl border border-gray-200 shadow-sm overflow-hidden bg-white">
+                    <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-200 bg-gray-50">
+                        <span className="h-3 w-3 rounded-full bg-red-400" />
+                        <span className="h-3 w-3 rounded-full bg-yellow-400" />
+                        <span className="h-3 w-3 rounded-full bg-green-400" />
+                        <span className="ml-2 text-sm text-secondary/60">Pain Points — sample view</span>
+                    </div>
+                    <div className="relative">
+                        <Image
+                            src="/images/teasers/detailed-view.png"
+                            alt="PainDB sample of high-signal pain points with validation scores"
+                            width={1920}
+                            height={1080}
+                            className="w-full h-auto"
+                            priority
+                        />
+                    </div>
+                </div>
+                <p className="mt-3 text-center text-sm text-secondary/60">Detailed view of real data.</p>
+            </section>
+
+            {/* Sample searches */}
+            {/* <section className="max-w-6xl mx-auto">
                 <h2 className="text-2xl font-bold text-primary text-center">Example searches founders run</h2>
                 <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
                     {[
@@ -119,10 +145,10 @@ export default function Examples() {
                     Each search returns concrete problems with context and a validation score so you can prioritize
                     quickly.
                 </p>
-            </section>
+            </section> */}
 
             {/* Mini case studies */}
-            <section className="max-w-6xl mx-auto">
+            {/* <section className="max-w-6xl mx-auto">
                 <h2 className="text-2xl font-bold text-primary text-center">From signal → idea in days, not months</h2>
                 <div className="mt-8 grid md:grid-cols-3 gap-6">
                     {[
@@ -157,10 +183,10 @@ export default function Examples() {
                         </article>
                     ))}
                 </div>
-            </section>
+            </section> */}
 
             {/* Social proof / quick stats */}
-            <section className="max-w-6xl mx-auto">
+            {/* <section className="max-w-6xl mx-auto">
                 <div className="grid md:grid-cols-3 gap-6">
                     {[
                         { k: "25k+", v: "curated pain points" },
@@ -176,7 +202,7 @@ export default function Examples() {
                         </div>
                     ))}
                 </div>
-            </section>
+            </section> */}
 
             {/* Closing CTA */}
             <section className="text-center max-w-3xl mx-auto">

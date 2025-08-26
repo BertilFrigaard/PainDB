@@ -47,11 +47,11 @@ export default async function Header() {
                             <Link className="text-secondary" href="/examples">
                                 Examples
                             </Link>
+                            <Link className="text-secondary" href="/#pricing">
+                                Pricing
+                            </Link>
                             <Link className="text-secondary" href="/faq">
                                 FAQ
-                            </Link>
-                            <Link className="text-secondary" href="/pricing">
-                                Pricing
                             </Link>
                         </>
                     )}
