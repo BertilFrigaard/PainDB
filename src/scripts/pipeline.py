@@ -3,7 +3,8 @@ import traceback
 from steps.scrape_sub_reddit import scrape
 from steps.openai_extractor import classify
 from steps.openai_embedder import embed
-from util.db_link import set_pipeline_run_status, upload_extracted_row, finish_pipeline, upload_raw_reddit_row, upload_embedding
+from steps.openai_analyzer import analyze
+from util.db_link import set_pipeline_run_status, upload_extracted_row, finish_pipeline, upload_raw_reddit_row, upload_embedding, upload_actionability
 from util import logger
 import io
 import os
@@ -65,7 +66,7 @@ def step_extraction():
         with open(DATA_FOLDER + "/2-" + str(pipeline_run_id) + ".csv", "w", newline="", encoding="utf-8") as csvfile2:
 
             # Write header
-            fieldnames = ["data_point_id", "problem"]
+            fieldnames = ["data_point_id", "problem", "description"]
             writer = csv.DictWriter(csvfile2, fieldnames=fieldnames, quoting=csv.QUOTE_MINIMAL)
             writer.writeheader()
 
@@ -83,10 +84,10 @@ def step_extraction():
                     additions += 1
                     
                     #Write the row
-                    writer.writerow({"data_point_id": id, "problem": classification["problem"]})
+                    writer.writerow({"data_point_id": id, "problem": classification["problem"], "description": classification["description"]})
     
 def step_embed():
-    global scraped
+    global additions
 
     # Ensure file exists
     if not os.path.isfile(DATA_FOLDER + "/2-" + str(pipeline_run_id) + ".csv"):
@@ -101,12 +102,46 @@ def step_embed():
         index = 0
         for row in reader:
             index += 1
-            logger.status(f"Embedding row ({str(index)}/{str(scraped)})")
+            logger.status(f"Embedding row ({str(index)}/{str(additions)})")
             embedding = embed(row["problem"])
             upload_embedding(row["data_point_id"], embedding)
     
+def step_analyze():
+    global scraped
 
+    # Ensure file exists
+    if not os.path.isfile(DATA_FOLDER + "/2-" + str(pipeline_run_id) + ".csv"):
+        raise Exception("Failed to find csv file.")
+    
+    # Update status
+    set_pipeline_run_status(pipeline_run_id, "analyzing")
 
+    # Open file to read from
+    with open(DATA_FOLDER + "/2-" + str(pipeline_run_id) + ".csv", encoding="utf-8") as csvfile:
+        reader = csv.DictReader(csvfile)
+        index = 0
+        for row in reader:
+            index += 1
+            logger.status(f"Analyzing row ({str(index)}/{str(additions)})")
+            value = analyze(row["problem"], row["description"])
+            if value is not None:
+                upload_actionability(row["data_point_id"], value)
+                pass
+
+"""     
+    FOR FUTURE DEBUGGING 
+
+    logger.debug("TESTING")
+    logger.debug("TESTING")
+    logger.debug("TESTING")
+    rows = [["Lack of enthusiasm in college path chosen due to parental pressure.", "The author feels coerced into pursuing software engineering and AI due to their father's expectations, leading to a loss of enthusiasm for their studies. Parental influence on career choices stifles the author's desire to explore game design, causing internal conflict about their future and happiness."], ["Limited budget for app promotion", "The author wants to promote their newly launched health app but has a limited budget, making it difficult to explore traditional advertising methods like paid ads and influencer marketing."], ["Lack of available service technicians for agricultural needs.", "The author struggles to find reliable workers for essential services like tire repair and equipment maintenance due to an overwhelming demand for these jobs, which go unfilled because few are willing to pursue these practical opportunities."], ["Pressure to let stepsister live rent-free in my apartment.", "The author is facing pressure from her stepdad and mom to accommodate her stepsister, who has been entitled and has no regard for personal boundaries. The author is struggling with guilt over asserting her right to privacy and independence."]]
+    for i in rows:
+        value = analyze(i[0], i[1])
+        logger.info("Row (" + i[0] + "; " + i[1] + ") returned " + str(value))
+    logger.debug("TESTING")
+    logger.debug("TESTING")
+    logger.debug("TESTING")
+ """
 
 try:
     logger.info("Starting Scraping")
@@ -115,6 +150,8 @@ try:
     step_extraction()
     logger.info("Starting Embedding")
     step_embed()
+    logger.info("Starting Analyzing")
+    step_analyze()
     logger.info("Finishing")
     finish_pipeline(pipeline_run_id, additions)
     set_pipeline_run_status(pipeline_run_id, "finished")

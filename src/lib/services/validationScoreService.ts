@@ -16,8 +16,13 @@ export default async function updateValidationScores() {
   dp.problem,
   dp.description,
   dp.created,
-  COALESCE(m.validation, 0) AS validation,
-  COALESCE(ARRAY_AGG(DISTINCT nn.data_point_id), '{}') AS similar,
+  COALESCE(m.validation, 0)    AS validation,
+  COALESCE(m.actionability, 0) AS actionability,
+  COALESCE(
+    ARRAY_AGG(DISTINCT nn.data_point_id) 
+      FILTER (WHERE nn.data_point_id IS NOT NULL),
+    '{}'::uuid[]
+  ) AS similar,
   rd.reddit_ups,
   rd.reddit_comments
 FROM data_points dp
@@ -33,15 +38,18 @@ LEFT JOIN (
 LEFT JOIN LATERAL (
   SELECT m2.data_point_id
   FROM metadata m2
-  WHERE m2.data_point_id != dp.id
+  WHERE m2.data_point_id <> dp.id
+    AND m.problem_embedding IS NOT NULL
+    AND m2.problem_embedding IS NOT NULL
+    -- using cosine distance on pgvector: similarity = 1 - distance
     AND 1 - (m.problem_embedding <=> m2.problem_embedding) >= $1
   ORDER BY m.problem_embedding <=> m2.problem_embedding
-) AS nn ON true
+  LIMIT 20
+) AS nn ON TRUE
 GROUP BY
   dp.id, dp.problem, dp.description, dp.created,
-  m.validation,
+  m.validation, m.actionability,
   rd.reddit_ups, rd.reddit_comments;
-
 `,
         [minSimilarity]
     );
@@ -53,7 +61,7 @@ GROUP BY
 
     const output = res.rows.map((row) => ({
         id: row.id,
-        validation: calculateValidationScore(row),
+        validation: calculateValidationScoreV2(row),
     }));
 
     const insertValues = output.map((o, i) => `($${i * 2 + 1}::uuid, $${i * 2 + 2}::double precision)`).join(", ");
@@ -68,7 +76,7 @@ GROUP BY
     await pool.query(insertQuery, insertParams);
 }
 
-function calculateValidationScore(painPoint: FullPainPoint): number {
+/* function calculateValidationScore(painPoint: FullPainPoint): number {
     const comments = painPoint.reddit_comments || 0;
     const ups = painPoint.reddit_ups || 0;
     const similar = painPoint.similar.length;
@@ -88,9 +96,9 @@ function calculateValidationScore(painPoint: FullPainPoint): number {
     const finalScore = rawScore * Math.max(timeDecay, 0.2);
 
     return Math.round(finalScore * 10) / 10;
-}
+} */
 
-/* function calculateValidationScoreV2(painPoint: FullPainPoint): number {
+function calculateValidationScoreV2(painPoint: FullPainPoint): number {
     const comments = painPoint.reddit_comments || 0;
     const ups = painPoint.reddit_ups || 0;
     const similar = painPoint.similar.length;
@@ -98,10 +106,20 @@ function calculateValidationScore(painPoint: FullPainPoint): number {
     const createdDate = new Date(painPoint.created).getTime();
     const daysSince = (Date.now() - createdDate) / (1000 * 60 * 60 * 24);
 
+    // Actionability factor
+    const actionability = painPoint.actionability || 0 / 100;
+
     // Engagement factor
-    const engagement = (ups * 1 + comments * 1) / 2;
+    const engagement = Math.min(ups * 1 + comments * 2, actionability / 2);
 
     // Repitition
-    const repitition = (similar * 1) / 1;
-    return 0;
-} */
+    const repitition = Math.min(similar * 4, actionability * 0.5);
+
+    // Time decay
+    const decay = Math.min(daysSince * 0.1, engagement);
+
+    return Math.round((repitition + engagement - decay + actionability) * 10) / 10;
+
+    /* 	use this:
+	You are an evaluator of problems and pain points. I will give you a problem statement, and your task is to assess how actionable this problem is for building a potential solution. Return one integer between 0 and 100 only. 0 means the problem is not actionable at all (too vague, unrealistic, or unfixable). 100 means the problem is extremely actionable (clear need, solvable with realistic means, and strong potential for a solution). Do not explain or output anything else besides the number. Problem XXX. Details XXX. */
+}

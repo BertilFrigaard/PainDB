@@ -4,6 +4,7 @@ export type FullPainPoint = {
     description: string;
     created: Date;
     validation: number | null;
+    actionability: number | null;
     similar: string[];
     scrape_method: string;
     reddit_name: string | null;

@@ -20,7 +20,7 @@ export default function PRIVACY() {
                 <p className="py-2">Our data controller is:</p>
                 <ul className="list-disc pl-5 mt-2 text-base space-y-3">
                     <li>Bertil Frigaard</li>
-                    <li>Email: legal@paindb.com</li>
+                    <li>Email: app.paindb@gmail.com</li>
                 </ul>
             </div>
 
@@ -122,7 +122,7 @@ export default function PRIVACY() {
                     <li>Restrict or object to processing.</li>
                     <li>Receive your data in a portable format.</li>
                 </ul>
-                <p className="py-2">To exercise these rights, contact us at legal@paindb.com</p>
+                <p className="py-2">To exercise these rights, contact us at app.paindb@gmail.com</p>
                 <p className="py-2">
                     You also have the right to complain to the{" "}
                     <a className="underline" href="https://www.datatilsynet.dk">

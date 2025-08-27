@@ -16,7 +16,7 @@ export default function ContactSection() {
                 <div className="space-y-2">
                     <h2 className="font-bold text-xl text-secondary">Contact Details</h2>
                     <ul>
-                        <li>support@paindb.com</li>
+                        <li>app.paindb@gmail.com</li>
                     </ul>
                 </div>
             </div>

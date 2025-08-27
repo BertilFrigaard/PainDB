@@ -74,7 +74,7 @@ def scrape(sub_reddit, stop_date):
                 running = False
                 break
             else:
-                logger.status("Current date: "+ format_timestamp_to_pretty_local(post["created"]) + " Stop date: " + format_timestamp_to_pretty_local(stop_date))
+                logger.debug("Current date: "+ format_timestamp_to_pretty_local(post["created"]) + " Stop date: " + format_timestamp_to_pretty_local(stop_date))
             posts.append(post)
 
     return posts

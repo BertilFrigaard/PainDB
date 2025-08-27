@@ -28,6 +28,10 @@ def upload_links(links):
         cursor.execute("INSERT INTO data_point_links (data_point_id_1, data_point_id_2, similarity) VALUES (%s, %s, %s)", (link["data_point_id_1"], link["data_point_id_2"], link["similarity"]))
     connection.commit()
 
+def upload_actionability(data_point_id, actionability):
+    cursor.execute("INSERT INTO metadata (data_point_id, actionability) VALUES (%s, %s) ON CONFLICT (data_point_id) DO UPDATE SET actionability = EXCLUDED.actionability", (data_point_id, actionability))
+    connection.commit()    
+
 def set_pipeline_run_status(pipeline_run_id, status):
     cursor.execute("UPDATE pipeline_runs SET status = %s WHERE id = %s", (status, pipeline_run_id))
     connection.commit()
