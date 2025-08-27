@@ -172,6 +172,9 @@ export default function DetailedView({ exitFunc, dataPointID }: { exitFunc: () =
                                                     validation: String(pp.validation),
                                                 }))}
                                         />
+                                        {similar.values.length === 0 && (
+                                            <div className="text-gray-500 font-semibold text-center pt-5">No data</div>
+                                        )}
                                     </div>
                                 </div>
                             </>
