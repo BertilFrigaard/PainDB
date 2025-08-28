@@ -21,7 +21,7 @@ export default function PainPointTable({
                             <th></th>
                             <th className="px-4 py-3 border-b-2 border-gray-300 text-secondary text-base">Problem</th>
                             <th className="px-4 py-3 border-b-2 border-gray-300 text-secondary text-base">Created</th>
-                            <th className="px-4 py-3 border-b-2 border-gray-300 text-secondary text-base">
+                            <th className="px-4 py-3 border-b-2 border-gray-300 text-secondary text-base text-center">
                                 Validation
                             </th>
                         </tr>

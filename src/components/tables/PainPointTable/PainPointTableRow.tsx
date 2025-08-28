@@ -1,3 +1,4 @@
+import { formatDate } from "@/lib/utils/formatter";
 import { PainPoint } from "@/types/painpoint/PainPoint";
 import { FaRegStar, FaStar } from "react-icons/fa6";
 
@@ -34,8 +35,8 @@ export default function PainPointTableRow({
                 </td>
             )}
             <td className="px-4 py-5 border-b-2 border-gray-200">{row.problem}</td>
-            <td className="px-4 py-5 border-b-2 border-gray-200">{new Date(row.created).toLocaleString()}</td>
-            <td className="px-4 py-5 border-b-2 border-gray-200">
+            <td className="px-4 py-5 border-b-2 border-gray-200">{formatDate(row.created)}</td>
+            <td className="px-4 py-5 border-b-2 border-gray-200 text-center">
                 {row.validation ? row.validation : <span className="italic text-gray-500">Waiting</span>}
             </td>
         </tr>

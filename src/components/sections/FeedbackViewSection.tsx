@@ -4,6 +4,7 @@ import { UseAlerts } from "@/contexts/AlertContext";
 import { Feedback } from "@/types/Feedback";
 import { useEffect, useState } from "react";
 import CustomTable from "../tables/CustomTable/CustomTable";
+import { formatDatePrecise } from "@/lib/utils/formatter";
 
 export default function FeedbackViewSection() {
     const [feedback, setFeedback] = useState<Feedback[]>([]);
@@ -39,7 +40,7 @@ export default function FeedbackViewSection() {
                     ]}
                     data={feedback.map((v) => {
                         return {
-                            date: new Date(v.created_at).toLocaleString(),
+                            date: formatDatePrecise(v.created_at),
                             user: v.user_id.toString(),
                             feedback: v.feedback,
                         };

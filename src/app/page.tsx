@@ -147,7 +147,7 @@ export default function Landing() {
                     <div>
                         <h2 className="text-2xl font-bold text-primary">What we do</h2>
                         <h3 className="mt-4 text-3xl md:text-4xl font-semibold text-secondary leading-tight">
-                            Validate ideas with real market signals — before you write a single line of code.
+                            Validate ideas with real market signals — before you write a single line of code
                         </h3>
                         <p className="mt-4 text-secondary/80 text-lg max-w-2xl">
                             PainDB aggregates high-signal user pain points, then enriches them so you can search, filter
@@ -198,7 +198,7 @@ export default function Landing() {
                 <div className="mx-auto max-w-5xl">
                     <h2 className="text-3xl font-bold text-primary mb-4">Pricing</h2>
                     <h3 className="mx-auto text-2xl md:text-4xl font-semibold text-secondary max-w-3xl mb-14">
-                        Start building apps users actually need — with instant access to market insights.
+                        Start building apps users actually need — with instant access to market insights
                     </h3>
 
                     <div className="mx-auto max-w-md bg-white rounded-2xl shadow-2xl p-10 border-2 border-primary will-change-transform hover:scale-[1.02] transition-transform">
@@ -232,7 +232,7 @@ export default function Landing() {
             <section className="relative overflow-hidden bg-secondary">
                 <div className="absolute inset-0 " />
                 <div className="relative mx-auto max-w-7xl px-6 md:px-12 lg:px-16 xl:px-24 py-16 lg:py-20 text-center">
-                    <h2 className="text-3xl md:text-4xl font-extrabold text-white">Stop guessing. Start validating.</h2>
+                    <h2 className="text-3xl md:text-4xl font-extrabold text-white">Stop guessing - Start validating</h2>
                     <p className="mt-4 text-white/80 max-w-2xl mx-auto">
                         Join other developers using PainDB to find problems worth solving — and ship with confidence.
                     </p>

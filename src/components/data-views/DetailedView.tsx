@@ -9,6 +9,7 @@ import { CalendarDays, Gauge } from "lucide-react";
 import { motion } from "framer-motion";
 import { FaRegStar, FaStar } from "react-icons/fa";
 import CustomTable from "../tables/CustomTable/CustomTable";
+import { formatDate } from "@/lib/utils/formatter";
 
 // Lightweight skeletons for loading states (UI-only)
 function Skeleton({ className = "" }: { className?: string }) {
@@ -93,16 +94,6 @@ export default function DetailedView({ exitFunc, dataPointID }: { exitFunc: () =
         }
     };
 
-    const PrettyDate = ({ date }: { date: string }) => (
-        <span>
-            {new Date(date).toLocaleDateString(undefined, {
-                year: "numeric",
-                month: "short",
-                day: "2-digit",
-            })}
-        </span>
-    );
-
     return (
         <div
             onClick={handleBackdropClick}
@@ -172,7 +163,7 @@ export default function DetailedView({ exitFunc, dataPointID }: { exitFunc: () =
                                                     validation: String(pp.validation),
                                                 }))}
                                         />
-                                        {similar.values.length === 0 && (
+                                        {similar.size === 0 && (
                                             <div className="text-gray-500 font-semibold text-center pt-5">No data</div>
                                         )}
                                     </div>
@@ -227,7 +218,7 @@ export default function DetailedView({ exitFunc, dataPointID }: { exitFunc: () =
                                     {loading || !painPoint ? (
                                         <Skeleton className="h-8 w-32" />
                                     ) : (
-                                        <PrettyDate date={String(painPoint.created)} />
+                                        <span>{formatDate(painPoint.created)}</span>
                                     )}
                                 </div>
                             </div>

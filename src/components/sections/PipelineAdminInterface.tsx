@@ -10,6 +10,7 @@ import Popup from "../popups/Popup";
 import CustomTable from "../tables/CustomTable/CustomTable";
 import { getRollbackUnixTimestamp } from "@/lib/utils/timestamps";
 import PopupManagePipeline from "../popups/custom/PopupManagePipeline";
+import { formatDate } from "@/lib/utils/formatter";
 
 export default function PipelineAdminInterface() {
     const [loading, setLoading] = useState(true);
@@ -233,10 +234,12 @@ export default function PipelineAdminInterface() {
                                     switch (value) {
                                         case "finished":
                                             return "bg-lime-500";
+                                        case "analyzing":
+                                            return "bg-yellow-500";
                                         case "embedding":
-                                            return "bg-yellow-600";
-                                        case "extracting":
                                             return "bg-yellow-400";
+                                        case "extracting":
+                                            return "bg-yellow-300";
                                         case "scraping":
                                             return "bg-yellow-200";
                                         case "failed":
@@ -297,7 +300,7 @@ export default function PipelineAdminInterface() {
                                 status: p.last_run_status,
                                 additions: p.last_run_additions ? String(p.last_run_additions) : null,
                                 creator: p.creator_name,
-                                last_run: p.last_run_started ? new Date(p.last_run_started).toLocaleString() : null,
+                                last_run: p.last_run_started ? formatDate(p.last_run_started) : null,
                             };
                         })}
                     />
