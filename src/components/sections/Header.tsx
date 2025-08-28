@@ -7,7 +7,7 @@ export default async function Header() {
     const session = await auth();
 
     return (
-        <nav className="flex justify-between items-center px-10 py-5 bg-background">
+        <nav className="flex justify-between items-center px-10 py-5 bg-background sticky top-0 z-50">
             <div className="flex items-center space-x-20">
                 <Link className="text-3xl font-bold text-secondary" href={session?.user ? "/home" : "/"}>
                     PainDB

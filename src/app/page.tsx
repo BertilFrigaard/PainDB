@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 
 // Optional: pass `session` as prop or read from your auth context
@@ -6,9 +5,21 @@ export default function Landing() {
     return (
         <main className="bg-background text-secondary">
             {/* HERO */}
-            <section className="relative overflow-hidden">
-                <div className="absolute inset-0 " />
-                <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16 xl:px-24 py-20 lg:py-28">
+            <section className="relative bg-[url(/images/world1.png)] bg-center bg-cover">
+                {/*                 
+                <div className="absolute inset-0">
+                    <Image
+                        src="/images/world1.png"
+                        alt="PainDB preview background"
+                        fill
+                        className="object-cover"
+                        priority
+                    />
+                    <div className="absolute inset-0 backdrop-blur-xs" />
+                </div> */}
+
+                {/* Foreground content */}
+                <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16 xl:px-24 py-20 lg:py-28 bg-background/30 backdrop-blur-xs">
                     <div className="grid lg:grid-cols-2 gap-y-14 gap-x-16 items-center">
                         {/* Left */}
                         <div className="order-2 lg:order-1 text-center lg:text-left space-y-8">
@@ -54,32 +65,6 @@ export default function Landing() {
                                     Learn More
                                 </Link>
                             </div>
-                        </div>
-
-                        {/* Right */}
-                        <div className="order-1 lg:order-2 relative">
-                            {/* Mocked browser frame */}
-                            <div className="relative rounded-2xl border border-gray-200 bg-white shadow-2xl overflow-hidden">
-                                <div className="flex items-center gap-2 px-4 h-10 border-b border-gray-100 bg-gray-50">
-                                    <span className="size-3 rounded-full bg-red-400" />
-                                    <span className="size-3 rounded-full bg-amber-400" />
-                                    <span className="size-3 rounded-full bg-emerald-400" />
-                                    <div className="ml-3 text-xs text-gray-500 truncate">
-                                        paindb • pains / analytics preview
-                                    </div>
-                                </div>
-                                <div className="relative aspect-[16/10]">
-                                    <Image
-                                        src="/images/showcase_landing.png"
-                                        alt="PainDB preview"
-                                        fill
-                                        className="object-cover"
-                                    />
-                                </div>
-                            </div>
-
-                            {/* Glow */}
-                            <div className="pointer-events-none absolute -inset-x-10 -bottom-10 h-40 bg-primary/20 blur-3xl" />
                         </div>
                     </div>
                 </div>
