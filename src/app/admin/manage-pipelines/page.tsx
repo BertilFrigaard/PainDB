@@ -1,6 +1,8 @@
 import PipelineAdminInterface from "@/components/sections/PipelineAdminInterface";
+import { pageMinRole } from "@/lib/utils/roleRestrictions";
 
 export default async function ManagePipelines() {
+    await pageMinRole({ role: "admin" });
     return (
         <main className="px-30 py-10">
             <h1 className="text-3xl font-bold text-secondary text-center mb-10">Manage Pipelines</h1>

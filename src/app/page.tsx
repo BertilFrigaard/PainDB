@@ -1,7 +1,8 @@
+import { pageMaxRole } from "@/lib/utils/roleRestrictions";
 import Link from "next/link";
 
-// Optional: pass `session` as prop or read from your auth context
-export default function Landing() {
+export default async function Landing() {
+    await pageMaxRole({ role: "none", redirectUsers: "/home" });
     return (
         <main className="bg-background text-secondary">
             {/* HERO */}
@@ -19,12 +20,12 @@ export default function Landing() {
                 </div> */}
 
                 {/* Foreground content */}
-                <div className="backdrop-blur-xs bg-white/10">
+                <div className="backdrop-blur-xs bg-white/20">
                     <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16 xl:px-24 py-20 lg:py-28">
                         <div className="grid lg:grid-cols-2 gap-y-14 gap-x-16 items-center">
                             {/* Left */}
                             <div className="order-2 lg:order-1 text-center lg:text-left space-y-8">
-                                <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 px-3 py-1 text-sm text-primary shadow-sm">
+                                <div className="inline-flex items-center gap-2 rounded-full border bg-white/80 border-primary/30 px-3 py-1 text-sm text-primary shadow-sm">
                                     <span className="i-lucide-sparkles" />
                                     <span>Validated pains • Real users • Fresh insights</span>
                                 </div>

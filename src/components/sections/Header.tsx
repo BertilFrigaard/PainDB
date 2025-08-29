@@ -37,6 +37,9 @@ export default async function Header() {
                         </>
                     ) : (
                         <>
+                            <Link className="text-secondary" href="/">
+                                Home
+                            </Link>
                             <Link className="text-secondary" href="/examples">
                                 Examples
                             </Link>
