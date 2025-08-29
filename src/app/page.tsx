@@ -1,4 +1,5 @@
 import { pageMaxRole } from "@/lib/utils/roleRestrictions";
+import { Target, FileText, Gauge } from "lucide-react";
 import Link from "next/link";
 
 export default async function Landing() {
@@ -100,7 +101,7 @@ export default async function Landing() {
                             },
                             {
                                 title: "See evidence at a glance",
-                                desc: "Each pain point is analyzed on popularity and recency so you can measure momentum without manual research.",
+                                desc: "Each pain point is analyzed on popularity, recency and actionability so you can measure momentum without manual research.",
                             },
                             {
                                 title: "Save for later",
@@ -164,7 +165,7 @@ export default async function Landing() {
                             {[
                                 { k: "Pains indexed", v: "5k+" },
                                 { k: "Sources", v: "25+" },
-                                { k: "Last update", v: "Yesterday" },
+                                { k: "Updates", v: "Weekly" },
                             ].map((s) => (
                                 <div key={s.k} className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
                                     <div className="text-2xl font-extrabold text-secondary">{s.v}</div>
@@ -176,17 +177,74 @@ export default async function Landing() {
                 </div>
             </section>
 
+            {/* WHAT YOU GET */}
+            <section className="bg-bg" id="what-you-get">
+                <div className="mx-auto max-w-5xl px-6 md:px-12 lg:px-16 xl:px-24 py-16 lg:py-20 text-center">
+                    <header className="space-y-3">
+                        <h2 className="text-2xl font-bold text-primary">What you get</h2>
+                        <h3 className="mt-1 text-3xl md:text-4xl font-semibold text-secondary leading-tight">
+                            Access to real problems that are ready to build for.
+                        </h3>
+                        <p className="mx-auto max-w-3xl text-base md:text-lg text-secondary/80">
+                            Every entry includes a distilled <span className="font-semibold">key problem</span>, a
+                            concise
+                            <span className="font-semibold"> description</span> for context, and a signal-weighted
+                            <span className="font-semibold"> validation score</span> so you can prioritize fast.
+                        </p>
+                    </header>
+
+                    {/* Feature cards */}
+                    <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 text-left">
+                        <div className="rounded-2xl border border-primary/15 bg-white/70 backdrop-blur p-6 shadow-sm">
+                            <div className="flex gap-4">
+                                <Target className="mb-4 text-2xl text-primary" aria-hidden />
+                                <h4 className="text-lg font-semibold text-secondary">Key Problem</h4>
+                            </div>
+                            <p className="mt-2 text-secondary/80">
+                                A crisp, one-line statement of the user’s pain, ready for ideation.
+                            </p>
+                        </div>
+
+                        <div className="rounded-2xl border border-primary/15 bg-white/70 backdrop-blur p-6 shadow-sm">
+                            <div className="flex gap-4">
+                                <FileText className="mb-4 text-2xl text-primary" aria-hidden />
+                                <h4 className="text-lg font-semibold text-secondary">Description</h4>
+                            </div>
+                            <p className="mt-2 text-secondary/80">
+                                A short summary that adds context—what’s happening, why it matters, and who’s affected.
+                            </p>
+                        </div>
+
+                        <div className="rounded-2xl border border-primary/15 bg-white/70 backdrop-blur p-6 shadow-sm">
+                            <div className="flex gap-4">
+                                <Gauge className="mb-4 text-2xl text-primary" aria-hidden />
+                                <h4 className="text-lg font-semibold text-secondary">Validation Score</h4>
+                            </div>
+                            <p className="mt-2 text-secondary/80">
+                                A score that reflects how actionable the problem is, helping you rank opportunities.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Optional reassurance line */}
+                    <p className="mt-10 text-sm text-secondary/70">
+                        Access to PainDB is access to a curated database of pain points—each <br />
+                        with a key problem, description, and validation score.
+                    </p>
+                </div>
+            </section>
+
             {/* PROCESS */}
-            <section className="bg-bg py-10">
+            <section className="bg-secondary py-10">
                 <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16 xl:px-24 py-10">
-                    <h2 className="text-2xl font-bold text-primary">Our process</h2>
+                    <h2 className="text-2xl font-bold text-primary">Our Process</h2>
                     <div className="mt-8 grid md:grid-cols-3 gap-6">
                         {[
                             { n: 1, t: "Collect", d: "We continuously gather user pains from high-signal sources." },
                             { n: 2, t: "Enrich", d: "We clean, classify, and cluster pains to surface patterns." },
                             { n: 3, t: "Deliver", d: "You explore via search & filters — or download to go deeper." },
                         ].map((s) => (
-                            <div key={s.t} className="relative rounded-2xl border border-gray-200 p-6 bg-white">
+                            <div key={s.t} className="relative rounded-2xl border border-gray-200 p-6 bg-background">
                                 <div className="absolute -top-3 -left-3 h-10 w-10 rounded-xl bg-primary text-white grid place-items-center font-bold shadow">
                                     {s.n}
                                 </div>
@@ -206,7 +264,7 @@ export default async function Landing() {
                         Start building apps users actually need — with instant access to market insights
                     </h3>
 
-                    <div className="mx-auto max-w-md bg-white rounded-2xl shadow-2xl p-10 border-2 border-primary will-change-transform hover:scale-[1.02] transition-transform">
+                    <div className="mx-auto max-w-sm bg-white rounded-2xl shadow-2xl p-10 border-2 border-primary">
                         <h4 className="text-2xl font-bold text-secondary mb-2">Pro</h4>
                         <div className="flex items-end gap-3 mb-2 justify-center">
                             <p className="text-2xl text-gray-400 line-through">$19</p>
