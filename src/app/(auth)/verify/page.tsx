@@ -1,4 +1,7 @@
-export default function VerifyEmail() {
+import { pageMaxRole } from "@/lib/utils/roleRestrictions";
+
+export default async function VerifyEmail() {
+    await pageMaxRole({ role: "guest" });
     return (
         <main className="h-[80vh] flex flex-col items-center justify-center p-10 text-center bg-white text-gray-800">
             <div className="max-w-lg">

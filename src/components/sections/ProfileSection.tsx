@@ -1,13 +1,14 @@
 "use client";
 import { UseAlerts } from "@/contexts/AlertContext";
 import { Session } from "next-auth";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 
 export default function ProfileSection({ session }: { session: Session }) {
     const [username, setUsername] = useState(session.user.name || "");
     const { addAlert } = UseAlerts();
 
-    const changeName = async () => {
+    const changeName = async (e: FormEvent) => {
+        e.preventDefault();
         if (username !== session.user.name) {
             const res = await fetch("/api/profile/name", {
                 method: "POST",
@@ -28,6 +29,7 @@ export default function ProfileSection({ session }: { session: Session }) {
         addAlert({ message: "Something went wrong. Try reloading the page", bg: "bg-error" }, 3000);
         return;
     }
+
     return (
         <>
             <div className="bg-white rounded-2xl shadow-md p-8 space-y-6 border border-gray-200">
@@ -74,7 +76,9 @@ export default function ProfileSection({ session }: { session: Session }) {
                 <div className="pt-4 border-t border-gray-100">
                     <p className="text-sm text-secondary font-bold mb-1">Current Plan</p>
                     <span className="text-4xl font-extrabold text-primary">
-                        {session.user.role.charAt(0).toUpperCase() + session.user.role.slice(1)}
+                        {session.user.role
+                            ? session.user.role.charAt(0).toUpperCase() + session.user.role.slice(1)
+                            : "Guest"}
                     </span>
                 </div>
             </div>
