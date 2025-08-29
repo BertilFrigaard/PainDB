@@ -19,51 +19,53 @@ export default function Landing() {
                 </div> */}
 
                 {/* Foreground content */}
-                <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16 xl:px-24 py-20 lg:py-28 bg-background/30 backdrop-blur-xs">
-                    <div className="grid lg:grid-cols-2 gap-y-14 gap-x-16 items-center">
-                        {/* Left */}
-                        <div className="order-2 lg:order-1 text-center lg:text-left space-y-8">
-                            <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-white/70 backdrop-blur px-3 py-1 text-sm text-primary shadow-sm">
-                                <span className="i-lucide-sparkles" />
-                                <span>Validated pains • Real users • Fresh insights</span>
-                            </div>
+                <div className="backdrop-blur-xs bg-white/10">
+                    <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16 xl:px-24 py-20 lg:py-28">
+                        <div className="grid lg:grid-cols-2 gap-y-14 gap-x-16 items-center">
+                            {/* Left */}
+                            <div className="order-2 lg:order-1 text-center lg:text-left space-y-8">
+                                <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 px-3 py-1 text-sm text-primary shadow-sm">
+                                    <span className="i-lucide-sparkles" />
+                                    <span>Validated pains • Real users • Fresh insights</span>
+                                </div>
 
-                            <h1 className="text-4xl sm:text-6xl font-extrabold leading-[1.1] text-secondary">
-                                Build with confidence
-                                <br />
-                                <span className="text-primary">Skip the guesswork</span>
-                            </h1>
+                                <h1 className="text-4xl sm:text-6xl font-extrabold leading-[1.1] text-secondary">
+                                    Build with confidence
+                                    <br />
+                                    <span className="text-primary">Skip the guesswork</span>
+                                </h1>
 
-                            <p className="text-lg sm:text-xl text-secondary/80 max-w-2xl mx-auto lg:mx-0">
-                                Access thousands of real-world pain points to validate your next idea quickly and before
-                                writing a single line of code.
-                            </p>
+                                <p className="text-lg sm:text-xl text-secondary/80 max-w-2xl mx-auto lg:mx-0">
+                                    Access thousands of real-world pain points to validate your next idea quickly and
+                                    before writing a single line of code.
+                                </p>
 
-                            <div className="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4">
-                                <Link
-                                    href="/signup"
-                                    className="group inline-flex items-center gap-3 px-7 py-4 rounded-2xl bg-primary text-white font-semibold shadow-lg shadow-primary/20 hover:brightness-110 transition"
-                                >
-                                    Get Started
-                                    <svg
-                                        className="size-5 transition -translate-x-0 group-hover:translate-x-0.5"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
+                                <div className="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4">
+                                    <Link
+                                        href="/signup"
+                                        className="group inline-flex items-center gap-3 px-7 py-4 rounded-2xl bg-primary text-white font-semibold shadow-lg shadow-primary/20 hover:brightness-110 transition"
                                     >
-                                        <path d="M5 12h14" />
-                                        <path d="m12 5 7 7-7 7" />
-                                    </svg>
-                                </Link>
-                                <Link
-                                    href="/learn"
-                                    className="inline-flex items-center gap-3 px-7 py-4 rounded-2xl border border-gray-300 bg-white text-gray-900 font-semibold hover:bg-gray-50 transition"
-                                >
-                                    Learn More
-                                </Link>
+                                        Get Started
+                                        <svg
+                                            className="size-5 transition -translate-x-0 group-hover:translate-x-0.5"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                        >
+                                            <path d="M5 12h14" />
+                                            <path d="m12 5 7 7-7 7" />
+                                        </svg>
+                                    </Link>
+                                    <Link
+                                        href="#paindb-helps-you"
+                                        className="inline-flex items-center gap-3 px-7 py-4 rounded-2xl border border-gray-300 bg-white text-gray-900 font-semibold hover:bg-gray-50 transition"
+                                    >
+                                        Learn More
+                                    </Link>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -77,7 +79,7 @@ export default function Landing() {
             <section className="bg-secondary">
                 <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16 xl:px-24 py-16 lg:py-20">
                     <h2 className="text-2xl font-bold text-primary">Why PainDB</h2>
-                    <p className="mt-6 text-3xl md:text-4xl font-semibold text-white max-w-4xl">
+                    <p className="mt-6 text-3xl md:text-4xl font-semibold text-white max-w-4xl" id="paindb-helps-you">
                         Start building apps that users actually need with instant access to market insights. Find your
                         next big idea today.
                     </p>
@@ -123,7 +125,9 @@ export default function Landing() {
                                 <div className="flex items-center gap-3">
                                     <h3 className="text-xl font-semibold text-secondary">{c.title}</h3>
                                 </div>
-                                <p className="mt-3 text-secondary/70">{c.desc}</p>
+                                <p className="mt-3 text-secondary/70" id="the-problem">
+                                    {c.desc}
+                                </p>
                             </div>
                         ))}
                     </div>
@@ -142,7 +146,7 @@ export default function Landing() {
             </section>
 
             {/* WHAT WE DO */}
-            <section className="bg-white">
+            <section className="bg-white" id="what-we-do">
                 <div className="mx-auto max-w-4xl px-6 md:px-12 lg:px-16 xl:px-24 py-16 lg:py-20 text-center">
                     <div>
                         <h2 className="text-2xl font-bold text-primary">What we do</h2>
@@ -244,7 +248,7 @@ export default function Landing() {
                             Get Started
                         </Link>
                         <Link
-                            href="/learn"
+                            href="/faq"
                             className="px-7 py-4 rounded-2xl border border-white/30 text-white font-semibold hover:bg-white/10 transition"
                         >
                             Learn More

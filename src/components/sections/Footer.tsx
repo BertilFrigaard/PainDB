@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { FaLinkedin, FaTwitter, FaFacebook } from "react-icons/fa";
 
 export default async function Footer() {
     return (
@@ -15,23 +14,18 @@ export default async function Footer() {
                         <h4 className="font-semibold text-secondary mb-3">Solutions</h4>
                         <ul className="space-y-2 text-gray-600 text-sm">
                             <li>
-                                <Link href="#" className="hover:text-primary transition">
-                                    Startups
+                                <Link href="/#the-problem" className="hover:text-primary transition">
+                                    The Problem
                                 </Link>
                             </li>
                             <li>
-                                <Link href="#" className="hover:text-primary transition">
-                                    Freelancers
+                                <Link href="/#what-we-do" className="hover:text-primary transition">
+                                    What we do
                                 </Link>
                             </li>
                             <li>
-                                <Link href="#" className="hover:text-primary transition">
-                                    Teams
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="#" className="hover:text-primary transition">
-                                    Market Research
+                                <Link href="/examples" className="hover:text-primary transition">
+                                    Examples
                                 </Link>
                             </li>
                         </ul>
@@ -40,8 +34,8 @@ export default async function Footer() {
                         <h4 className="font-semibold text-secondary mb-3">Company</h4>
                         <ul className="space-y-2 text-gray-600 text-sm">
                             <li>
-                                <Link href="/about" className="hover:text-primary transition">
-                                    About Us
+                                <Link href="https://bertilfrigaard.dk" className="hover:text-primary transition">
+                                    The Team
                                 </Link>
                             </li>
                             <li>
@@ -68,7 +62,7 @@ export default async function Footer() {
                     </div>
                 </div>
                 {/* Social */}
-                <div className="flex flex-col items-start gap-4">
+                {/*                 <div className="flex flex-col items-start gap-4">
                     <span className="text-secondary font-semibold">Follow us on</span>
                     <div className="flex gap-4 text-xl text-gray-600">
                         <Link href="#" aria-label="Twitter" className="hover:text-primary">
@@ -81,7 +75,7 @@ export default async function Footer() {
                             <FaFacebook />
                         </Link>
                     </div>
-                </div>
+                </div> */}
             </div>
             <div className="border-t-2 border-gray-300 mt-10 pt-6 text-center text-gray-500 text-sm mx-20">
                 &copy; {new Date().getFullYear()} PainDB. All Rights Reserved.

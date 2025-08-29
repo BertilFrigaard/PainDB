@@ -37,13 +37,6 @@ export default async function Header() {
                         </>
                     ) : (
                         <>
-                            <DropDownPlain
-                                text="Features"
-                                items={[
-                                    { text: "Advanced query", link: "/advanced-query" },
-                                    { text: "Data Viewer", link: "/data-viewer" },
-                                ]}
-                            />
                             <Link className="text-secondary" href="/examples">
                                 Examples
                             </Link>
