@@ -128,6 +128,20 @@ def step_analyze():
                 upload_actionability(row["data_point_id"], value)
                 pass
 
+def step_cleanup():
+    set_pipeline_run_status(pipeline_run_id, "cleanup")
+    if os.path.exists(DATA_FOLDER + "/1-" + str(pipeline_run_id) + ".csv"):
+        os.remove(DATA_FOLDER + "/1-" + str(pipeline_run_id) + ".csv")
+        logger.debug("Remove file: " + DATA_FOLDER + "/1-" + str(pipeline_run_id) + ".csv")
+    else:
+        logger.warn("Could not remove file: " + DATA_FOLDER + "/2-" + str(pipeline_run_id) + ".csv" + " (Not Found)")
+
+    if os.path.exists(DATA_FOLDER + "/2-" + str(pipeline_run_id) + ".csv"):
+        os.remove(DATA_FOLDER + "/2-" + str(pipeline_run_id) + ".csv")
+        logger.debug("Remove file: " + DATA_FOLDER + "/2-" + str(pipeline_run_id) + ".csv")
+    else:
+        logger.warn("Could not remove file: " + DATA_FOLDER + "/2-" + str(pipeline_run_id) + ".csv" + " (Not Found)")
+
 """     
     FOR FUTURE DEBUGGING 
 
@@ -152,10 +166,11 @@ try:
     step_embed()
     logger.info("Starting Analyzing")
     step_analyze()
+    logger.info("Starting cleanup")
+    step_cleanup()
     logger.info("Finishing")
-    finish_pipeline(pipeline_run_id, additions)
     set_pipeline_run_status(pipeline_run_id, "finished")
-    logger.warn("Cleanup csv NOT IMPLEMENTED")
+    finish_pipeline(pipeline_run_id, additions)
 except Exception as e:
     error_msg = "".join(traceback.format_exception(type(e), e, e.__traceback__))
     logger.error(error_msg)

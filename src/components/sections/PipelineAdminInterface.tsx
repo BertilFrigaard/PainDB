@@ -234,6 +234,8 @@ export default function PipelineAdminInterface() {
                                     switch (value) {
                                         case "finished":
                                             return "bg-lime-500";
+                                        case "cleanup":
+                                            return "bg-yellow-600";
                                         case "analyzing":
                                             return "bg-yellow-500";
                                         case "embedding":
