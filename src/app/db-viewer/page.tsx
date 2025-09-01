@@ -3,7 +3,7 @@ import { pageMinRole } from "@/lib/utils/roleRestrictions";
 export default async function DBViewer() {
     await pageMinRole({ role: "starter" });
     return (
-        <main className="mx-30 py-10 space-y-12">
+        <main className="px-5 md:px-30 py-10 space-y-12">
             <section className="text-center">
                 <h1 className="text-5xl font-bold text-secondary mb-4">Pain Point Database</h1>
                 <p className="text-lg text-gray-600">

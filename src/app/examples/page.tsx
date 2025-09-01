@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Examples() {
     return (
-        <main className="mx-30 py-12 space-y-16">
+        <main className="mx-5 md:mx-30 py-12 space-y-16">
             {/* Intro / pitch */}
             <section className="text-center max-w-3xl mx-auto">
                 <h1 className="text-5xl font-bold text-secondary mb-4">Examples</h1>
@@ -109,7 +109,7 @@ export default function Examples() {
                     </div>
                     <div className="relative">
                         <Image
-                            src="/images/teasers/detailed-view.png"
+                            src="/images/teasers/detailed-view-2.png"
                             alt="PainDB sample of high-signal pain points with validation scores"
                             width={1920}
                             height={1080}

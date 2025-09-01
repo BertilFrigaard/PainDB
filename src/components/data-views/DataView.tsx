@@ -167,8 +167,8 @@ export default function DataViewer({
     };
 
     return (
-        <section className="mx-auto bg-white rounded-xl shadow-md py-8 px-13">
-            <div className="flex items-center justify-between mb-5">
+        <section className="mx-auto bg-white rounded-xl shadow-md py-8 px-8 md:px-13">
+            <div className="space-y-5 md:space-y-0 md:flex items-center justify-between mb-5">
                 <h2 className="text-2xl font-semibold text-gray-800">{title}</h2>
 
                 <div className="flex items-center gap-3  text-primary">
@@ -191,7 +191,10 @@ export default function DataViewer({
             </div>
             <div className="my-8 space-y-4">
                 {search_field && (
-                    <form className="relative flex items-center w-fit min-w-xl">
+                    <form
+                        className="relative flex items-center w-full md:max-w-[60%]"
+                        onSubmit={(e) => e.preventDefault()}
+                    >
                         <FaSearch className="absolute left-3 text-secondary pointer-events-none" />
                         <input
                             id="search"
@@ -203,7 +206,7 @@ export default function DataViewer({
                         />
                     </form>
                 )}
-                <div className="gap-2 flex">
+                <div className="gap-2 flex-col flex md:flex-row">
                     <DropDownPrimaryButton
                         text="Export CSV"
                         items={[

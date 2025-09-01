@@ -8,27 +8,18 @@ export default async function Landing() {
         <main className="bg-background text-secondary">
             {/* HERO */}
             <section className="relative bg-[url(/images/world1.png)] bg-center bg-cover">
-                {/*                 
-                <div className="absolute inset-0">
-                    <Image
-                        src="/images/world1.png"
-                        alt="PainDB preview background"
-                        fill
-                        className="object-cover"
-                        priority
-                    />
-                    <div className="absolute inset-0 backdrop-blur-xs" />
-                </div> */}
-
                 {/* Foreground content */}
                 <div className="backdrop-blur-xs bg-white/20">
-                    <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16 xl:px-24 py-20 lg:py-28">
+                    <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16 xl:px-24 pt-5 pb-10 md:py-20 lg:py-28">
                         <div className="grid lg:grid-cols-2 gap-y-14 gap-x-16 items-center">
                             {/* Left */}
                             <div className="order-2 lg:order-1 text-center lg:text-left space-y-8">
                                 <div className="inline-flex items-center gap-2 rounded-full border bg-white/80 border-primary/30 px-3 py-1 text-sm text-primary shadow-sm">
                                     <span className="i-lucide-sparkles" />
-                                    <span>Validated pains • Real users • Fresh insights</span>
+                                    <span>
+                                        Validated pains • Real users{" "}
+                                        <span className="hidden md:inline">• Fresh insights</span>
+                                    </span>
                                 </div>
 
                                 <h1 className="text-4xl sm:text-6xl font-extrabold leading-[1.1] text-secondary">
@@ -91,7 +82,7 @@ export default async function Landing() {
             {/* VALUE CARDS */}
             <section className="bg-white">
                 <div className="mx-auto max-w-7xl px-6 md:px-12 lg:px-16 xl:px-24 py-16 lg:py-20">
-                    <p className="mt-2 text-4xl font-bold text-secondary">PainDB helps you</p>
+                    <p className="md:mt-2 text-3xl md:text-4xl font-bold text-secondary">PainDB helps you</p>
 
                     <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
                         {[
@@ -161,7 +152,7 @@ export default async function Landing() {
                         </p>
 
                         {/* Stats / social proof */}
-                        <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 gap-4 max-w-2xl">
+                        <div className="mt-8 grid-cols-2 sm:grid-cols-3 gap-4 max-w-2xl hidden sm:grid">
                             {[
                                 { k: "Pains indexed", v: "5k+" },
                                 { k: "Sources", v: "25+" },

@@ -3,11 +3,12 @@ import Link from "next/link";
 export default async function Footer() {
     return (
         <footer className="bg-gray-100 py-12 border-gray-200">
-            <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-start gap-10">
+            <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center md:items-start gap-10 text-center md:text-left">
                 {/* Logo */}
-                <div className="mb-8 md:mb-0">
+                <div className="mb-0 md:mb-0">
                     <span className="text-secondary font-bold text-2xl">PainDB</span>
                 </div>
+
                 {/* Links Columns */}
                 <div className="flex flex-col sm:flex-row gap-12 flex-1 justify-center">
                     <div>
@@ -61,23 +62,9 @@ export default async function Footer() {
                         </ul>
                     </div>
                 </div>
-                {/* Social */}
-                {/*                 <div className="flex flex-col items-start gap-4">
-                    <span className="text-secondary font-semibold">Follow us on</span>
-                    <div className="flex gap-4 text-xl text-gray-600">
-                        <Link href="#" aria-label="Twitter" className="hover:text-primary">
-                            <FaTwitter />
-                        </Link>
-                        <Link href="#" aria-label="LinkedIn" className="hover:text-primary">
-                            <FaLinkedin />
-                        </Link>
-                        <Link href="#" aria-label="Facebook" className="hover:text-primary">
-                            <FaFacebook />
-                        </Link>
-                    </div>
-                </div> */}
             </div>
-            <div className="border-t-2 border-gray-300 mt-10 pt-6 text-center text-gray-500 text-sm mx-20">
+
+            <div className="border-t-2 border-gray-300 mt-10 pt-6 text-center text-gray-500 text-sm mx-6 md:mx-20">
                 &copy; {new Date().getFullYear()} PainDB. All Rights Reserved.
             </div>
         </footer>
