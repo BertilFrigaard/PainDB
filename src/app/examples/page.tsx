@@ -40,7 +40,7 @@ export default function Examples() {
                     <div className="relative">
                         {/* Put your provided image in /public/images/examples/painpoints.png */}
                         <Image
-                            src="/images/teasers/data-view.png"
+                            src="/images/teasers/data-view-2.png"
                             alt="PainDB sample of high-signal pain points with validation scores"
                             width={1920}
                             height={1080}
