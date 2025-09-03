@@ -35,6 +35,31 @@ export async function getPipelineSubReddit(pipelineID: string): Promise<string |
     }
 }
 
+export async function deletePipelineRunData(pipelineRunID: number): Promise<void> {
+    await pool.query(
+        "DELETE FROM data_points WHERE id IN (SELECT data_point_id FROM raw_data WHERE pipeline_run_id = $1)",
+        [pipelineRunID]
+    );
+}
+
+export async function deletePipelineRun(pipelineRunID: number): Promise<void> {
+    await pool.query(
+        `DELETE FROM pipeline_runs
+         WHERE id = $1`,
+        [pipelineRunID]
+    );
+}
+
+export async function getPipelineLastRun(pipelineID: string): Promise<number | null> {
+    const res = await pool.query(
+        "SELECT id FROM pipeline_runs WHERE pipeline_id = $1 ORDER BY run_started DESC LIMIT 1",
+        [pipelineID]
+    );
+    if (res.rowCount !== 1) return null;
+
+    return res.rows[0].id;
+}
+
 export async function getPipelinesLastRunStarted(pipelineID: string): Promise<string | null> {
     const res = await pool.query(
         `SELECT run_started
@@ -121,7 +146,7 @@ export async function getPipelineWithLastRunByID(pipelineID: string) {
     }
 }
 
-export async function getLogsByPipelineRunID(pipelineRunID: string) {
+export async function getLogsByPipelineRunID(pipelineRunID: number) {
     const res = await pool.query<PipelineLog>(
         "SELECT * FROM pipeline_run_logs WHERE pipeline_run_id = $1 ORDER BY time DESC",
         [pipelineRunID]
