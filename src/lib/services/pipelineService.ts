@@ -153,3 +153,13 @@ export async function getLogsByPipelineRunID(pipelineRunID: number) {
     );
     return res.rows;
 }
+
+export async function getCountPipelines(): Promise<number> {
+    const res = await pool.query("SELECT COUNT(*) FROM pipelines");
+    return res.rows[0].count;
+}
+
+export async function getLastRun(): Promise<number> {
+    const res = await pool.query("SELECT run_started FROM pipeline_runs ORDER BY run_started DESC LIMIT 1");
+    return res.rows[0].run_started;
+}

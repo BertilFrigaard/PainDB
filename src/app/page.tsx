@@ -1,9 +1,34 @@
+import { getCountPainPoints } from "@/lib/services/dataService";
+import { getCountPipelines, getLastRun } from "@/lib/services/pipelineService";
+import { getRelativeTime } from "@/lib/utils/formatter";
 import { pageMaxRole } from "@/lib/utils/roleRestrictions";
 import { Target, FileText, Gauge } from "lucide-react";
 import Link from "next/link";
 
 export default async function Landing() {
     await pageMaxRole({ role: "none", redirectUsers: "/home" });
+
+    const stats = [];
+
+    try {
+        stats.push({ k: "Pains indexed", v: Math.floor((await getCountPainPoints()) / 1000) + "k+" });
+    } catch {
+        stats.push({ k: "Pains indexed", v: "?" });
+    }
+
+    try {
+        stats.push({ k: "Sources", v: Math.floor((await getCountPipelines()) / 5) * 5 + "+" });
+    } catch {
+        stats.push({ k: "Sources", v: "?" });
+    }
+
+    try {
+        stats.push({ k: "Last Update", v: getRelativeTime(new Date(await getLastRun())) });
+    } catch (e) {
+        console.log(e);
+        stats.push({ k: "Updates", v: "weekly" });
+    }
+
     return (
         <main className="bg-background text-secondary">
             {/* HERO */}
@@ -153,11 +178,7 @@ export default async function Landing() {
 
                         {/* Stats / social proof */}
                         <div className="mt-8 grid-cols-2 sm:grid-cols-3 gap-4 max-w-2xl hidden sm:grid">
-                            {[
-                                { k: "Pains indexed", v: "5k+" },
-                                { k: "Sources", v: "25+" },
-                                { k: "Updates", v: "Weekly" },
-                            ].map((s) => (
+                            {stats.map((s) => (
                                 <div key={s.k} className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
                                     <div className="text-2xl font-extrabold text-secondary">{s.v}</div>
                                     <div className="text-sm text-secondary/60">{s.k}</div>

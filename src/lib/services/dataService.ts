@@ -93,3 +93,8 @@ export async function getPainPointById(id: string, userID: number) {
         return null;
     }
 }
+
+export async function getCountPainPoints(): Promise<number> {
+    const res = await pool.query("SELECT COUNT(*) FROM data_points");
+    return res.rows[0].count;
+}
