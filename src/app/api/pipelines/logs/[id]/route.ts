@@ -11,7 +11,12 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     }
 
     try {
-        const logs = await getLogsByPipelineRunID((await params).id);
+        const runID = Number((await params).id);
+        if (isNaN(runID)) {
+            return new Response(null, { status: 400 });
+        }
+
+        const logs = await getLogsByPipelineRunID(runID);
         return Response.json(logs);
     } catch {
         return new Response(null, { status: 500 });

@@ -14,6 +14,32 @@ export default function PopupManagePipeline({ exitFunc, pipelineID }: { exitFunc
 
     const { addAlert } = UseAlerts();
 
+    const rerunPipeline = async () => {
+        setLoading(true);
+        const res = await fetch("/api/pipelines/rerun", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id: pipelineID }),
+        });
+        if (res.status === 204) {
+            updatePipeline();
+        } else if (res.status === 404) {
+            addAlert(
+                {
+                    message: "No last run was found. The pipeline should be deleted and recreated before rerunning.",
+                    bg: "bg-warn",
+                },
+                5000
+            );
+            setLoading(false);
+        } else {
+            addAlert({ message: "Excecution failed (error code: " + res.status + ")", bg: "bg-error" }, 3000);
+            setLoading(false);
+        }
+    };
+
     const deletePipeline = async () => {
         setLoading(true);
         const res = await fetch("/api/pipelines/delete", {
@@ -148,7 +174,24 @@ export default function PopupManagePipeline({ exitFunc, pipelineID }: { exitFunc
                             </div>
                             <div className="flex flex-col gap-2">
                                 <BubbleButton onClick={updatePipeline} text="Reload" bg="bg-purple-400" />
-                                <BubbleButton onClick={runPipeline} text="Run" bg="bg-lime-400" />
+                                {pipeline.last_run_status == "finished" ? (
+                                    <BubbleButton onClick={runPipeline} text="Run" bg="bg-lime-400" />
+                                ) : (
+                                    <BubbleButton
+                                        onClick={() => {
+                                            addAlert(
+                                                {
+                                                    message: "Pipeline can not be run (It might be running)",
+                                                    bg: "bg-warn",
+                                                },
+                                                3000
+                                            );
+                                        }}
+                                        text="Run"
+                                        bg="bg-gray-400"
+                                    />
+                                )}
+                                <BubbleButton onClick={rerunPipeline} bg="bg-warn" text="Rerun" />
                                 <BubbleButton onClick={deletePipeline} bg="bg-error" text="Delete" />
                             </div>
                         </div>
