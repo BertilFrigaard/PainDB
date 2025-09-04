@@ -36,7 +36,7 @@ export default async function Header() {
     }
 
     return (
-        <nav className="flex space-x-5 md:justify-between items-center px-10 py-5 bg-background sticky top-0 z-50">
+        <nav className="flex space-x-5 md:justify-between items-center px-5 md:px-10 py-3 md:py-5 bg-background sticky top-0 z-50">
             <div className="md:hidden">
                 <DropDownBurger items={items} />
             </div>
