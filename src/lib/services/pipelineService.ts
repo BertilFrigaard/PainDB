@@ -159,7 +159,10 @@ export async function getCountPipelines(): Promise<number> {
     return res.rows[0].count;
 }
 
-export async function getLastRun(): Promise<number> {
+export async function getLastRun(): Promise<number | null> {
     const res = await pool.query("SELECT run_started FROM pipeline_runs ORDER BY run_started DESC LIMIT 1");
+    if (res.rows.length <= 0) {
+        return null;
+    }
     return res.rows[0].run_started;
 }

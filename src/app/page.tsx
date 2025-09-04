@@ -23,7 +23,12 @@ export default async function Landing() {
     }
 
     try {
-        stats.push({ k: "Last Update", v: getRelativeTime(new Date(await getLastRun())) });
+        const lastRun = await getLastRun();
+        if (lastRun) {
+            stats.push({ k: "Last Update", v: getRelativeTime(new Date(lastRun)) });
+        } else {
+            stats.push({ k: "Updates", v: "weekly" });
+        }
     } catch (e) {
         console.log(e);
         stats.push({ k: "Updates", v: "weekly" });
