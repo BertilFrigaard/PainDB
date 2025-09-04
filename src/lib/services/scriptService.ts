@@ -11,7 +11,7 @@ export async function startPipelineScript(pipelineID: string, pipelineRunID: num
 
     const scriptPath = path.resolve(process.cwd(), "src", "scripts", "pipeline.py");
 
-    const pipelineProcess = spawn(process.env.DEV ? "py" : "python3", [
+    const pipelineProcess = spawn(process.env.PYTHON_COMMAND || "py", [
         scriptPath,
         pipelineID,
         pipelineRunID.toString(),
