@@ -20,6 +20,13 @@ export default async function Header() {
         }
         items.push({ text: "Profile", link: "/profile" });
         items.push({ text: "Sign Out", link: "/signout" });
+    } else if (session?.user.role !== undefined) {
+        items.push({ text: "Home", link: "/" });
+        items.push({ text: "Examples", link: "/examples" });
+        items.push({ text: "Pricing", link: "/#pricing" });
+        items.push({ text: "FAQ", link: "/faq" });
+        items.push({ text: "Profile", link: "/profile" });
+        items.push({ text: "Sign Out", link: "/signout" });
     } else {
         items.push({ text: "Home", link: "/" });
         items.push({ text: "Examples", link: "/examples" });
