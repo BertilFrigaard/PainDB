@@ -76,7 +76,7 @@ export default function ProfileSection({ session }: { session: Session }) {
                 <div className="pt-4 border-t border-gray-100">
                     <p className="text-sm text-secondary font-bold mb-1">Current Plan</p>
                     <span className="text-4xl font-extrabold text-primary">
-                        {session.user.role
+                        {session.user.role && session.user.role !== "none"
                             ? session.user.role.charAt(0).toUpperCase() + session.user.role.slice(1)
                             : "Guest"}
                     </span>
