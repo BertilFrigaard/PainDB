@@ -4,7 +4,7 @@ import { pageMinRole } from "@/lib/utils/roleRestrictions";
 import Link from "next/link";
 
 export default async function Home() {
-    await pageMinRole({ role: "starter" });
+    await pageMinRole({ role: "standard" });
     const session = await auth();
     return (
         <main className="px-5 md:px-30 py-10">

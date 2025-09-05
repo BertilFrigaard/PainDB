@@ -1,7 +1,7 @@
 import DataViewer from "@/components/data-views/DataView";
 import { pageMinRole } from "@/lib/utils/roleRestrictions";
 export default async function DBViewer() {
-    await pageMinRole({ role: "starter" });
+    await pageMinRole({ role: "standard" });
     return (
         <main className="px-5 md:px-30 py-10 space-y-12">
             <section className="text-center">

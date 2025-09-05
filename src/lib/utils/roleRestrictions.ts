@@ -9,7 +9,7 @@ function getRoleLevel(role: string | undefined | null) {
         return 4;
     } else if (role === "pro") {
         return 3;
-    } else if (role === "starter") {
+    } else if (role === "standard") {
         return 2;
     } else if (role === "" || role === "none") {
         return 1;
@@ -19,7 +19,7 @@ function getRoleLevel(role: string | undefined | null) {
 }
 
 export async function apiMinRole({
-    role = "starter",
+    role = "standard",
     session = null,
 }: {
     role?: string | null;
@@ -70,7 +70,7 @@ export async function pageMaxRole({
 }
 
 export async function pageMinRole({
-    role = "starter",
+    role = "standard",
     redirectUsers = "/",
     redirectVisitors = "/signup",
     session = null,

@@ -1,12 +1,17 @@
+import { auth } from "@/auth";
 import { getCountPainPoints } from "@/lib/services/dataService";
 import { getCountPipelines, getLastRun } from "@/lib/services/pipelineService";
+import { ensureEnv } from "@/lib/utils/envEnsurer";
 import { getRelativeTime } from "@/lib/utils/formatter";
 import { pageMaxRole } from "@/lib/utils/roleRestrictions";
 import { Target, FileText, Gauge } from "lucide-react";
 import Link from "next/link";
 
+ensureEnv(["STRIPE_SHOP_STANDARD_LINK"]);
+
 export default async function Landing() {
-    await pageMaxRole({ role: "none", redirectUsers: "/home" });
+    const session = await auth();
+    await pageMaxRole({ role: "none", redirectUsers: "/home", session: session });
 
     const stats = [];
 
@@ -282,7 +287,7 @@ export default async function Landing() {
                     </h3>
 
                     <div className="mx-auto max-w-sm bg-white rounded-2xl shadow-2xl p-10 border-2 border-primary">
-                        <h4 className="text-2xl font-bold text-secondary mb-2">Pro</h4>
+                        <h4 className="text-2xl font-bold text-secondary mb-2">PainDB</h4>
                         <div className="flex items-end gap-3 mb-2 justify-center">
                             <p className="text-2xl text-gray-400 line-through">$19</p>
                             <p className="text-4xl font-extrabold text-primary">$9</p>
@@ -297,7 +302,11 @@ export default async function Landing() {
                         </ul>
 
                         <Link
-                            href={"/"}
+                            href={
+                                session
+                                    ? process.env.STRIPE_SHOP_STANDARD_LINK!
+                                    : "/signup?callbackUrl=" + (process.env.STRIPE_SHOP_STANDARD_LINK || "/home")
+                            }
                             className="inline-block px-6 py-3 bg-primary text-white font-semibold rounded-xl hover:brightness-110 transition"
                         >
                             Get Pro

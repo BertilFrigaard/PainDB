@@ -5,7 +5,7 @@ import { addFeedback, getFeedback } from "@/lib/services/feedbackService";
 
 export async function POST(req: NextRequest) {
     const session = await auth();
-    const rr = await apiMinRole({ role: "starter", session: session });
+    const rr = await apiMinRole({ role: "standard", session: session });
     if (rr) {
         return rr;
     }

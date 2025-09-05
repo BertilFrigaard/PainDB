@@ -14,7 +14,7 @@ ensureEnv([
     "EMAIL_FROM",
     "GOOGLE_CLIENT_ID",
     "GOOGLE_CLIENT_SECRET",
-    "STRIPE_SHOP_PRO_LINK",
+    "STRIPE_SHOP_STANDARD_LINK",
 ]);
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -55,7 +55,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             // Allows callback URLs on the same origin
             if (new URL(url).origin === baseUrl) return url;
 
-            if ([process.env.STRIPE_SHOP_PRO_LINK].includes(url)) {
+            if ([process.env.STRIPE_SHOP_STANDARD_LINK].includes(url)) {
                 return url;
             }
 

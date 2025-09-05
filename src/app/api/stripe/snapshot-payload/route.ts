@@ -5,7 +5,7 @@ import Stripe from "stripe";
 ensureEnv([
     "STRIPE_SECRET_KEY",
     "STRIPE_WEBHOOK_SECRET",
-    "STRIPE_STARTER_PAYMENT_LINK",
+    "STRIPE_STANDARD_PAYMENT_LINK",
     "STRIPE_PRO_PAYMENT_LINK",
     "STRIPE_UNLIMITED_PAYMENT_LINK",
 ]);
@@ -45,8 +45,8 @@ export async function POST(req: Request) {
             return new Response(null, { status: 500 });
         }
         switch (paymentLink) {
-            case process.env.STRIPE_STARTER_PAYMENT_LINK:
-                ensureUser(email, name, "starter");
+            case process.env.STRIPE_STANDARD_PAYMENT_LINK:
+                ensureUser(email, name, "standard");
                 break;
             case process.env.STRIPE_PRO_PAYMENT_LINK:
                 ensureUser(email, name, "pro");
