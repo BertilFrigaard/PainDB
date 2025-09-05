@@ -9,9 +9,10 @@ export default function PRIVACY() {
             <div>
                 <h2 className="font-bold text-2xl">Overview</h2>
                 <p className="py-2">
-                    This Privacy Policy explains how we (Website paindb.com) collect, use and protect your information
-                    when you use our site. protection legislation, including the EU General Data Protection Regulation
-                    (GDPR), the Danish Data Protection Act and the rules on cookies in the Cookie Executive Order.
+                    This Privacy Policy explains how we (paindb.com) collect, use, and protect your information when you
+                    use our site. We comply with applicable data protection legislation, including the EU General Data
+                    Protection Regulation (GDPR), the Danish Data Protection Act, and the rules on cookies in the Danish
+                    Cookie Executive Order.
                 </p>
             </div>
 
