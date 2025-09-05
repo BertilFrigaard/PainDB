@@ -2,19 +2,29 @@ import requests
 import time
 from util import logger
 from util.time import format_timestamp_to_pretty_local
+import os
 
 MAX_RETRIES = 10
 
-headers = {
-    "User-Agent": (
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) "
-        "Chrome/115.0.0.0 Safari/537.36"
-    ),
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-    "Accept-Language": "en-US,en;q=0.9",
-    "Referer": "https://www.google.com/"
-}
+token = ""
+
+agent = "PainDBScraper/0.1 by u/PainDB"
+
+def updateToken():
+    global token
+    auth = requests.auth.HTTPBasicAuth(os.getenv("REDDIT_CLIENT_ID"), os.getenv("REDDIT_CLIENT_SECRET"))
+    data = {
+        "grant_type": "client_credentials",
+    }
+    headers = {"User-Agent": agent}
+    res = requests.post("https://www.reddit.com/api/v1/access_token", auth=auth, data=data,headers=headers, timeout=30)
+    if res.status_code == 200:
+        logger.info("Updated access token")
+        token = res.json()["access_token"]
+        return True
+    else:
+        logger.critical("Auth endpoint returned status code " + str(res.status_code))
+        return False
 
 def extract_post(post):
     return {
@@ -30,17 +40,26 @@ def getAfter(json):
     return json["data"]["after"]
 
 def scrape(sub_reddit, stop_date):
-    baseurl = "https://www.reddit.com/" + sub_reddit + "/new/.json"
+    print(sub_reddit)
+    baseurl = "https://oauth.reddit.com/" + sub_reddit + "/new"
     posts = []
     retries = 0
     i = 0
     after = ""
     running = True
+
+    if not token:
+        updateToken()
+    
     while running:
+        headers = {
+            "User-Agent": "PainDBScraper/0.1 by u/PainDB",
+            "Authorization": f"bearer {token}",
+            }
         if after:
-            res = requests.get(baseurl + "?after=" + after, headers=headers)
+            res = requests.get(baseurl + "?after=" + after + "&limit=100", headers=headers)
         else:
-            res = requests.get(baseurl, headers=headers) 
+            res = requests.get(baseurl + "?limit=100", headers=headers) 
 
         if (res.status_code == 429):
             retries += 1
@@ -53,6 +72,12 @@ def scrape(sub_reddit, stop_date):
 
             time.sleep(30)
             continue
+
+        if (res.status_code == 401 or res.status_code == 403):
+            if (updateToken()):
+                continue
+            else:
+                break
 
         if (res.status_code != 200):
             logger.critical("Iteration: " + str(i) + " Recieved " + str(res.status_code) + " - Breaking out")
@@ -71,6 +96,7 @@ def scrape(sub_reddit, stop_date):
         for child in json["data"]["children"]:
             post = extract_post(child)
             if int(post["created"]) < stop_date:
+                logger.debug("Ended " + str(post["created"]) + " " + str(stop_date))
                 running = False
                 break
             else:
