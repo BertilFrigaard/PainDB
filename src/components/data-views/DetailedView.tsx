@@ -43,7 +43,7 @@ export default function DetailedView({ exitFunc, dataPointID }: { exitFunc: () =
         };
 
         updateData();
-    }, [dataPointID]);
+    }, [dataPointID, addAlert]);
 
     useEffect(() => {
         if (painPoint) {
@@ -67,7 +67,7 @@ export default function DetailedView({ exitFunc, dataPointID }: { exitFunc: () =
             };
             updateSimilar();
         }
-    }, [painPoint]);
+    }, [painPoint, addAlert]);
 
     const setFavorite = async () => {
         if (!painPoint) {

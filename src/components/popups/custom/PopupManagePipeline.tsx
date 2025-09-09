@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Popup from "../Popup";
 import { PipelineWithLastRun } from "@/types/pipeline/PipelineWithLastRun";
 import { UseAlerts } from "@/contexts/AlertContext";
@@ -74,7 +74,7 @@ export default function PopupManagePipeline({ exitFunc, pipelineID }: { exitFunc
         }
     };
 
-    const updatePipeline = async () => {
+    const updatePipeline = useCallback(async () => {
         setLoading(true);
         const res = await fetch("/api/pipelines/" + pipelineID);
         if (res.status === 200) {
@@ -84,30 +84,30 @@ export default function PopupManagePipeline({ exitFunc, pipelineID }: { exitFunc
             addAlert({ message: "Tried to fetch pipelines (error code: " + res.status + ")", bg: "bg-error" }, 3000);
         }
         setLoading(false);
-    };
+    }, [pipelineID, addAlert]);
 
-    const updateLogs = async () => {
+    const updateLogs = useCallback(async () => {
         setLoadingLogs(true);
         if (pipeline) {
             const res = await fetch("/api/pipelines/logs/" + pipeline.last_run_id);
             if (res.status === 200) {
                 const json = await res.json();
                 setLogs(json);
-                console.log(logs);
             } else {
                 addAlert({ message: "Tried to fetch logs (error code: " + res.status + ")", bg: "bg-error" }, 3000);
             }
         }
         setLoadingLogs(false);
-    };
+    }, [pipeline, addAlert]);
 
     useEffect(() => {
         updatePipeline();
-    }, []);
+    }, [updatePipeline]);
 
     useEffect(() => {
         updateLogs();
-    }, [pipeline]);
+    }, [updateLogs]);
+
     return (
         <Popup exitFunc={exitFunc} title="Manage Pipeline">
             {loading ? (

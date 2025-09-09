@@ -3,7 +3,7 @@ import { getLogsByPipelineRunID } from "@/lib/services/pipelineService";
 import { apiMinRole } from "@/lib/utils/roleRestrictions";
 import { NextRequest } from "next/server";
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(request: NextRequest, ctx: RouteContext<"/api/pipelines/logs/[id]">) {
     const session = await auth();
     const rr = await apiMinRole({ role: "admin", session: session });
     if (rr) {
@@ -11,7 +11,8 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     }
 
     try {
-        const runID = Number((await params).id);
+        const { id } = await ctx.params;
+        const runID = Number(id);
         if (isNaN(runID)) {
             return new Response(null, { status: 400 });
         }

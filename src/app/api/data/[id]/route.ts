@@ -2,9 +2,8 @@ import { auth } from "@/auth";
 import { getPainPointById } from "@/lib/services/dataService";
 import { apiMinRole } from "@/lib/utils/roleRestrictions";
 import { PainPoint } from "@/types/painpoint/PainPoint";
-import { NextRequest } from "next/server";
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(request: Request, ctx: RouteContext<"/api/data/[id]">) {
     const session = await auth();
     const rr = await apiMinRole({ session: session });
     if (rr) {
@@ -18,7 +17,8 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
 
     let res: PainPoint | null;
     try {
-        res = await getPainPointById((await params).id, userID);
+        const { id } = await ctx.params
+        res = await getPainPointById(id, userID);
     } catch {
         return new Response(null, { status: 400 });
     }

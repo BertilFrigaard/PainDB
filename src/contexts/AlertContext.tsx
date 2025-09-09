@@ -1,7 +1,7 @@
 "use client";
 import AlertPopup from "@/components/alert/AlertPopup";
 import { Alert, AlertContextType, AlertDraft } from "@/types/Alert";
-import { createContext, ReactNode, useContext, useState } from "react";
+import { createContext, ReactNode, useCallback, useContext, useState } from "react";
 
 const AlertContext = createContext<AlertContextType>({
     addAlert: () => {
@@ -16,7 +16,7 @@ export const UseAlerts = () => {
 export function AlertProvider({ children }: { children: ReactNode }) {
     const [alerts, setAlerts] = useState<Alert[]>([]);
 
-    const addAlert = (alert: AlertDraft, timeout: number) => {
+    const addAlert = useCallback((alert: AlertDraft, timeout: number) => {
         const id = Date.now();
         const finalAlert: Alert = { ...alert, id };
 
@@ -29,7 +29,7 @@ export function AlertProvider({ children }: { children: ReactNode }) {
                 })
             );
         }, timeout);
-    };
+    }, []);
 
     return (
         <AlertContext.Provider value={{ addAlert }}>

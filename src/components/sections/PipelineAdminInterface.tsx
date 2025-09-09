@@ -2,7 +2,7 @@
 
 import { UseAlerts } from "@/contexts/AlertContext";
 import { PipelineWithLastRun } from "@/types/pipeline/PipelineWithLastRun";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import DataTable from "../tables/DataTable/DataTable";
 import SmallButtonSecondary from "../buttons/smallButtons/SmallButtonSecondary";
 import SmallButtonPrimary from "../buttons/smallButtons/SmallButtonPrimary";
@@ -88,7 +88,7 @@ export default function PipelineAdminInterface() {
         }
     };
 
-    const updatePipelines = async () => {
+    const updatePipelines = useCallback(async () => {
         setLoading(true);
         const res = await fetch("/api/pipelines");
         if (res.status === 200) {
@@ -98,11 +98,11 @@ export default function PipelineAdminInterface() {
             addAlert({ message: "Tried to fetch pipelines (error code: " + res.status + ")", bg: "bg-error" }, 3000);
         }
         setLoading(false);
-    };
+    }, [addAlert]);
 
     useEffect(() => {
         updatePipelines();
-    }, []);
+    }, [updatePipelines]);
 
     return (
         <section className="mx-auto bg-white rounded-xl shadow-md py-8 px-13">

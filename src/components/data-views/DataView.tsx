@@ -73,7 +73,7 @@ export default function DataViewer({
         };
         setLoading(true);
         updateData();
-    }, [order, filter, query, page]);
+    }, [endpoint, order, filter, query, page, addAlert]);
 
     const getOrderDropDownItems = () => {
         const out: { text: string; link?: string | undefined; func?: (() => void) | undefined }[] = [];

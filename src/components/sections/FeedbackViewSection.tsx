@@ -2,7 +2,7 @@
 
 import { UseAlerts } from "@/contexts/AlertContext";
 import { Feedback } from "@/types/Feedback";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import CustomTable from "../tables/CustomTable/CustomTable";
 import { formatDatePrecise } from "@/lib/utils/formatter";
 
@@ -12,7 +12,7 @@ export default function FeedbackViewSection() {
 
     const { addAlert } = UseAlerts();
 
-    const updateFeedback = async () => {
+    const updateFeedback = useCallback(async () => {
         setLoading(true);
         const res = await fetch("/api/feedback");
         if (res.status === 200) {
@@ -22,11 +22,11 @@ export default function FeedbackViewSection() {
             addAlert({ message: "Failed to get data (error code: " + res.status + ")", bg: "bg-error" }, 3000);
         }
         setLoading(false);
-    };
+    }, [addAlert]);
 
     useEffect(() => {
         updateFeedback();
-    }, []);
+    }, [updateFeedback]);
 
     return (
         <>

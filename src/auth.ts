@@ -19,6 +19,7 @@ ensureEnv([
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
     adapter: PostgresAdapter(pool),
+    trustHost: true,
     providers: [
         Nodemailer({
             server: {
