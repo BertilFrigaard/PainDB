@@ -34,13 +34,13 @@ export default function Examples() {
 
                 <div className="mt-6 flex items-center justify-center gap-3">
                     <Link
-                        href="/signup"
+                        href="/#pricing"
                         className="inline-flex items-center justify-center rounded-xl bg-primary px-6 py-3 text-white font-medium shadow-sm hover:opacity-90"
                     >
                         Try PainDB
                     </Link>
                     <Link
-                        href="/pricing"
+                        href="/#pricing"
                         className="inline-flex items-center justify-center rounded-xl border border-gray-300 px-6 py-3 text-secondary hover:bg-gray-100"
                     >
                         See Pricing

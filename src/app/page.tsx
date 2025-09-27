@@ -38,9 +38,6 @@ export default async function Landing() {
         console.log(e);
         stats.push({ k: "Updates", v: "weekly" });
     }
-
-    console.log(session?.user.role);
-
     return (
         <main className="bg-background text-secondary">
             {/* HERO */}
