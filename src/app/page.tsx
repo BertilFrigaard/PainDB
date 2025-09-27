@@ -39,6 +39,8 @@ export default async function Landing() {
         stats.push({ k: "Updates", v: "weekly" });
     }
 
+    console.log(session?.user.role);
+
     return (
         <main className="bg-background text-secondary">
             {/* HERO */}
@@ -70,7 +72,7 @@ export default async function Landing() {
 
                                 <div className="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4">
                                     <Link
-                                        href="/signup"
+                                        href={session?.user.role ? "#pricing" : "/signup"}
                                         className="group inline-flex items-center gap-3 px-7 py-4 rounded-2xl bg-primary text-white font-semibold shadow-lg shadow-primary/20 hover:brightness-110 transition"
                                     >
                                         Get Started
@@ -159,6 +161,40 @@ export default async function Landing() {
                             </div>
                         ))}
                     </div>
+                </div>
+            </section>
+
+            {/* Link To Examples */}
+            <section className="bg-bg" id="what-you-get">
+                <div className="mx-auto max-w-5xl px-6 md:px-12 lg:px-16 xl:px-24 py-16 lg:py-20 text-center">
+                    <header className="space-y-3 pb-8">
+                        <h2 className="text-2xl font-bold text-primary">Real Problems</h2>
+                        <h3 className="mt-1 text-3xl md:text-4xl font-semibold text-secondary leading-tight">
+                            See real examples from our Database
+                        </h3>
+                        <p className="mx-auto max-w-3xl text-base md:text-lg text-secondary/80">
+                            Curious what our data looks like? Get a sneak peek into our database and explore how real
+                            user pain points can help you build better and faster!
+                        </p>
+                    </header>
+                    <Link
+                        href="/examples"
+                        className="group inline-flex items-center gap-3 px-7 py-4 rounded-2xl bg-primary text-white font-semibold shadow-lg shadow-primary/20 hover:brightness-110 transition"
+                    >
+                        View Examples
+                        <svg
+                            className="size-5 transition -translate-x-0 group-hover:translate-x-0.5"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        >
+                            <path d="M5 12h14" />
+                            <path d="m12 5 7 7-7 7" />
+                        </svg>
+                    </Link>
                 </div>
             </section>
 
@@ -327,7 +363,7 @@ export default async function Landing() {
                     </p>
                     <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
                         <Link
-                            href="/signup"
+                            href={session?.user.role ? "#pricing" : "/signup"}
                             className="px-7 py-4 rounded-2xl bg-primary text-white font-semibold hover:brightness-110 transition"
                         >
                             Get Started
