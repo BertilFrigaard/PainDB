@@ -1,5 +1,25 @@
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+
+export async function generateMetadata(): Promise<Metadata> {
+    const url = new URL("https://paindb.com/examples");
+
+    return {
+        title: "Examples",
+        description: "Explore real examples from the PainDB pain point database and see how customer problems and market signals can help validate startup ideas.",
+        openGraph: {
+        type: "website",
+        url: url.toString(),
+        siteName: "PainDB",
+        title: "Examples - PainDB",
+        description: "Explore real examples from the PainDB pain point database and see how customer problems and market signals can help validate startup ideas."
+,
+        images: ["/seo/examples.png"], // 1200x630
+        locale: "en_US",
+    },
+    }
+}
 
 export default function Examples() {
     return (

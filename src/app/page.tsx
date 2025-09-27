@@ -123,7 +123,7 @@ export default async function Landing() {
                         {[
                             {
                                 title: "Find validated problems fast",
-                                desc: "Search across thousands of high-signal pain points and sort by traction to avoid dead ends.",
+                                desc: "Search our pain point database for thousands of high-signal pain points and sort them by traction to avoid dead ends.",
                             },
                             {
                                 title: "See evidence at a glance",
