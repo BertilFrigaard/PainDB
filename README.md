@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PainDB
 
-## Getting Started
+> **Note:** This repository is no longer actively maintained. The code may be outdated.
 
-First, run the development server:
+PainDB is a full-stack app that scrapes Reddit posts and uses AI to find pain points — problems that users are complaining about. Similar pain points are grouped together by comparing them in vector space, so you can see how common a problem actually is and how well validated it is.
+
+The idea is to help founders and developers in general discover ideas worth making.
+
+<img width="1920" height="1100" alt="image" src="https://github.com/user-attachments/assets/964e5bfa-fb90-4822-94e7-4c452aa35af2" />
+
+---
+
+## How It Works
+
+**1. Scraping** — A Python backend scrapes Reddit posts and comments from relevant subreddits.
+
+**2. AI extraction** — Each post is sent to an LLM (OpenAI) which pulls out pain points in a structured format.
+
+**3. Vectorisation & clustering** — Pain points are turned into embeddings using `sentence-transformers` and compared in vector space. This way similar pain points can be detected.
+
+**4. Validation scoring** — Each cluster gets a score based on how often the problem appears, how recent the posts are, and how much engagement they got.
+
+**5. Frontend** — A Next.js dashboard where you can browse problems by category, see related ones, and export the data.
+
+<img width="1920" height="1102" alt="image" src="https://github.com/user-attachments/assets/bef18500-fcc4-4d7a-805b-c829ed846b89" />
+
+---
+
+## Tech Stack
+
+**Frontend**
+- [Next.js 15](https://nextjs.org) (App Router, TypeScript)
+- Tailwind CSS v4, Framer Motion
+- Auth via [NextAuth v5](https://authjs.dev) — magic link email + Google OAuth
+- Stripe for payments
+
+**Backend (Python)**
+- Reddit scraping via PRAW / AIOHTTP
+- OpenAI API for pain point extraction
+- `sentence-transformers` + `scikit-learn` for embeddings and clustering
+- FastAPI for internal API endpoints
+
+**Database**
+- PostgreSQL (via `pg` / `psycopg2`)
+- Nodemailer for transactional email
+
+<!-- screenshot: auth / pricing page -->
+
+---
+
+## Local Setup
+
+Copy the example env file and fill in your keys:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cp .env.example .env
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**Frontend:**
+```bash
+npm install
+npm run dev
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Python backend:**
+```bash
+pip install -r requirements.txt
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## License
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[MIT](https://choosealicense.com/licenses/mit/)
